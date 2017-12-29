@@ -1,0 +1,22 @@
+{
+    "name": "engegraph/wsgi",
+    "description": "Sistema de Controle de Imobiliária",
+    "require": {
+        "php": ">=7.1",
+        "illuminate/database": "^5.5",
+        "vlucas/phpdotenv": "^2.4",
+        "webpatser/laravel-uuid": "^3.0"
+    },
+    "authors": [
+        {
+            "name": "Airton",
+            "email": "Airton@engegraph.com.br"
+        }
+    ],
+    "autoload" : {
+        "psr-4" : {
+            "App\\" : "app/",
+            "Core\\" : "core/"
+        }
+    }
+}
