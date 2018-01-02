@@ -1,7 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: airton.lopes
- * Date: 29/12/2017
- * Time: 16:57
- */
+
+return [
+
+    /**
+     *  Nome do template usado pela aplicação
+     * -- app/templates/meutemplate
+     */
+    'template' => 'bootstrap',
+
+    /**
+     * Url amigável para o painel do sistema
+     * -- wsgi.com.br/meupainel
+     */
+    'backend' => 'sistema'
+
+];

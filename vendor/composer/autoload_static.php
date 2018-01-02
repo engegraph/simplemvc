@@ -12,6 +12,10 @@ class ComposerStaticInit83f224600d96a54d11ce9357a7e27f91
     );
 
     public static $prefixLengthsPsr4 = array (
+        'w' => 
+        array (
+            'wSGI\\' => 5,
+        ),
         'S' => 
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
@@ -39,13 +43,13 @@ class ComposerStaticInit83f224600d96a54d11ce9357a7e27f91
             'Core\\' => 5,
             'Carbon\\' => 7,
         ),
-        'A' => 
-        array (
-            'App\\' => 4,
-        ),
     );
 
     public static $prefixDirsPsr4 = array (
+        'wSGI\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/app/wsgi',
+        ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-mbstring',
@@ -93,10 +97,6 @@ class ComposerStaticInit83f224600d96a54d11ce9357a7e27f91
         'Carbon\\' => 
         array (
             0 => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon',
-        ),
-        'App\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/app',
         ),
     );
 
