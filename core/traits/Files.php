@@ -27,14 +27,21 @@ trait Files
 
     final protected function scripts()
     {
-        $js = $this->_get('js');
-        return $js;
+        $scripts = $this->_get('js');
+        if(isset($this->assets['script']) && !empty($this->assets['script']))
+            foreach ($this->assets['script'] as $asset)
+                $scripts .= $asset.PHP_EOL;
+
+        return $scripts;
     }
 
     final protected function styles()
     {
-        $css = $this->_get('css');
-        return $css;
+        $styles = $this->_get('css');
+        if(isset($this->assets['style']) && !empty($this->assets['style']))
+            foreach ($this->assets['style'] as $asset)
+                $styles .= $asset.PHP_EOL;
+        return $styles;
     }
 
     private function _get(string $type) : string
@@ -52,11 +59,11 @@ trait Files
             }
         }
 
-        $rawAssets = ['css'=>'style', 'js'=>'script'];
-
-        if(isset($this->assets[$rawAssets[$type]]) && !empty($this->assets[$rawAssets[$type]]))
-            foreach ($this->assets[$rawAssets[$type]] as $asset)
-                $Htm .= $asset.PHP_EOL;
+//        $rawAssets = ['css'=>'style', 'js'=>'script'];
+//
+//        if(isset($this->assets[$rawAssets[$type]]) && !empty($this->assets[$rawAssets[$type]]))
+//            foreach ($this->assets[$rawAssets[$type]] as $asset)
+//                $Htm .= $asset.PHP_EOL;
 
         return $Htm;
     }

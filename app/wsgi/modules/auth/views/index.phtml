@@ -12,7 +12,7 @@
     estilos</h1>
 
 {% put style %}
-<style>
+<style type="text/css">
     h1{color: #2aabd2;}
 </style>
 {% endput %}
@@ -32,7 +32,11 @@
 dvsd
 
 {% put style %}
-<style>
+<style type="text/css">
     h1{border: 1px solid #f0ad4e}
 </style>
 {% endput %}
+
+<?php
+ var_dump($this->assets);
+?>

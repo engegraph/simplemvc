@@ -37,6 +37,7 @@ class Controller
         $content = ob_get_flush();
         $this->viewFilter($content);
         ob_end_clean();
+        var_dump($this->assets);
         return $content;
     }
 
