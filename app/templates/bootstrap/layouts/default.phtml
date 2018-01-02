@@ -8,7 +8,8 @@
     <title>Bootstrap 101 Template</title>
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?=tpl_assets('css/bootstrap.min.css')?>" rel="stylesheet">
+
     <?=$this->styles()?>
 
     <!-- HTML5 shim e Respond.js para suporte no IE8 de elementos HTML5 e media queries -->
@@ -25,7 +26,7 @@
 <!-- jQuery (obrigatório para plugins JavaScript do Bootstrap) -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Inclui todos os plugins compilados (abaixo), ou inclua arquivos separadados se necessário -->
-<script src="js/bootstrap.min.js"></script>
+<script src="<?=tpl_assets('js/bootstrap.min.js');?>"></script>
 
 <?=$this->scripts()?>
 </body>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Arquivo autoload do composer para inclusão automática das classes
+ * Arquivo autoload do composer para inclusão "automática" das classes
  */
 require __DIR__.'/vendor/autoload.php';
 

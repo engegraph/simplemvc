@@ -29,11 +29,11 @@ function active_item($url)
         return 'active';
 }
 
-function tpl_path($str = null)
+function tpl_assets($str = null)
 {
     global $app;
-    $path = url('/app/templates/'.$app['template']);
-    return ($str ? "{$path}{$str}" : $path);
+    $path = url('/app/templates/'.$app['template'].'/assets/');
+    return ($str ? "{$path}/{$str}" : $path);
 }
 
 function path_assets(string $file = null)

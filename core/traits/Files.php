@@ -20,7 +20,7 @@ trait Files
         if(substr($path,0,7)=='assets/')
         {
             $path = substr($path,7);
-            $file = $this->pathAssets.'/'.$path;
+            $file = $this->pathAssets($path);
         }
         return $file;
     }
@@ -51,6 +51,13 @@ trait Files
                     $Htm .= sprintf($format, $file).PHP_EOL;
             }
         }
+
+        $rawAssets = ['css'=>'style', 'js'=>'script'];
+
+        if(isset($this->assets[$rawAssets[$type]]) && !empty($this->assets[$rawAssets[$type]]))
+            foreach ($this->assets[$rawAssets[$type]] as $asset)
+                $Htm .= $asset.PHP_EOL;
+
         return $Htm;
     }
 }

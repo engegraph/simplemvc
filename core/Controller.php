@@ -6,7 +6,6 @@ class Controller
         \Core\Traits\Files;
 
     private $path;
-    private $pathAssets;
     private $view;
 
     public function __construct()
@@ -17,8 +16,6 @@ class Controller
     final protected function view(string $name, $layout = 'default')
     {
         $this->view = $name;
-        $this->path = __DIR__.'.'.DS.'..'.DS.'app'.DS.$path;
-        $this->pathAssets = url('/app/'.$path);
 
         if($layout)
         {
@@ -32,14 +29,43 @@ class Controller
 
     private function page()
     {
-        $view = $this->path.DS.'views'.DS.$this->view.'.phtml';
+        $view = $this->path().DS.'views'.DS.$this->view.'.phtml';
         if(!file_exists($view))
             die('View não encontrada : <code>'.$view.'</code>');
 
         require_once $view;
         $content = ob_get_flush();
+        $this->viewFilter($content);
         ob_end_clean();
         return $content;
+    }
+
+
+    private function viewFilter(string &$Content)
+    {
+        $Pattern = '/{\s*%\s*put\s*(?<tag>style|script)\s*%\s*}(?<content>[^%]+)*{\s*%\s*endput\s*%\s*}/im';
+        $Assets  = [];
+        $Result  = preg_replace_callback($Pattern, function($m) use (&$Assets){
+
+            $tagname = $m['tag'];
+            $content = $m['content'];
+
+            if(preg_match('/^\s*<'.$tagname.'(\s*>|\s+[^>]+>)/i', $content))
+            {
+                $Assets[$tagname][] = $content;
+                return '';
+            }
+            else
+                return $content;
+
+        }, $Content);
+
+        if(isset($Assets['style']))
+            $this->assets['style'] = $Assets['style'];
+        if(isset($Assets['script']))
+            $this->assets['script'] = $Assets['script'];
+
+        $Content = $Result;
     }
 
     private function layout(string $name)
@@ -54,15 +80,15 @@ class Controller
 
     public function path()
     {
-        $path = '';
-        $path = __DIR__.'.'.DS.'..'.DS.'app'.DS.$path;
+        $modulePath = 'modules'.DS.$this->Request->Module;
+        $path = $this->Request->isBack ? 'wsgi'.DS.$modulePath : 'web'.DS.$modulePath;
+        return __DIR__.'.'.DS.'..'.DS.'app'.DS.$path;
     }
 
     public function pathAssets(string $file = null)
     {
-        $modulePath = 'modules'.DS.$this->Request->Module;
-        $path = $this->Request->isBack ? 'wsgi'.DS.$modulePath : 'web'.DS.$modulePath;
-        $url = url('/app/'.$path);
-        return $file ? $url.'/'.$file : $url;
+        $modulePath = 'modules'.'/'.$this->Request->Module;
+        $path = '/app/'.($this->Request->isBack ? 'wsgi'.'/'.$modulePath : 'web'.'/'.$modulePath).'/assets';
+        return url($file ? $path.'/'.$file : $path);
     }
 }

@@ -1,20 +1,30 @@
+
+{% put script %}
+<script>
+    $(function () {
+        alert('Primeiramente');
+    });
+</script>
+{% endput %}
+
+
 <h1>addicionando
     estilos</h1>
 
 {% put style %}
 <style>
-    p{margin: 0}
+    h1{color: #2aabd2;}
 </style>
 {% endput %}
 
 <h1>Adicionando scripts</h1>
 
-<h1></h1>
+<h1>wSGI</h1>
 
 {% put script %}
-<script>
+<script type="text/javascript">
     $(function () {
-
+        alert('OBA Oba');
     });
 </script>
 {% endput %}
@@ -22,4 +32,7 @@
 dvsd
 
 {% put style %}
+<style>
+    h1{border: 1px solid #f0ad4e}
+</style>
 {% endput %}

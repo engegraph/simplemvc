@@ -13,7 +13,7 @@ if(!file_exists($fileHelpers))
     die('Arquivos estão ausentes!');
 require $fileHelpers;
 
-$App = new \Core\Router($config_app);
+$App = new \Core\Router($app);
 
 
 
