@@ -27,24 +27,17 @@ trait Files
 
     final protected function scripts()
     {
-        $scripts = $this->_get('js');
-        if(isset($this->assets['script']) && !empty($this->assets['script']))
-            foreach ($this->assets['script'] as $asset)
-                $scripts .= $asset.PHP_EOL;
-
+        $scripts = $this->getStylesAndScripts('js');
         return $scripts;
     }
 
     final protected function styles()
     {
-        $styles = $this->_get('css');
-        if(isset($this->assets['style']) && !empty($this->assets['style']))
-            foreach ($this->assets['style'] as $asset)
-                $styles .= $asset.PHP_EOL;
+        $styles = $this->getStylesAndScripts('css');
         return $styles;
     }
 
-    private function _get(string $type) : string
+    private function getStylesAndScripts(string $type) : string
     {
         $Htm = '';
         if(sizeof($this->assets))
@@ -59,11 +52,11 @@ trait Files
             }
         }
 
-//        $rawAssets = ['css'=>'style', 'js'=>'script'];
-//
-//        if(isset($this->assets[$rawAssets[$type]]) && !empty($this->assets[$rawAssets[$type]]))
-//            foreach ($this->assets[$rawAssets[$type]] as $asset)
-//                $Htm .= $asset.PHP_EOL;
+        $rawAssets = ['css'=>'style', 'js'=>'script'];
+
+        if(isset($this->assets[$rawAssets[$type]]) && !empty($this->assets[$rawAssets[$type]]))
+            foreach ($this->assets[$rawAssets[$type]] as $asset)
+                $Htm .= $asset.PHP_EOL;
 
         return $Htm;
     }

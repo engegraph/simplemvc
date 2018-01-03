@@ -5,40 +5,38 @@ class Controller
     use \Core\Traits\Events,
         \Core\Traits\Files;
 
-    private $path;
     private $view;
+    private $content = '';
+    private static $checkViewinc = 0;
 
     public function __construct()
     {
         $this->onInit();
     }
 
-    final protected function view(string $name, $layout = 'default')
+    final protected function view(string $name)
     {
-        $this->view = $name;
-
-        if($layout)
-        {
-            $this->layout($layout);
-        }
-        else
-        {
-            $this->page();
-        }
-    }
-
-    private function page()
-    {
-        $view = $this->path().DS.'views'.DS.$this->view.'.phtml';
+        $view = $this->path().DS.'views'.DS.$name.'.phtml';
         if(!file_exists($view))
             die('View não encontrada : <code>'.$view.'</code>');
 
         require_once $view;
-        $content = ob_get_flush();
+        $content = ob_get_clean();
         $this->viewFilter($content);
-        ob_end_clean();
-        var_dump($this->assets);
-        return $content;
+        $this->content = $content;
+
+
+        $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'templates'.DS.$this->App['template'].DS.'index.phtml';
+        if(!file_exists($layout))
+            die('Layout não encontrado : <code>'.$layout.'</code>');
+
+        require_once $layout;
+    }
+
+    private function page()
+    {
+        self::$checkViewinc++;
+        return $this->content;
     }
 
 

@@ -7,8 +7,8 @@ class Index extends Controller
 
     public function onRun(): void
     {
-        $this->addStyle('assets/css/auth.css');
         $this->addScript('assets/js/auth.js');
+        $this->addStyle('assets/css/auth.css');
     }
 
     public function index()
