@@ -24,21 +24,22 @@ class Controller
         $content = ob_get_clean();
         $this->viewFilter($content);
         $this->content = $content;
+        $this->layout();
+    }
 
+    private function page()
+    {
+        return $this->content;
+    }
 
+    private function layout()
+    {
         $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'templates'.DS.$this->App['template'].DS.'index.phtml';
         if(!file_exists($layout))
             die('Layout não encontrado : <code>'.$layout.'</code>');
 
         require_once $layout;
     }
-
-    private function page()
-    {
-        self::$checkViewinc++;
-        return $this->content;
-    }
-
 
     private function viewFilter(string &$Content)
     {
@@ -66,16 +67,6 @@ class Controller
 
         $Content = $Result;
     }
-
-    private function layout(string $name)
-    {
-        $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'templates'.DS.$this->App['template'].DS.'layouts'.DS.$name.'.phtml';
-        if(!file_exists($layout))
-            die('Layout não encontrado : <code>'.$layout.'</code>');
-
-        require_once $layout;
-    }
-
 
     public function path()
     {
