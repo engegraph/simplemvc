@@ -1,16 +1,18 @@
 <?php namespace Core;
 
+use Core\Providers\ModuleBase;
+
 class Controller
 {
     use \Core\Traits\Events,
-        \Core\Traits\Files;
+        \Core\Traits\Files,
+        \Core\Traits\Hooks;
 
-    private $view;
-    private $content = '';
-    private static $checkViewinc = 0;
+    private $content;
 
     public function __construct()
     {
+        $this->modulesInit();
         $this->onInit();
     }
 
@@ -81,4 +83,11 @@ class Controller
         $path = '/app/'.($this->Request->isBack ? 'wsgi'.'/'.$modulePath : 'web'.'/'.$modulePath).'/assets';
         return url($file ? $path.'/'.$file : $path);
     }
+
+
+    private function showMenuPrincipal()
+    {
+        var_dump($this->ModuleNavigation);
+    }
+
 }

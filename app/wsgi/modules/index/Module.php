@@ -1,4 +1,4 @@
-<?php namespace wSGI\Modules\Auth;
+<?php namespace wSGI\Modules\Index;
 
 use Core\Providers\ModuleBase;
 
@@ -7,7 +7,7 @@ class Module extends ModuleBase
     public function registerNavigation(): array
     {
         return [
-            'amor' => 'tudo'
+            'jesus' => 'salva'
         ];
     }
 }

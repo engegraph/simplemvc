@@ -1,14 +1,13 @@
 <?php namespace Core\Providers;
 
-class ModuleBase
+abstract class ModuleBase
 {
-    public function registerNavigation() : array
+    protected $Navigation = [];
+
+    public function __construct()
     {
-        return [];
+        $this->Navigation[] = $this->registerNavigation();
     }
 
-    public function registerAccess()
-    {
-        return[];
-    }
+    public abstract function registerNavigation() : array ;
 }
