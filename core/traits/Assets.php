@@ -1,17 +1,29 @@
 <?php namespace Core\Traits;
 
-trait Files
+trait Assets
 {
     private $assets = [];
 
-    final protected function addStyle(string $pathCss)
+    final protected function addStyle($Style)
     {
-        $this->assets['css'][] = $this->add($pathCss);
+        if(is_string($Style))
+            $this->assets['css'][] = $this->add($Style);
+        elseif(is_array($Style))
+            foreach ($Style as $item)
+                $this->assets['css'][] = $this->add($item);
+
+       // $this->assets['css'][] = $this->add($Style);
     }
 
-    final protected function addScript(string $pathJs)
+    final protected function addScript($Script)
     {
-        $this->assets['js'][] = $this->add($pathJs);
+        if(is_string($Script))
+            $this->assets['js'][] = $this->add($Script);
+        elseif(is_array($Script))
+            foreach ($Script as $item)
+                $this->assets['js'][] = $this->add($item);
+
+        //$this->assets['js'][] = $this->add($Script);
     }
 
     private function add(string $path) : string

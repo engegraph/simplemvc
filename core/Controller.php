@@ -3,7 +3,7 @@
 class Controller
 {
     use \Core\Traits\Events,
-        \Core\Traits\Files,
+        \Core\Traits\Assets,
         \Core\Traits\Hooks;
 
     private $content;
@@ -75,7 +75,7 @@ class Controller
         return __DIR__.'.'.DS.'..'.DS.'app'.DS.$path;
     }
 
-    public function pathAssets(string $file = null)
+    final public function pathAssets(string $file = null)
     {
         $modulePath = 'modules'.'/'.$this->Request->Module;
         $path = '/app/'.($this->Request->isBack ? 'wsgi'.'/'.$modulePath : 'web'.'/'.$modulePath).'/assets';

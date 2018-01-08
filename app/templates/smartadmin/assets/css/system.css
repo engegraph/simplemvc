@@ -1,0 +1,10 @@
+table.data-table{
+    width: 100%;
+}
+table.data-table th .checkbox label{
+    margin-left: 16px;
+}
+table.data-table th .checkbox input[type=checkbox]{
+    position: absolute;
+}
+table.data-table .checkbox label{padding-left: 7px; font-weight: bold;}
