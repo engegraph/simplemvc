@@ -237,3 +237,18 @@ function RetiraCaracteres($valor){
     $result = str_replace($pontos, "", $valor);
     return $result;
 }
+
+function array_insert_pos(array &$input, $item, $pos = null)
+{
+    if($pos)
+    {
+        $pos = $pos==0 ? 1 : $pos;
+        $pos--;
+        $list_1 = array_slice($input, 0, $pos);
+        $list_1[] = $item;
+        $list_2 = array_slice($input, $pos);
+        $input = array_merge($list_1, $list_2);
+    }
+    else
+        $input[] = $item;
+}

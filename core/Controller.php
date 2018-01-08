@@ -1,7 +1,5 @@
 <?php namespace Core;
 
-use Core\Providers\ModuleBase;
-
 class Controller
 {
     use \Core\Traits\Events,
@@ -83,11 +81,4 @@ class Controller
         $path = '/app/'.($this->Request->isBack ? 'wsgi'.'/'.$modulePath : 'web'.'/'.$modulePath).'/assets';
         return url($file ? $path.'/'.$file : $path);
     }
-
-
-    private function showMenuPrincipal()
-    {
-        var_dump($this->ModuleNavigation);
-    }
-
 }

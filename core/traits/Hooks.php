@@ -1,13 +1,17 @@
 <?php namespace Core\Traits;
 
+use Core\MiddleWares\Nav;
 use Core\Providers\ModuleBase;
 use Doctrine\Common\Inflector\Inflector;
 
 trait Hooks
 {
-    private $ModuleNavigation = [];
+    private $Menu = [];
 
-    final protected function modulesInit()
+    /**
+     *
+     */
+    final private function modulesInit()
     {
         $path = __DIR__.'./../../app/wsgi/modules';
         $dir  = new \DirectoryIterator($path);
@@ -23,9 +27,20 @@ trait Hooks
                 $Module = new $Class;
                 if($Module instanceof ModuleBase)
                 {
-                    $this->ModuleNavigation[] = $Module->registerNavigation();
+                    $module     = key($Module->registerNavigation());
+                    $navigation = $Module->registerNavigation()[$module];
+                    $order = isset($navigation['order']) ? $navigation['order'] : null;
+                    $navigation['module'] = $module;
+                    array_insert_pos($this->Menu, $navigation, $order);
                 }
             }
         }
+    }
+
+
+    final private function showMenuPrincipal()
+    {
+        var_dump($this->Menu);
+        return Nav::getNavigation($this->Menu);
     }
 }

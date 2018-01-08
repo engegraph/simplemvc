@@ -7,7 +7,11 @@ class Module extends ModuleBase
     public function registerNavigation(): array
     {
         return [
-            'amor' => 'tudo'
+            'auth' => [
+                'url' => backend_url('/'),
+                'label' => 'Auth',
+                'icon' => 'tachometer',
+            ]
         ];
     }
 }

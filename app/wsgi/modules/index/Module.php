@@ -7,7 +7,12 @@ class Module extends ModuleBase
     public function registerNavigation(): array
     {
         return [
-            'jesus' => 'salva'
+            'index' => [
+                'url' => backend_url('/'),
+                'label' => 'Dashared',
+                'icon' => 'fa-text',
+                'order' => 1
+            ]
         ];
     }
 }
