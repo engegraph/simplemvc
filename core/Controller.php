@@ -4,21 +4,60 @@ class Controller
 {
     use \Core\Traits\Events,
         \Core\Traits\Assets,
-        \Core\Traits\Hooks;
+        \Core\Traits\Navigation;
 
+    /**
+     * @var array $App Informações da aplicação
+     */
+    public $App;
+
+    /**
+     * @var Request $Request Informações da requisição
+     */
+    public $Request;
+
+    /**
+     * @var $content string Conteúdo da viwe a ser exibida
+     */
     private $content;
 
-    public function __construct()
+
+    final public function __construct(Request $Request, array $App)
     {
-        $this->modulesInit();
+        /**
+         * Setando variáveis da aplicação
+         */
+        $this->Request = $Request;
+        $this->App = $App;
+
+        /**
+         * Disparando evento onInit, antes de tudo começar
+         */
         $this->onInit();
+
+        /**
+         * Preparando os módulos
+         */
+        $this->onModulesInit();
+
+        /**
+         * Preparando o menu principal
+         */
+        $this->onNavigationInit();
     }
 
-    final protected function view(string $name)
+    final protected function view(string $name, $data = null)
     {
-        $view = $this->path().DS.'views'.DS.$name.'.phtml';
+        $view = $this->path().DS.'views'.DS.$this->Request->Controller.DS.$name.'.phtml';
         if(!file_exists($view))
             die('View não encontrada : <code>'.$view.'</code>');
+
+        $this->setBreadCrumbs();
+
+        /**
+         * Disparando evento onRender, antes de renderizar uma view
+         */
+        $this->onRender();
 
         require_once $view;
         $content = ob_get_clean();
@@ -27,7 +66,7 @@ class Controller
         $this->layout();
     }
 
-    private function page()
+    private function content()
     {
         return $this->content;
     }
@@ -39,6 +78,11 @@ class Controller
             die('Layout não encontrado : <code>'.$layout.'</code>');
 
         require_once $layout;
+
+        /**
+         * Disparando evento onEnd, após a página ter sideo exibida completamente
+         */
+        $this->onEnd();
     }
 
     private function viewFilter(string &$Content)
@@ -68,7 +112,7 @@ class Controller
         $Content = $Result;
     }
 
-    public function path()
+    final public function path()
     {
         $modulePath = 'modules'.DS.$this->Request->Module;
         $path = $this->Request->isBack ? 'wsgi'.DS.$modulePath : 'web'.DS.$modulePath;

@@ -12,6 +12,18 @@ return [
      * Url amigável para o painel do sistema
      * -- wsgi.com.br/meupainel
      */
-    'backend' => 'sistema'
+    'backend' => 'sistema',
+
+    /**
+     * Nome da aplicação
+     * - Visível nos breadcrumbs
+     */
+    'name' => 'wSGI',
+
+    /**
+     * Subtítulo das listagens
+     * - Visível nos breadcrumbs
+     */
+    'list' => 'Listagem',
 
 ];

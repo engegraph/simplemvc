@@ -1,4 +1,4 @@
-<?php namespace wSGI\Modules\Aluguel\Controllers;
+<?php namespace wSGI\Modules\Alugueis\Controllers;
 
 use Core\Controller;
 

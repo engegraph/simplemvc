@@ -8,3 +8,27 @@ table.data-table th .checkbox input[type=checkbox]{
     position: absolute;
 }
 table.data-table .checkbox label{padding-left: 7px; font-weight: bold;}
+
+.wsgi-widget header{
+    height: 40px;
+    line-height: 40px;
+}
+.wsgi-widget header h2{line-height: 40px;}
+.wsgi-widget header .widget-icon,
+.wsgi-widget header .button-icon{
+    height: 40px;
+    line-height: 40px;
+}
+.toolbar-actions{
+
+}
+.toolbar-actions .btn-actions{
+    display: inline-block;
+    margin-bottom: 7px;
+    float: right;
+}
+.toolbar-actions-text{
+    height: 35px;
+    line-height: 31px;
+    font-size: 15px;
+}

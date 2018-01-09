@@ -11,6 +11,7 @@ $db  = require __DIR__.'./database.php';
 $fileHelpers = __DIR__.'.'.DS.'..'.DS.'core'.DS.'helpers'.DS.'functions.php';
 if(!file_exists($fileHelpers))
     die('Arquivos estão ausentes!');
+
 require $fileHelpers;
 
 $App = new \Core\Router($app);

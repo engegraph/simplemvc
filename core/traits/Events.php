@@ -1,17 +1,17 @@
 <?php namespace Core\Traits;
 
 /**
- * Implementação do ciclo de vida da aplicação. Útil para realizar oprações em determinados momentos da requisição.
+ * Implementação de controle do ciclo de vida da aplicação. Útil para realizar oprações em determinados momentos da requisição.
  * Trait Events
  * @package Core\Traits
- * @author Airton Lopes <airton@engegraph.com.br>
+ * @author Airton Lopes <airton.lopes@engegraph.com.br>
  * @copyright Engegraph® Sistemas
  */
 
 trait Events
 {
     /**
-     * Chamado ligeiramente com o construtor. Aqui ainda não tem nada pronto
+     * Chamado ligeiramente após o Front Controller ter identificado a rota e instanciado o controller específico. Aqui ainda não tem nada pronto
      * @method onInit
      * @return void
      */
@@ -25,14 +25,14 @@ trait Events
     public function onRun() : void {}
 
     /**
-     * Chamado antes de uma view ser renderizada. Mas tudo já está pronto.
+     * Chamado quando uma view está prestes a ser renderizada
      * @method onRender
      * @return void
      */
     public function onRender() : void {}
 
     /**
-     * Chamado após a requisição ter sido finalizada e a página ter sido exibida
+     * Chamado após a requisição ter sido finalizada e a página ter sido exibida com sucesso
      * @method onEnd
      * @return void
      */

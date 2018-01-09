@@ -26,7 +26,6 @@ $(document).ready(function(){
     };
 
     $('.data-sort').dataTable({
-        "lang" : "pt",
         "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>"+
         "t"+
         "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",

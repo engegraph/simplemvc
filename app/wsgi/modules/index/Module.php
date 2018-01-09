@@ -9,8 +9,9 @@ class Module extends ModuleBase
         return [
             'index' => [
                 'url' => backend_url('/'),
-                'label' => 'Dashared',
-                'icon' => 'fa-text',
+                'label' => 'Dashboard',
+                'icon' => 'tachometer',
+                'permissions' => ['*'],
                 'order' => 1
             ]
         ];

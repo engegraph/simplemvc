@@ -33,20 +33,14 @@ class Router
             {
                 $Request = $this->Request;
                 $Class = "wSGI\\Modules\\{$Request->Module}\\Controllers\\{$Request->Controller}";
-                $Controller = Container::Controller($Class);
-                $Controller->App = $this->AppConfig;
-                $Controller->Request = $Request;
+                $Controller = new $Class($Request, $this->AppConfig); #Container::Controller($Class);
 
                 /**
                  * Disparando evento onRun antes da chamada de qualquer action
                  */
                 $Controller->onRun();
-                $Response = call_user_func_array([$Controller, $Request->Action], $Request->Params);
-                /**
-                 * Disparando evento onEnd após a página ter sido processada
-                 */
-                $Controller->onEnd();
 
+                $Response = call_user_func_array([$Controller, $Request->Action], $Request->Params);
                 return $Response ? $Response : true;
             }
         }

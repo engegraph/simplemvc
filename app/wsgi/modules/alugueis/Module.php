@@ -1,4 +1,4 @@
-<?php namespace wSGI\Modules\Aluguel;
+<?php namespace wSGI\Modules\Alugueis;
 
 use Core\Providers\ModuleBase;
 
@@ -10,61 +10,61 @@ class Module extends ModuleBase
     public function registerNavigation() : array
     {
         return [
-            'aluguel' => [
-                'label'       => 'Aluguel',
-                'url'         => 'aluguel/controle-de-chaves',
-                'icon'        => 'icon-pencil',
-                'order' => 2,
+            'alugueis' => [
+                'url' => 'javascript:void(0);',
+                'label' => 'Aluguel',
+                'icon' => 'suitcase',
+                'permissions' => ['*'],
                 'childs' => [
                     [
-                        'url' => backend_url('/central-alugueis'),
+                        'url' => backend_url('/alugueis/central-alugueis'),
                         'label' => 'Central de aluguéis',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => '#',
+                        'url' => 'javascript:void(0);',
                         'label' => 'Controle gerais',
                         'permissions' => ['*'],
                         'childs' => [
                             [
-                                'url' => backend_url('/imovel-controle-chaves'),
+                                'url' => backend_url('/alugueis/imovel-controle-chaves'),
                                 'label' => 'Controle de chaves',
                                 'permissions' => ['*'],
                             ],                [
-                                'url' => backend_url('/imovel-controle-vistorias'),
+                                'url' => backend_url('/alugueis/imovel-controle-vistorias'),
                                 'label' => 'Central de vistorias',
                                 'permissions' => ['*'],
                             ]
                         ]
                     ],
                     [
-                        'url' => '#',
+                        'url' => 'javascript:void(0);',
                         'label' => 'Recibos',
                         'permissions' => ['*'],
                         'childs' => [
                             [
-                                'url' => backend_url('/recibo-locador'),
+                                'url' => backend_url('/alugueis/recibo-locador'),
                                 'label' => 'Recibo locador',
                                 'permissions' => ['*'],
                             ],                [
-                                'url' => backend_url('/recibo-locatario'),
+                                'url' => backend_url('/alugueis/recibo-locatario'),
                                 'label' => 'Recibo locatário',
                                 'permissions' => ['*'],
                             ]
                         ]
                     ],
                     [
-                        'url' => backend_url('/imovel-lancamento'),
+                        'url' => backend_url('/alugueis/imovel-lancamento'),
                         'label' => 'Lançamentos',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/pagamento-aluguel'),
+                        'url' => backend_url('/alugueis/pagamento-aluguel'),
                         'label' => 'Pagamento de aluguéis',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/lista-inadimplente'),
+                        'url' => backend_url('/alugueis/lista-inadimplente'),
                         'label' => 'Lista de inadimplmentes',
                         'permissions' => ['*'],
                     ]
