@@ -33,8 +33,8 @@ trait Module
                     {
                         $Module->resolveNav($name);
                         $this->Module = $Module;
+                        $this->Nav = $navigation;
                     }
-
                     array_insert_pos($this->Menu, $navigation, $order);
                 }
             }

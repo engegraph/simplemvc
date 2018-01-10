@@ -1,3 +1,4 @@
+/*
 table.data-table{
     width: 100%;
 }
@@ -8,7 +9,7 @@ table.data-table th .checkbox input[type=checkbox]{
     position: absolute;
 }
 table.data-table .checkbox label{padding-left: 7px; font-weight: bold;}
-
+*/
 .wsgi-widget header{
     height: 40px;
     line-height: 40px;
@@ -31,4 +32,28 @@ table.data-table .checkbox label{padding-left: 7px; font-weight: bold;}
     height: 35px;
     line-height: 31px;
     font-size: 15px;
+}
+
+
+
+.checkbox, .radio{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+table.data-table .checkbox input, table.data-table .radio input{
+    width: auto !important;
+}
+
+table.data-table .cell-check{
+
+}
+table.data-table .cell-check label{
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
+#logo{margin: 4px; margin-left: 0; text-align: center;}
+#logo img{
+    display: inline-block;
 }

@@ -5,7 +5,8 @@
         "php": ">=7.1",
         "illuminate/database": "^5.5",
         "vlucas/phpdotenv": "^2.4",
-        "webpatser/laravel-uuid": "^3.0"
+        "webpatser/laravel-uuid": "^3.0",
+        "illuminate/events": "^5.5"
     },
     "authors": [
         {

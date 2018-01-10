@@ -16,7 +16,7 @@ return [
         ],
 
         # Conexão secundária. Onde está rodando o servidor de Autenticação da aplicação.
-        'Auth' => [
+        'auth' => [
             'driver'    => env('AU_TYPE'),
             'host'      => env('AU_HOST'),
             'database'  => env('AU_BASE'),

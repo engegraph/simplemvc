@@ -11,11 +11,12 @@ namespace Core;
 
 class Container
 {
-    public static function Controller(string $Name)
+    public static function Service(string $Name)
     {
-        if(class_exists($Name))
-            return new $Name;
+        $Class = 'Core\\Services\\'.$Name;
+        if(class_exists($Class))
+            return new $Class;
 
-        die('Controller <code>'.$Name.'</code> não encontrado');
+        die('Serviço <code>'.$Class.'</code> não encontrado');
     }
 }

@@ -4,10 +4,21 @@ class Controller
 {
     use \Core\Traits\Events,
         \Core\Traits\Assets,
-        \Core\Traits\Navigation;
+        \Core\Traits\Navigation,
+        \Core\Traits\Crud;
 
     /**
-     * @var array $App Informações da aplicação
+     * @var $Nav array informações de navegação do módulo
+     */
+    public $Nav;
+
+    /**
+     * @var bool $Model Model Atrelado ao controlador
+     */
+    public $model = TRUE, $Model = TRUE;
+
+    /**
+     * @var \stdClass $App Informações da aplicação
      */
     public $App;
 
@@ -17,12 +28,18 @@ class Controller
     public $Request;
 
     /**
+     * Parâmetros diversos em diferentes locais da aplicação
+     * @var array
+     */
+    public $Param = [];
+
+    /**
      * @var $content string Conteúdo da viwe a ser exibida
      */
     private $content;
 
 
-    final public function __construct(Request $Request, array $App)
+    final public function __construct(Request $Request, \stdClass $App)
     {
         /**
          * Setando variáveis da aplicação
@@ -41,9 +58,19 @@ class Controller
         $this->onModulesInit();
 
         /**
+         * Configurando model padrão atrelado ao controller
+         */
+        $this->onConfigModel();
+
+        /**
          * Preparando o menu principal
          */
         $this->onNavigationInit();
+
+        /**
+         * Adiconando alguns serviços
+         */
+        $this->addService('csrf');
     }
 
     final protected function view(string $name, $data = null)
@@ -73,7 +100,7 @@ class Controller
 
     private function layout()
     {
-        $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'templates'.DS.$this->App['template'].DS.'index.phtml';
+        $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'templates'.DS.$this->App->template.DS.'index.phtml';
         if(!file_exists($layout))
             die('Layout não encontrado : <code>'.$layout.'</code>');
 
@@ -124,5 +151,16 @@ class Controller
         $modulePath = 'modules'.'/'.$this->Request->Module;
         $path = '/app/'.($this->Request->isBack ? 'wsgi'.'/'.$modulePath : 'web'.'/'.$modulePath).'/assets';
         return url($file ? $path.'/'.$file : $path);
+    }
+
+    /**
+     * Atrela um serviço ao controller
+     * @param string $name
+     * @param null $alias
+     */
+    final protected function addService(string $name, $alias=null) : void
+    {
+        $Name = $alias ? $alias : $name;
+        $this->{$Name} = Container::service(ucfirst($name));
     }
 }

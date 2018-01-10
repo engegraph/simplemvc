@@ -29,18 +29,19 @@ class Router
     {
         if($this->Request->isBack)
         {
-            if(Route::valid($this->Request))
+            $Request = $this->Request;
+            if($App = Route::valid($Request))
             {
-                $Request = $this->Request;
-                $Class = "wSGI\\Modules\\{$Request->Module}\\Controllers\\{$Request->Controller}";
-                $Controller = new $Class($Request, $this->AppConfig); #Container::Controller($Class);
+                $App = json_decode(json_encode($this->AppConfig+$App));
+                $Class = "wSGI\\Modules\\{$App->Module}\\Controllers\\{$App->Controller}";
+                $Controller = new $Class($Request, $App); #Container::Controller($Class);
 
                 /**
                  * Disparando evento onRun antes da chamada de qualquer action
                  */
                 $Controller->onRun();
 
-                $Response = call_user_func_array([$Controller, $Request->Action], $Request->Params);
+                $Response = call_user_func_array([$Controller, $App->Action], $Request->Params);
                 return $Response ? $Response : true;
             }
         }

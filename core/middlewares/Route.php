@@ -13,7 +13,7 @@ class Route implements \Core\Interfaces\Request
 
     /**
      * @param Request $request verifica se a url não contém caracteres estranhos
-     * @return bool
+     * @return mixed
      */
     public static function valid(Request &$request)
     {
@@ -31,14 +31,12 @@ class Route implements \Core\Interfaces\Request
         if(!$Validate($request->Action))
             return false;
 
-        $request->Module     = Inflector::tableize(Inflector::camelize($request->Module));
-        $request->Controller = ucfirst(Inflector::camelize($request->Controller));
-        $request->Action     = Inflector::camelize($request->Action);
+        $App = [];
+        $App['Module']     = ucfirst(Inflector::tableize(Inflector::camelize($request->Module)));
+        $App['Controller'] = ucfirst(Inflector::camelize($request->Controller));
+        $App['Action']     = Inflector::camelize($request->Action);
 
-        self::$Request = $request;
-
-        $class = get_called_class();
-        return new $class;
+        return $App;
     }
 
     /**

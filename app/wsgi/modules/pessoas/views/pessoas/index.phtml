@@ -1,0 +1,149 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+            class="jarviswidget"
+            id="wid-id-0"
+            data-widget-colorbutton="false"
+            data-widget-editbutton="false"
+            data-widget-deletebutton="false"
+            data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Pessoas Cadastradas</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body no-padding">
+
+                    <div class="dt-toolbar toolbar-actions">
+                        <div class="col-sm-6">
+                            <div class="toolbar-actions-text">
+                                <p class="">Utilize as opções de <span class="label label-warning">busca</span> e <span class="label label-info">paginação</span> para encontar o que precisa</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="control-actions">
+                                <?=$this->actions();?>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <table  class="table data-table data-sort table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="cell-check">
+                                <div class="checkbox checkbox-danger">
+                                    <input type="checkbox" name="dsd" id="toggle-all">
+                                    <label for="toggle-all">
+                                        <i class="fa fa-hashtag"></i>
+                                    </label>
+                                </div>
+                            </th>
+                            <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Nome/Razão social</th>
+                            <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Apelido/Nome fantasia</th>
+                            <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Telefone celular</th>
+                            <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Telefone Residencial</th>
+                            <th data-hide="phone"><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Telefone Comercial</th>
+                            <th>Email</th>
+                            <th data-hide="phone,tablet">CPF/CNPJ</th>
+                            <th data-hide="phone,tablet">RG/Incrição estadual</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Nascimento</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data cadastro</th>
+                        </tr>
+                        </thead>
+
+                        <?php if($all = $this->Model->all()): ?>
+                            <tbody>
+                            <?php foreach ($all as $i => $o): $i++; ?>
+                                <tr class="row-data">
+                                    <td class="cell-check"><?=$this->checks($i, $o->Id);?></td>
+                                    <td class="cell-link"><?=$o->Nome?></td>
+                                    <td class="cell-link"><?=$o->NomeFantasia?></td>
+                                    <td class="cell-link">
+                                        <?php
+                                        if (strlen($o->FoneCelular) == 11)
+                                            echo mask($o->FoneCelular,'(##) #####-####');
+                                        else
+                                            echo mask($o->FoneCelular,'(##) ####-####');
+                                        ?>
+                                    </td>
+                                    <td class="cell-link">
+                                        <?php
+                                        if (strlen($o->FoneResidencial) == 11)
+                                            echo mask($o->FoneResidencial,'(##) #####-####');
+                                        else
+                                            echo mask($o->FoneResidencial,'(##) ####-####');
+                                        ?>
+                                    </td>
+                                    <td class="cell-link">
+                                        <?php
+                                        if (strlen($o->FoneComercial) == 11)
+                                            echo mask($o->FoneComercial,'(##) #####-####');
+                                        else
+                                            echo mask($o->FoneComercial,'(##) ####-####');
+                                        ?>
+                                    </td>
+                                    <td class="cell-link"><?=$o->Email?></td>
+                                    <td class="cell-link">
+                                        <?php
+                                        if (strlen($o->CpfCnpj) == 14)
+                                            echo mask($o->CpfCnpj,'##.###.###/####-##');
+                                        else
+                                            echo mask($o->CpfCnpj,'###.###.###-##');
+                                        ?>
+                                    </td>
+                                    <td class="cell-link"><?=$o->RgInscricaoEstadual?></td>
+                                    <td class="cell-link"><?=($o->DataNascimento == '' ? '' : date('d/m/Y',strtotime($o->DataNascimento)))?></td>
+                                    <td class="cell-link"><?=date('d/m/Y H:i', strtotime($o->DataCriacao));?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        <?php endif; ?>
+
+                    </table>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->
