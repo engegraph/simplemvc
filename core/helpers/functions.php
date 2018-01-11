@@ -112,6 +112,27 @@ function str_guid($str, $guid = false)
     }
 }
 
+function is_guid($str)
+{
+    $pattern = '/^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/i';
+    if(preg_match($pattern, $str))
+    {
+        $string = str_replace('-','', $str);
+        $len = strlen($string);
+        $var = '';
+        for($i=0; $i < $len; $i++)
+        {
+            if( $i==8 || $i==12 || $i==16 || $i==20 || $i==32 )
+                $var .= '-';
+
+            $var .= $string{$i};
+        }
+
+        if($var===$str)
+            return true;
+    }
+}
+
 function eval_arr(&$data, $name, $val = null)
 {
 

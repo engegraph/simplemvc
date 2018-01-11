@@ -63,25 +63,26 @@ trait Crud
 
             $Model = new $Class;;
 
-            if($Uuid=array_shift($this->Request->Params))
+            if(@$Uuid=$this->Request->Params[0])
             {
-                echo $Uuid;
-                if(Uuid::validate($Uuid) && ($this->Request->Action=='editar' || $this->Request->Action=='update'))
+                if(is_guid($Uuid) && ($this->Request->Action=='editar' || $this->Request->Action=='update'))
+                {
                     $Model = $Class::find($Uuid);
+                }
             }
             $this->model = $this->Model = $Model;
         }
     }
 
     /**
-     * Retorna o link para salvae os dados
+     * Retorna o link para salvar os dados
      * @return string
      */
     private function DataPoint()
     {
         $url = backend_url("/{$this->Request->Module}/{$this->Request->Controller}");
-        if(isset($this->Param['Uuid']))
-            $url .= '/update/'.str_guid($this->Param['Uuid']);
+        if($Uuid=$this->Model->Id)
+            $url .= '/update/'.str_guid($Uuid);
         else
             $url .= "/create";
 
