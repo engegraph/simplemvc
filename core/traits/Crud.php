@@ -16,7 +16,17 @@ trait Crud
     }
     public function create()
     {
-
+        if($this->csrf->resolve())
+        {
+            try
+            {
+                var_dump($this->Model);
+            }
+            catch (\Exception $e)
+            {
+                echo $e->getMessage();
+            }
+        }
     }
 
     public function editar($Uuid)

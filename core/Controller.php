@@ -71,6 +71,7 @@ class Controller
          * Adiconando alguns serviços
          */
         $this->addService('csrf');
+        $this->addService('validator');
     }
 
     final protected function view(string $name, $data = null)
@@ -158,9 +159,9 @@ class Controller
      * @param string $name
      * @param null $alias
      */
-    final protected function addService(string $name, $alias=null) : void
+    final protected function addService(string $name, $alias=null, $params=null) : void
     {
         $Name = $alias ? $alias : $name;
-        $this->{$Name} = Container::service(ucfirst($name));
+        $this->{$Name} = Container::service(ucfirst($name), $params);
     }
 }

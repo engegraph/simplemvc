@@ -1,15 +1,13 @@
 <?php namespace Core;
 
-use Core\Services\Validation as Validator;
+use Core\Traits\Validator;
 use Doctrine\Common\Inflector\Inflector;
 use Illuminate\Database\Capsule\Manager;
 use Webpatser\Uuid\Uuid;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
-    protected $rules = [];
-
-    protected $ruleMessages = [];
+    use Validator;
 
     public $columns = [];
 
@@ -326,7 +324,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * Validação de entradas de formulário
      * @return bool
      */
-    private function validate()
+/*    private function validate()
     {
         $data = $this->toArray();
         if(!empty($this->rules))
@@ -336,7 +334,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
             return $v;
         }
         return true;
-    }
+    }*/
 
 
     /**
@@ -383,7 +381,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
 
     /**
-     * Aplicando validação nos campos que não aceitam nulos
+     * Aplicando validação nos campos do banco de dados que não aceitam nulos
      */
     private function applyValidate()
     {
@@ -393,7 +391,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
                 continue;
 
             $this->rules[$Name] = 'required';
-            $this->ruleMessages["{$Name}.required"] = 'O campo <strong>:attr</strong> não aceita nulo. Por favor informe-o.';
+            $this->ruleMessages["{$Name}.required"] = 'O campo <strong>'.$Name.'</strong> não aceita nulo. Por favor informe-o.';
         }
     }
 

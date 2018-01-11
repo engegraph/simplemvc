@@ -1,6 +1,6 @@
 <?php namespace Core\Interfaces;
 
-interface Request
+interface iRequest
 {
     public function dispatch();
 }

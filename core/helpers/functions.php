@@ -23,6 +23,11 @@ function backend_url($url)
     return rtrim($url, '/');
 }
 
+function request($param)
+{
+
+}
+
 function active_item($url)
 {
     if ($url == url())

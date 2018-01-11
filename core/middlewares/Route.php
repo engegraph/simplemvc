@@ -4,7 +4,7 @@ use Core\Container;
 use Core\Request;
 use Doctrine\Common\Inflector\Inflector;
 
-class Route implements \Core\Interfaces\Request
+class Route implements \Core\Interfaces\iRequest
 {
     /**
      * @var Request $Request Resuisição
