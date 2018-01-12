@@ -1,5 +1,6 @@
 <?php namespace Core\Traits;
 
+use Core\Session;
 use Doctrine\Common\Inflector\Inflector;
 use Webpatser\Uuid\Uuid;
 
@@ -99,13 +100,36 @@ trait Crud
         return $url;
     }
 
-    final public function err()
+    /**
+     * Retorna a mensagem de errro atual de validação
+     * @param string $var
+     * @return mixed
+     */
+    final protected function err(string $var)
     {
-
+        $name = "err.{$var}";
+        if( $e = Session::get($name))
+        {
+            echo ' has-error';
+            Session::del($name);
+            return $e;
+        }
     }
 
-    final public function val()
+    final public function val(string $var)
     {
+        $split = explode('.', $var);
+        $class = array_shift($split);
+        if($class == $this->model->getClass())
+        {
+            if(count($split) > 1)
+                $relation = implode('->', $split);
+            else
+                $relation = $class.'->'.$split[0];
 
+            $model = $this->model;
+            $property = $model->Endereco->Cep;
+            var_dump($split, $relation, $model, $property);
+        }
     }
 }

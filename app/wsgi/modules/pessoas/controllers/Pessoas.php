@@ -3,12 +3,17 @@
 use Core\Controller;
 use Core\Session;
 use wSGI\Modules\Controles\Models\Estado;
+use wSGI\Modules\Pessoas\Models\Pessoa;
 
 class Pessoas extends Controller
 {
-    public function validate()
+    public function editar($Uuid)
     {
-        $v = $this->validator::make([
+        $Pessoa = Pessoa::find($Uuid);
+        $relation = 'Endereco->Cidade->Nome';
+        var_dump($Pessoa->{$relation});
+
+        /*$v = $this->validator::make([
             'nome' => 'foo',
             'email' => 'airton engegraph.com.br',
             'telefone' => ['celular'=>'25a', 'comercial'=>'']
@@ -35,12 +40,14 @@ class Pessoas extends Controller
             var_dump($Erro->get('nome'));
         }
 
-        echo '<hr>';
+        echo '<hr>'; */
 
-        try
+        #$this->val('Pessoa.Endereco.Cidade.Nome');
+
+        /*try
         {
-            $Estado = Estado::find('7A657BF0-F703-11E7-BE74-07E28952CDB9');
-            $Estado->Nome = 'wsgi';
+            $Estado = Estado::find('00000003-0000-0000-0000-000000000000');
+            $Estado->Nome = 'Flórida';
             $Estado->Uf = 'FL';
             if($Res = $Estado->save())
             {
@@ -48,13 +55,16 @@ class Pessoas extends Controller
             }
             else
             {
+                echo '<pre>';
                 print_r(Session::all());
+                $this->val('Pessoa.Endereco.Cidade.Nome');
+                echo '</pre>';
             }
         }
         catch (\Exception $exception)
         {
             echo 'Erros aconteceram :: '.$exception->getMessage();
-        }
+        } */
 
     }
 }

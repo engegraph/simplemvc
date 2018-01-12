@@ -52,7 +52,7 @@ class Pessoa extends Model
 
     public function Endereco()
     {
-        return $this->hasOne('wSGI\Modules\Controles\Models\Endereco','Id', 'EnderecoId');
+        return $this->hasOne('wSGI\Modules\Controles\Models\Endereco','Id','EnderecoId');
     }
 
     public function Cidades()

@@ -15,6 +15,35 @@ trait Validator
     protected $ruleMessages = [];
 
     /**
+     * Preenche o objeto setando suas propriedades
+     * com os valores do formulário submetido
+     * @return array
+     */
+    public function populate(array $data)
+    {
+        if(!empty($data))
+            foreach ($data as $prop => $val)
+                $this->setProperty($prop, $val);
+    }
+
+
+    /**
+     * Seta um valor para propriedade e o guarda em uma sessão
+     * @param $name
+     * @param $value
+     */
+    private function setProperty($name, $value) : void
+    {
+        if(in_array($name, array_keys($this->attributes)))
+        {
+            $model = $this->getClass();
+            $val = $this->$name = ($v=$value) ? $v : NULL;
+            Session::set("val.{$model}.{$name}", $val);
+        }
+    }
+
+
+    /**
      * @return bool
      */
     private function validate() : bool
@@ -37,7 +66,7 @@ trait Validator
                 $erro = $v->errors();
                 foreach ($v->failed() as $field => $format)
                 {
-                    $message = $erro->get($field);
+                    $message = $erro->first($field);
                     Session::set("err.{$model}.{$field}", $message);
                     return false;
                 }
