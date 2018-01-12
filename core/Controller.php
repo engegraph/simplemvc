@@ -1,5 +1,7 @@
 <?php namespace Core;
 
+use Core\Classes\Message;
+
 class Controller
 {
     use \Core\Traits\Events,
@@ -71,7 +73,7 @@ class Controller
          * Adiconando alguns serviços
          */
         $this->addService('csrf');
-        $this->addService('validator');
+        #$this->addService('validation.validator');
     }
 
     final protected function view(string $name, $data = null)
@@ -163,5 +165,15 @@ class Controller
     {
         $Name = $alias ? $alias : $name;
         $this->{$Name} = Container::service(ucfirst($name), $params);
+    }
+
+
+    /**
+     * Exibe as mensagens
+     * @return mixed
+     */
+    protected function alerts()
+    {
+        return Message::alerts();
     }
 }

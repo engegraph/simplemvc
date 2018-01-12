@@ -1,6 +1,4 @@
-<?php
-
-namespace Core;
+<?php namespace Core\Classes;
 
 
 class Session
@@ -45,13 +43,8 @@ class Session
 
         if(sizeof($sess))
         {
-            foreach ($sess as $name => $value)
-                unset($_SESSION[$name]);
-
-            @session_destroy();
-
-            session_start();
-
+            if(isset($_SESSION) && empty($_SESSION))
+                session_destroy();
         }
 
         return $sess;
@@ -76,7 +69,6 @@ class Session
 
         switch ($acao)
         {
-            # ['alert']['error']
             case 'set':
                 if(substr($index,0,9)=="['alert']")
                     $index = "['alert'][]".substr($index,9);

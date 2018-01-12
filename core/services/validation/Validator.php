@@ -1,6 +1,6 @@
-<?php namespace Core\Services;
+<?php namespace Core\Services\Validation;
 
-use \Core\Translator;
+use Core\Orm;
 use Doctrine\Common\Inflector\Inflector;
 
 class Validator
@@ -22,6 +22,9 @@ class Validator
         {
             $translator = new Translator;
             $validator  = new \Illuminate\Validation\Factory($translator);
+            $presence = new \Illuminate\Validation\DatabasePresenceVerifier(Orm::$Instance->getDatabaseManager());
+            $presence->setConnection(Orm::$Instance->getConnection('default'));
+            $validator->setPresenceVerifier($presence);
             self::customValidate($validator);
             self::$instance = $validator;
         }
@@ -31,7 +34,7 @@ class Validator
 
     private static function customValidate(&$validator)
     {
-        $Module = ucfirst(Inflector::tableize(Inflector::camelize(__MODULE)));
+        $Module = ucfirst(Inflector::tableize(Inflector::camelize(__APP_MODULE)));
         $CustomValidator = "wSGI\\Modules\\{$Module}\\Util\\Validator";
         if(class_exists($CustomValidator))
         {

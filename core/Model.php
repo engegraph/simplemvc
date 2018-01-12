@@ -1,5 +1,6 @@
 <?php namespace Core;
 
+use Core\Classes\Message;
 use Core\Traits\Validator;
 use Doctrine\Common\Inflector\Inflector;
 use Illuminate\Database\Capsule\Manager;
@@ -178,40 +179,31 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
 
     /**
-     * Salva no modelo atual e em tabelas relacionadas
+     * Salva no modelo atual e seus relacionamentos
      * @param array $Relations
      * @return bool|string
      */
-    public function saveAll(array $Relations = [])
+    public function push(array $Relations = [])
     {
         $Model = $this->getClass();
         $Data = $Relations ? $Relations : post($Model);
-        $Ns = 'App\\Modules\\'.(defined('ADMIN') ? 'wSGI' : 'Site').'\\Models\\';
 
-        $SaveAll = function(array $Relations, &$Obj) use (&$SaveAll, $Ns){
-            if(sizeof($Relations))
+        $Ns   = 'wSGI\\Modules\\'.__APP_MODULE.'\\Models\\';
+        $SaveAll = function(Model &$Model, array $Relations) use (&$SaveAll, $Ns){
+            foreach ($Relations as $Prop => $Val)
             {
-                $Attr = [];
-                foreach ($Relations as $Name => $Val)
+                if(!is_array($Val))
                 {
-                    if(is_array($Val))
-                    {
-                        if(!$Obj->validate())
-                            return false;
-
-                        $Class = $Ns.$Name;
-                        $Fk = "{$Name}Id";
-                        $Model = ($Id=$Obj->$Fk) ? forward_static_call_array([$Class,'find'],[$Id]) : new $Class;
-                        $SaveAll($Val, $Model);
-                        $ResId = $Model->save();
-                        $Obj->$Fk = $Id ? $Id : $ResId;
-
-                    }
-                    else
-                    {
-                        $Attr[$Name] = $Val;
-                        $Obj->$Name = $Val;
-                    }
+                    $Model->$Prop = $Val;
+                }
+                else
+                {
+                    $Class = $Ns.$Prop;
+                    $Fk = $Prop.'Id';
+                    $Obj = ($Id=$Model->$Fk) ? $Class::find($Id) : new $Class;
+                    $SaveAll($Obj, $Val);
+                    $Res = $Obj->save();
+                    $Model->$Fk = $Id ? $Id : $Res;
                 }
             }
         };
@@ -219,15 +211,14 @@ class Model extends \Illuminate\Database\Eloquent\Model
         try
         {
             Manager::connection()->beginTransaction();
-            $SaveAll($Data, $this);
+            $SaveAll($this, $Data);
             $result = $this->save();
             Manager::connection()->commit();
             return $result;
         }
         catch (\Exception $e){
             Manager::connection()->rollBack();
-            Message::danger('Erro :: '.$e->getMessage());
-            return false;
+            throw new \Exception($e->getMessage());
         }
     }
 

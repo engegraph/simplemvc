@@ -1,6 +1,6 @@
 <?php namespace Core\Traits;
 
-use Core\Session;
+use Core\Classes\Session;
 
 /**
  * Validação dos modelos
@@ -59,7 +59,7 @@ trait Validator
         $data = $this->toArray();
         if(!empty($this->rules))
         {
-            $v = \Core\Services\Validator::make($data, $this->rules, $this->ruleMessages);
+            $v = \Core\Services\Validation\Validator::make($data, $this->rules, $this->ruleMessages);
             if($v->fails())
             {
                 $model = $this->getClass();

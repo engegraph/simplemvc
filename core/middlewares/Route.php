@@ -35,7 +35,7 @@ class Route implements \Core\Interfaces\iRequest
         $App['Module']     = ucfirst(Inflector::tableize(Inflector::camelize($request->Module)));
         $App['Controller'] = ucfirst(Inflector::camelize($request->Controller));
         $App['Action']     = Inflector::camelize($request->Action);
-
+        define('__APP_MODULE', $App['Module']);
         return $App;
     }
 

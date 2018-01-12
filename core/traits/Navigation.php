@@ -192,7 +192,7 @@ str;
 
             if($val == 'save')
             {
-                $btn .= '<button class="btn btn-success" type="submit" name="'.$name.'" value="0">';
+                $btn .= '<button class="btn btn-success" type="submit" name="'.$name.'" value="-1">';
                 $btn .= '<i class="fa fa-save"></i> <u>S</u>alvar';
                 $btn .= '</button>';
             }

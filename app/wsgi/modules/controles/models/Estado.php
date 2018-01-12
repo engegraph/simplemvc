@@ -7,7 +7,7 @@ class Estado extends Model
     public $table = 'TbEstados';
 
     protected $rules = [
-        'Nome' => 'required|wsgi',
+        'Nome' => 'required',
         'Uf'   => 'required|size:2',
     ];
 

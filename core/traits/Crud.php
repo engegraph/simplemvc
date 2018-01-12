@@ -1,8 +1,9 @@
 <?php namespace Core\Traits;
 
-use Core\Session;
+use Core\Classes\Message;
+use Core\Classes\Redirect;
+use Core\Classes\Session;
 use Doctrine\Common\Inflector\Inflector;
-use Webpatser\Uuid\Uuid;
 
 trait Crud
 {
@@ -15,38 +16,65 @@ trait Crud
     {
         return $this->view('cadastro');
     }
-    public function create()
+
+    public function save($Uuid = null)
     {
-        if($this->csrf->resolve())
+        $base = backend_url('/'.$this->Request->Module.'/'.$this->Request->Controller);
+        $local = $base.($Uuid ? '/editar/'.$Uuid : '/cadastro');
+        try
         {
-            try
+            if($this->csrf->resolve())
             {
-                var_dump($this->Model);
-            }
-            catch (\Exception $e)
-            {
-                echo $e->getMessage();
+                if(post('_save'))
+                {
+                    if($res = $this->model->push())
+                    {
+                        $to = $this->getRedirectInfo($res, $base);
+                        return Redirect::to($to['url'])->withAlert('success', $to['message']);
+                    }
+                    return Redirect::to($local)->withAlert('warning', 'Verifique se informou os dados corretamente');
+                }
             }
         }
+        catch (\Exception $e)
+        {
+            return Redirect::to($local)->withAlert('danger', $e->getMessage());
+        }
+    }
+
+
+    /**
+     * Retorna a url de destino asssim como sua mensagem de alerta, após uma submissão de formulário
+     * @param $result
+     * @param $url
+     * @return array
+     */
+    private function getRedirectInfo($result, $url) : array
+    {
+        $message  = '';
+        $redirect = '';
+        if(is_bool($result))
+            $message = 'Atualização bem sucedida :)';
+        if(is_guid($result))
+            $message = 'Cadastro realizado com sucesso :)';
+        $uuid = !is_bool($result) ?? $this->model->Id;
+
+        if(post('_save')=='-1')
+            $redirect = $url."/editar/{$uuid}";
+        if(post('_save')=='1')
+        {
+            Session::del('val');
+            $redirect = $url."/cadastro";
+        }
+        if(post('_save')=='2')
+            $redirect = $url;
+
+        return ['url'=>$redirect, 'message'=>$message];
     }
 
     public function editar($Uuid)
     {
         return $this->view('editar');
-    }
-    public function update($Uuid)
-    {
-        if($this->csrf->resolve())
-        {
-            try
-            {
-                var_dump($this->Model);
-            }
-            catch (\Exception $e)
-            {
-                echo $e->getMessage();
-            }
-        }
     }
 
     public function onDelete()
@@ -76,7 +104,7 @@ trait Crud
 
             if(@$Uuid=$this->Request->Params[0])
             {
-                if(is_guid($Uuid) && ($this->Request->Action=='editar' || $this->Request->Action=='update'))
+                if(is_guid($Uuid) && ($this->Request->Action=='editar' || $this->Request->Action=='save'))
                 {
                     $Model = $Class::find($Uuid);
                 }
@@ -91,11 +119,9 @@ trait Crud
      */
     private function DataPoint()
     {
-        $url = backend_url("/{$this->Request->Module}/{$this->Request->Controller}");
-        if($Uuid=$this->Model->Id)
-            $url .= '/update/'.str_guid($Uuid);
-        else
-            $url .= "/create";
+        $url = backend_url("/{$this->Request->Module}/{$this->Request->Controller}/save");
+        if($Uuid=$this->model->Id)
+            $url .= '/'.$Uuid;
 
         return $url;
     }
@@ -107,29 +133,48 @@ trait Crud
      */
     final protected function err(string $var)
     {
-        $name = "err.{$var}";
-        if( $e = Session::get($name))
+        $split = explode('.', $var);
+        $count = count($split);
+
+        $sessmodel = $split[$count-2];
+        $sesskey   = $split[$count-1];
+        $sessname  = 'err.'.$sessmodel.'.'.$sesskey;
+
+        if($e = Session::get($sessname))
         {
             echo ' has-error';
-            Session::del($name);
+            Session::del($sessname);
             return $e;
         }
     }
 
+    /**
+     * Retorna o valor da propriedade que está na sessão, ou no model, ou vazio
+     * @param string $var
+     * @return mixed|string
+     */
     final public function val(string $var)
     {
         $split = explode('.', $var);
+        $count = count($split);
+
+        $sessmodel = $split[$count-2];
+        $sesskey   = $split[$count-1];
+        $sessname  = 'val.'.$sessmodel.'.'.$sesskey;
+
         $class = array_shift($split);
-        if($class == $this->model->getClass())
+        $model = $this->model;
+        if($class == $model->getClass())
         {
             if(count($split) > 1)
                 $relation = implode('->', $split);
             else
-                $relation = $class.'->'.$split[0];
+                $relation = $split[0];
 
-            $model = $this->model;
-            $property = $model->Endereco->Cep;
-            var_dump($split, $relation, $model, $property);
+            $property = '$model->'.$relation;
+            $eval     = eval('return '.$property.' ?? NULL;');
+            $value    = Session::has($sessname) ? Session::get($sessname) : ($eval ? $eval : '');
+            return $value;
         }
     }
 }

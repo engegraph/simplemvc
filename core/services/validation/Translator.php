@@ -1,5 +1,5 @@
 <?php
-namespace Core;
+namespace Core\Services\Validation;
 
 
 class Translator implements  \Illuminate\Contracts\Translation\Translator

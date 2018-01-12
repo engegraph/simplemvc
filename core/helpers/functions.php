@@ -109,9 +109,11 @@ function str_guid($str, $guid = false)
     } else {
         $s = '';
         for ($i = 1; $i < strlen($str); $i++) {
-            $s .= strtoupper($str{$i});
+
             if ($i == 8 || $i == 12 || $i == 16 || $i == 20)
                 $s .= '-';
+
+            $s .= strtoupper($str{$i});
         }
         return $s;
     }

@@ -1,70 +1,66 @@
 <?php namespace wSGI\Modules\Pessoas\Controllers;
 
+use Core\Classes\Session;
 use Core\Controller;
-use Core\Session;
-use wSGI\Modules\Controles\Models\Estado;
+use wSGI\Modules\Pessoas\Models\Estado;
 use wSGI\Modules\Pessoas\Models\Pessoa;
 
 class Pessoas extends Controller
 {
-    public function editar($Uuid)
+    public function teste()
     {
-        $Pessoa = Pessoa::find($Uuid);
-        $relation = 'Endereco->Cidade->Nome';
-        var_dump($Pessoa->{$relation});
+        $data = [
+            'Pessoa' => [
+                'TipoPessoa' => 1,
+                'Nome' => 'Airton Lopes',
+                'Email' => 'airton.lopes@engegraph.com.br',
+/*                'Endereco' => [
+                    'Bairro' => 'Bueno',
+                    'Cep' => '74223200',
+                    'Numero' => '51',
+                    'Cidade' => [
+                        'Nome' => 'Goiânia',
+                        'Estado' => [
+                            'Nome' => 'Goiás',
+                            'Uf' => 'GO'
+                        ],
+                        'Capital' => 'Sim'
+                    ],
+                    'Lote' => '10',
+                    'Quadra' => '21',
+                    'Complemento' => 'Casa'
+                ],*/
+                'Nascimento' => '12/12/2015',
+                'Cadastro' => '12/01/2018',
+                'Atualizacao' => '0000-00-00',
+                'CpfCnpj' => '02894606389',
+            ]
+        ];
+        echo '<pre>';
+        print_r($data);
+       #echo '</pre>';
 
-        /*$v = $this->validator::make([
-            'nome' => 'foo',
-            'email' => 'airton engegraph.com.br',
-            'telefone' => ['celular'=>'25a', 'comercial'=>'']
-        ],[
-            'nome' => ['required','foo'],
-            'email' => ['required', 'email'],
-            'telefone.celular' => ['required', 'regex:/^[0-9]{0,8}$/'],
-            'telefone.comercial' => 'required',
-        ],[
-            'nome.required' => 'Informe seu nome',
-            'nome.foo' => 'Informe foo',
-            'email.required' => 'Informe seu email',
-            'email.email' => 'Email inválido',
-            'telefone.celular.required' => 'Telefone é requirido',
-            'telefone.celular.regex' => 'Somente números é permitido',
-            'telefone.comercial.required' => 'Um telefone comercial é necessário',
-        ]);
+        $Model = new Pessoa;
+        $Model->Nome = 'Marcos';
+        $Model->TipoPessoa = 1;
+        $Model->CpfCnpj = '2154555';
 
-        var_dump($v->fails(), $v->failed());
-
-        if($v->fails())
+        try
         {
-            $Erro = $v->errors();
-            var_dump($Erro->get('nome'));
-        }
-
-        echo '<hr>'; */
-
-        #$this->val('Pessoa.Endereco.Cidade.Nome');
-
-        /*try
-        {
-            $Estado = Estado::find('00000003-0000-0000-0000-000000000000');
-            $Estado->Nome = 'Flórida';
-            $Estado->Uf = 'FL';
-            if($Res = $Estado->save())
+            if($res = $Model->save())
             {
-                var_dump($Res, $Estado);
+                var_dump($res);
             }
             else
             {
-                echo '<pre>';
-                print_r(Session::all());
-                $this->val('Pessoa.Endereco.Cidade.Nome');
-                echo '</pre>';
+                var_dump($this->alerts());
             }
         }
-        catch (\Exception $exception)
+        catch (\Exception $e)
         {
-            echo 'Erros aconteceram :: '.$exception->getMessage();
-        } */
+            echo $e->getMessage();
+        }
+
 
     }
 }

@@ -7,6 +7,8 @@ class Orm
 {
     private $Capsule;
 
+    public static $Instance;
+
     public function __construct()
     {
         try
@@ -33,5 +35,6 @@ class Orm
         $this->Capsule->setEventDispatcher($EventsDispatcher);
         $this->Capsule->setAsGlobal();
         $this->Capsule->bootEloquent();
+        self::$Instance = $this->Capsule;
     }
 }
