@@ -1,19 +1,201 @@
 /*
  * It is advised not to edit the smartadmin_production.css
- * as this will override any changes you make in the 
- * later versions of this theme. 
- * 
- * We advise that you use use this CSS to override 
- * SmartAdmin styles. 
- * 
+ * as this will override any changes you make in the
+ * later versions of this theme.
+ *
+ * We advise that you use use this CSS to override
+ * SmartAdmin styles.
+ *
  * Rename the stylesheet to whatever your liking so it will stay
  * unique to you with each update of SmartAdmin.
  */
 
 /*
  * INDEX
- * 
+ *
  * - HTML
  * - BODY
  * - CUSTOM STYLES
  */
+
+
+@import "inputs.elegant.css";
+
+.wSGI-load{
+    position: fixed;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+.wSGI-load::before{
+    content: '';
+    position: absolute;
+    width: inherit;
+    height: inherit;
+    background-color: rgba(0,0,0,0.7);
+    z-index: 100000;
+}
+.wSGI-load::after{
+    content: 'Por favor aguarde...';
+    color: #ccc;
+    text-align: center;
+    width: 150px;
+    padding-top: 50px;
+    left: 50%;
+    top: 50%;
+    margin-left: -75px;
+    margin-top: -100px;
+    background-image: url("../img/disk-load.svg");
+    background-position:top center;
+    background-repeat: no-repeat;
+    position: absolute;
+    z-index: 100000;
+}
+
+body.time-progress{
+    cursor: progress;
+}
+
+.control-actions{
+    width: 100%;
+    overflow: hidden;
+    text-align: right;
+}
+
+.wsgi-alerts{
+    width: 600px;
+    position: fixed;
+    left: 50%;
+    margin-left: -300px;
+    z-index: 1000;
+    top: 100px;
+    font-size: 14px;
+}
+.wsgi-alerts .alert{
+    padding: 15px;
+    padding-right: 20px;
+    margin: 0;
+    box-shadow: 0 0 7px #666;
+}
+.wsgi-alerts p{margin: 0;}
+.alert-close{
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    opacity: 0.2;
+    color: inherit;
+}
+
+
+table.data-table tr.row-data td.cell-link{
+    cursor: pointer;
+}
+table.data-table tr.row-data td .checkbox, table.data-table tr th .checkbox{margin: 0;}
+
+.btn-actions{}
+.btn-actions button.remove{
+    color: #999;
+}
+
+.centralizado   {
+    text-align: center;
+}
+
+#RelDetails {
+    margin-top: 5px;
+}
+
+.SmallBox i.fa{
+    opacity: 0.5;
+    font-size: 35px;
+    vertical-align: top;
+    position: relative;
+    top: 14px;
+}
+
+#RelDetailsHeader h1 {
+    /*font-size: 18px;*/
+    color: #3276b1;
+    font-weight: bold;
+}
+.titlerel {
+    /*font-size: 18px;*/
+    color: #3276b1;
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+}
+
+.titlerel2 {
+    font-size: 14px;
+    color: #3276b1;
+    font-weight: bold;
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+}
+
+.selectRel  {
+    width: 100% !important;
+    min-height: 300px;
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+}
+
+.fieldsetfiltro  {
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+}
+
+.fieldsetfiltro legend {
+    font-size: 14px;
+    color: #3276b1;
+    font-family: "Open Sans",Arial,Helvetica,Sans-Serif;
+}
+
+.label-block{
+    display: block;
+    margin-bottom: 10px;
+}
+.form-data .form-control{color: #3276b1;}
+.ui-autocomplete {
+    z-index: 1160 !important;
+}
+
+.sem-registro   {
+    color: #3276b1;
+    background-color: #ffffff;
+    /*text-align: center;*/
+    font-size: 13px;
+}
+
+.dropzone   {
+    min-height: 100px !important;
+    /*height: 100px !important;*/
+}
+
+.dropzone.dz-clickable .dz-message, .dropzone.dz-clickable .dz-message * {
+    cursor: pointer;
+    margin-top: 8px !important;
+}
+
+.font-lg {
+    font-size: 135% !important;
+}
+
+#lightgallery img {
+    border: 1px solid #ddd; /* Gray border */
+    border-radius: 4px;  /* Rounded border */
+    padding: 5px; /* Some padding */
+    width: 150px; /* Set a small width */
+    height: 150px;
+}
+
+/* Add a hover effect (blue shadow) */
+#lightgallery img:hover {
+    box-shadow: 0 0 2px 1px rgba(61, 70, 85, 0.5);
+}

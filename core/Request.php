@@ -27,6 +27,8 @@ class Request
         $this->Params = sizeof($Url) ? $Url : [];
 
         define('__REQUEST_MODULE', $this->Module);
+        define('__REQUEST_CONTROLER', $this->Controller);
+        define('__REQUEST_ACTION', $this->Action);
     }
 
     private function getUrl()

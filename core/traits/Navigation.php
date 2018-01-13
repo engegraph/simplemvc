@@ -177,11 +177,12 @@ str;
                     $btn .= '<i class="fa fa-trash"></i> Remover';
                     $btn .= '</button>';
                 }
-                else
+
+                if(__REQUEST_ACTION=='editar')
                 {
-                    if(property_exists($this,'_uuid'))
+                    if($uuid=$this->model->Id)
                     {
-                        $btn .= '<button class="btn btn-link pull-left remove" type="button" name="'.$this->Module->getClass().'[Uuid][]" onclick="remove([this])" value="'.$this->_uuid.'">';
+                        $btn .= '<button class="btn btn-link pull-left remove" type="button" name="'.$this->model->getClass().'[Uuid][]" onclick="remove([this])" value="'.$uuid.'">';
                         $btn .= '<i class="fa fa-trash"></i> <u>R</u>emover';
                         $btn .= '</button>';
                     }

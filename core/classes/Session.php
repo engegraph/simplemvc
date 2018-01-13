@@ -43,7 +43,7 @@ class Session
 
         if(sizeof($sess))
         {
-            if(isset($_SESSION) && empty($_SESSION))
+            if(isset($_SESSION) && !empty($_SESSION))
                 session_destroy();
         }
 

@@ -29,7 +29,7 @@ trait Crud
                 {
                     if($res = $this->model->push())
                     {
-                        $to = $this->getRedirectInfo($base, is_guid($res) ? $res : $Uuid);
+                        $to = $this->getRedirectInfo($base, $res, $Uuid);
                         return Redirect::to($to['url'])->withAlert('success', $to['message']);
                     }
                     return Redirect::to($local)->withAlert('warning', 'Verifique se informou os dados corretamente');
@@ -49,15 +49,16 @@ trait Crud
      * @param $url
      * @return array
      */
-    private function getRedirectInfo($url, $uuid) : array
+    private function getRedirectInfo($url, $res, $uuid) : array
     {
-        $message  = '';
         $redirect = '';
-        $uuid = '';
-        if($uuid)
+
+        if(is_guid($res))
             $message = 'Cadastro realizado com sucesso :)';
         else
             $message = 'Atualização bem sucedida :)';
+
+        $uuid = is_guid($res) ? $res : $uuid;
 
         if(post('_save')=='-1')
             $redirect = $url."/editar/{$uuid}";

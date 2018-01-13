@@ -24,14 +24,14 @@ class Validator
             $validator  = new \Illuminate\Validation\Factory($translator);
             $presence = new \Illuminate\Validation\DatabasePresenceVerifier(Orm::$Instance->getDatabaseManager());
             $validator->setPresenceVerifier($presence);
-            self::customValidate($validator);
+            self::resolveCustomValidate($validator);
             self::$instance = $validator;
         }
         return self::$instance;
     }
 
 
-    private static function customValidate(&$validator)
+    private static function resolveCustomValidate(&$validator)
     {
         $CustomValidator = 'wSGI\\Modules\\'.__APP_MODULE.'\\Util\\Validator';
         if(class_exists($CustomValidator))

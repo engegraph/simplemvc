@@ -189,7 +189,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         $Data = $Relations ? $Relations : post($Model);
 
         $Ns   = 'wSGI\\Modules\\'.__APP_MODULE.'\\Models\\';
-        $SaveAll = function(Model &$Model, array $Relations) use (&$SaveAll, $Ns){
+        $Push = function(Model &$Model, array $Relations) use (&$Push, $Ns){
             foreach ($Relations as $Prop => $Val)
             {
                 if(!is_array($Val))
@@ -201,7 +201,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
                     $Class = $Ns.$Prop;
                     $Fk = $Prop.'Id';
                     $Obj = ($Id=$Model->$Fk) ? $Class::find($Id) : new $Class;
-                    $SaveAll($Obj, $Val);
+                    $Push($Obj, $Val);
                     $Res = $Obj->save();
                     $Model->$Fk = $Id ? $Id : $Res;
                 }
@@ -211,7 +211,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         try
         {
             Manager::connection()->beginTransaction();
-            $SaveAll($this, $Data);
+            $Push($this, $Data);
             $result = $this->save();
             Manager::connection()->commit();
             return $result;

@@ -21,7 +21,8 @@ table.data-table .checkbox label{padding-left: 7px; font-weight: bold;}
     line-height: 40px;
 }
 .toolbar-actions{
-
+    padding-bottom: 5px;
+    padding-top: 10px;
 }
 .toolbar-actions .btn-actions{
     display: inline-block;
@@ -33,7 +34,7 @@ table.data-table .checkbox label{padding-left: 7px; font-weight: bold;}
     line-height: 31px;
     font-size: 15px;
 }
-
+.toolbar-actions-text p{margin: 0;}
 
 
 .checkbox, .radio{
