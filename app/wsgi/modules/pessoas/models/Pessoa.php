@@ -4,11 +4,13 @@ use Core\Model;
 
 class Pessoa extends Model
 {
+    public $table = 'Pessoas';
+
     protected $rules = [
         'Nome' => 'required',
         'NomeFantasia' => 'required',
         'TipoPessoa' => 'required',
-        'CpfCnpj' => 'required|unique:pessoa',
+        'CpfCnpj' => 'required',
     ];
 
     protected $ruleMessages = [

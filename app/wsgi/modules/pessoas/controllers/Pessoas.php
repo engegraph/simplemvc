@@ -37,13 +37,13 @@ class Pessoas extends Controller
             ]
         ];
         echo '<pre>';
-        print_r($data);
+        #print_r($data);
        #echo '</pre>';
 
-        $Model = new Pessoa;
+        $Model = Pessoa::find('00000005-0000-0000-0000-000000000000');
         $Model->Nome = 'Marcos';
         $Model->TipoPessoa = 1;
-        $Model->CpfCnpj = '2154555';
+        $Model->CpfCnpj = '02894606389';
 
         try
         {

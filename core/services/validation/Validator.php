@@ -23,7 +23,6 @@ class Validator
             $translator = new Translator;
             $validator  = new \Illuminate\Validation\Factory($translator);
             $presence = new \Illuminate\Validation\DatabasePresenceVerifier(Orm::$Instance->getDatabaseManager());
-            $presence->setConnection(Orm::$Instance->getConnection('default'));
             $validator->setPresenceVerifier($presence);
             self::customValidate($validator);
             self::$instance = $validator;
@@ -34,8 +33,7 @@ class Validator
 
     private static function customValidate(&$validator)
     {
-        $Module = ucfirst(Inflector::tableize(Inflector::camelize(__APP_MODULE)));
-        $CustomValidator = "wSGI\\Modules\\{$Module}\\Util\\Validator";
+        $CustomValidator = 'wSGI\\Modules\\'.__APP_MODULE.'\\Util\\Validator';
         if(class_exists($CustomValidator))
         {
             $validator->resolver(function($translator, $data, $rules, $messages, $customAttributes) use ($CustomValidator){

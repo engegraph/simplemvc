@@ -49,16 +49,18 @@ trait Validator
     private function validate() : bool
     {
         /**
-         * Disparando evento onBeforeValidate
-         */
-        $this->onBeforeValidate();
-
-        /**
          * Realizando validação
          */
         $data = $this->toArray();
         if(!empty($this->rules))
         {
+
+            /**
+             * Disparando evento onBeforeValidate
+             */
+            $this->onBeforeValidate();
+
+
             $v = \Core\Services\Validation\Validator::make($data, $this->rules, $this->ruleMessages);
             if($v->fails())
             {
@@ -68,15 +70,15 @@ trait Validator
                 {
                     $message = $erro->first($field);
                     Session::set("err.{$model}.{$field}", $message);
-                    return false;
+                    throw new \Exception($message);
                 }
             }
-        }
 
-        /**
-         * Disparando evento onAfterValidate
-         */
-        $this->onAfterValidate();
+            /**
+             * Disparando evento onAfterValidate
+             */
+            $this->onAfterValidate();
+        }
 
         return true;
     }
