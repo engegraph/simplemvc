@@ -17,6 +17,11 @@ trait Crud
         return $this->view('cadastro');
     }
 
+    /**
+     * Responsável por enviar os dados para ser salvo no modelo
+     * @param null $Uuid
+     * @return mixed
+     */
     public function save($Uuid = null)
     {
         $base = backend_url('/'.$this->Request->Module.'/'.$this->Request->Controller);
@@ -78,11 +83,6 @@ trait Crud
         return $this->view('editar');
     }
 
-    public function onDelete()
-    {
-
-    }
-
     /**
      * onConfigModel atrela um model ao controlador instanciado
      */
@@ -114,68 +114,31 @@ trait Crud
         }
     }
 
-    /**
-     * Retorna o link para salvar os dados
-     * @return string
-     */
-    private function DataPoint()
-    {
-        $url = backend_url("/{$this->Request->Module}/{$this->Request->Controller}/save");
-        if($Uuid=$this->model->Id)
-            $url .= '/'.$Uuid;
-
-        return $url;
-    }
 
     /**
-     * Retorna a mensagem de errro atual de validação
-     * @param string $var
-     * @return mixed
+     * Remoção de registros
+     * @return array
      */
-    final protected function err(string $var)
+    public function onDelete()
     {
-        $split = explode('.', $var);
-        $count = count($split);
-
-        $sessmodel = $split[$count-2];
-        $sesskey   = $split[$count-1];
-        $sessname  = 'err.'.$sessmodel.'.'.$sesskey;
-
-        if($e = Session::get($sessname))
+        $Name = Inflector::singularize($this->App->Controller).'.Uuid';
+        if($Uuids = post($Name))
         {
-            echo ' has-error';
-            Session::del($sessname);
-            return $e;
-        }
-    }
+            try
+            {
+/*                foreach ($Uuids as &$uuid)
+                    $uuid = str_guid($uuid, true);*/
 
-    /**
-     * Retorna o valor da propriedade que está na sessão, ou no model, ou vazio
-     * @param string $var
-     * @return mixed|string
-     */
-    final public function val(string $var)
-    {
-        $split = explode('.', $var);
-        $count = count($split);
+                forward_static_call_array([$this->model, 'destroy'], $Uuids);
+                $msg = (count($Uuids) > 1 ? 'Registros eliminados' : 'Registro eliminado').' com sucesso !';
+                Message::info($msg);
+            }
+            catch (\Exception $e)
+            {
+                echo $e->getMessage();
+            }
 
-        $sessmodel = $split[$count-2];
-        $sesskey   = $split[$count-1];
-        $sessname  = 'val.'.$sessmodel.'.'.$sesskey;
-
-        $class = array_shift($split);
-        $model = $this->model;
-        if($class == $model->getClass())
-        {
-            if(count($split) > 1)
-                $relation = implode('->', $split);
-            else
-                $relation = $split[0];
-
-            $property = '$model->'.$relation;
-            $eval     = eval('return '.$property.' ?? NULL;');
-            $value    = Session::has($sessname) ? Session::get($sessname) : ($eval ? $eval : '');
-            return $value;
+            return ['redirect' => backend_url('/'.$this->Request->Module.'/'.$this->Request->Controller)];
         }
     }
 }

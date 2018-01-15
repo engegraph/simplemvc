@@ -19,8 +19,7 @@
  */
 
 
-@import "inputs.elegant.css";
-
+/*
 .wSGI-load{
     position: fixed;
     overflow: hidden;
@@ -64,7 +63,7 @@
 body.time-progress{
     cursor: progress;
 }
-
+*/
 .control-actions{
     width: 100%;
     overflow: hidden;
@@ -103,7 +102,7 @@ table.data-table tr.row-data td.cell-link{
 table.data-table tr.row-data td .checkbox, table.data-table tr th .checkbox{margin: 0;}
 
 .btn-actions{}
-.btn-actions button.remove{
+.btn-actions a.remove.remove-only{
     color: #999;
 }
 
@@ -198,4 +197,57 @@ table.data-table tr.row-data td .checkbox, table.data-table tr th .checkbox{marg
 /* Add a hover effect (blue shadow) */
 #lightgallery img:hover {
     box-shadow: 0 0 2px 1px rgba(61, 70, 85, 0.5);
+}
+
+
+/*******************************
+************ Nova Versão/arquitetura *******
+*******************************/
+.wsgi-widget header{
+    height: 40px;
+    line-height: 40px;
+}
+.wsgi-widget header h2{line-height: 40px;}
+.wsgi-widget header .widget-icon,
+.wsgi-widget header .button-icon{
+    height: 40px;
+    line-height: 40px;
+}
+.toolbar-actions{
+    padding-bottom: 5px;
+    padding-top: 10px;
+}
+.toolbar-actions .btn-actions{
+    display: inline-block;
+    margin-bottom: 7px;
+    float: right;
+}
+.toolbar-actions-text{
+    height: 35px;
+    line-height: 31px;
+    font-size: 15px;
+}
+.toolbar-actions-text p{margin: 0;}
+
+
+.checkbox, .radio{
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+table.data-table .checkbox input, table.data-table .radio input{
+    width: auto !important;
+}
+
+table.data-table .cell-check{
+
+}
+table.data-table .cell-check label{
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
+#logo{margin: 4px; margin-left: 0; text-align: center;}
+#logo img{
+    display: inline-block;
 }

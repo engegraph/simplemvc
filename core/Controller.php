@@ -1,13 +1,15 @@
 <?php namespace Core;
 
 use Core\Classes\Message;
+use Core\Classes\Session;
 
 class Controller
 {
     use \Core\Traits\Events,
         \Core\Traits\Assets,
         \Core\Traits\Navigation,
-        \Core\Traits\Crud;
+        \Core\Traits\Crud,
+        \Core\Classes\Modals\Modal;
 
     /**
      * @var $Nav array informações de navegação do módulo
@@ -74,6 +76,11 @@ class Controller
          */
         $this->addService('csrf');
         #$this->addService('validation.validator');
+
+        /**
+         * Adiciona alguns arquivos js/css padrão ao sistema
+         */
+        $this->defaultAssets();
     }
 
     final protected function view(string $name, $data = null)
@@ -175,5 +182,91 @@ class Controller
     protected function alerts()
     {
         return Message::alerts();
+    }
+
+    /**
+     * Retorna o link para salvar os dados
+     * @return string
+     */
+    private function DataPoint()
+    {
+        $url = backend_url("/{$this->Request->Module}/{$this->Request->Controller}/save");
+        if($Uuid=$this->model->Id)
+            $url .= '/'.$Uuid;
+
+        return $url;
+    }
+
+    /**
+     * Retorna a mensagem de errro atual de validação
+     * @param string $var
+     * @return mixed
+     */
+    final protected function err(string $var)
+    {
+        $split = explode('.', $var);
+        $count = count($split);
+
+        $sessmodel = $split[$count-2];
+        $sesskey   = $split[$count-1];
+        $sessname  = 'err.'.$sessmodel.'.'.$sesskey;
+
+        if($e = Session::get($sessname))
+        {
+            echo ' has-error';
+            Session::del($sessname);
+            return $e;
+        }
+    }
+
+    /**
+     * Retorna o valor da propriedade que está na sessão, ou no model, ou vazio
+     * @param string $var
+     * @return mixed|string
+     */
+    final public function val(string $var)
+    {
+        $split = explode('.', $var);
+        $count = count($split);
+
+        $sessmodel = $split[$count-2];
+        $sesskey   = $split[$count-1];
+        $sessname  = 'val.'.$sessmodel.'.'.$sesskey;
+
+        $class = array_shift($split);
+        $model = $this->model;
+        if($class == $model->getClass())
+        {
+            if(count($split) > 1)
+                $relation = implode('->', $split);
+            else
+                $relation = $split[0];
+
+            $property = '$model->'.$relation;
+            $eval     = eval('return '.$property.' ?? NULL;');
+            $value    = Session::has($sessname) ? Session::get($sessname) : ($eval ? $eval : '');
+            return $value;
+        }
+    }
+
+
+    /**
+     * Adiciona arquivos css e js
+     */
+    private function defaultAssets() : void
+    {
+        /**
+         * Estilos do sistema
+         */
+        $this->addStyle(url('/core/system/assets/css/system.css'));
+        $this->addStyle(url('/core/system/assets/css/inputs.elegant.css'));
+        $this->addStyle(url('/core/system/assets/css/bootstrap-datetimepicker.min.css'));
+
+        /**
+         * Escripts do sistema
+         */
+        $this->addScript(url('/core/system/assets/js/autosize.min.js'));
+        $this->addScript(url('/core/system/assets/js/bootstrap-datetimepicker.min.js'));
+        $this->addScript(url('/core/system/assets/js/system.js'));
     }
 }

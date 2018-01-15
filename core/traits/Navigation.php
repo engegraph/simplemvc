@@ -87,13 +87,13 @@ trait Navigation
             $this->pageTitle = ucfirst($this->Request->Controller);
 
         if(!$this->Header)
-            $this->Header = $this->Module->Menu->label;
+            $this->Header = isset($this->Module->Menu->label) ? $this->Module->Menu->label : $this->pageTitle;
 
         if(!$this->pageSubtitle)
             $this->pageSubtitle = ($this->App->Action=='index' ? $this->App->list : ucfirst($this->App->Action));
 
         if(!$this->pageIcon)
-            $this->pageIcon = $this->Module->Menu->icon;
+            $this->pageIcon = isset($this->Module->Menu->icon) ? $this->Module->Menu->icon : 'tachometer';
 
         //var_dump($this->App);
 
@@ -126,7 +126,7 @@ page;
     final protected function checks(int $key, string $Id) : string
     {
         $uuid = $Id;
-        $Id = str_guid($uuid);
+        //$Id = str_guid($uuid);
         $page = $this->Request->Module.'/'.$this->Request->Controller;
         $url = backend_url("/{$page}/editar/{$uuid}");
         $name = $this->Model->getClass().'[Uuid][]';
@@ -173,7 +173,7 @@ str;
             {
                 if($url == url())
                 {
-                    $btn .= '<button type="button" class="btn btn-danger disabled" disabled="disabled" id="remove-checked">';
+                    $btn .= '<button type="button" class="btn btn-danger remove disabled" disabled="disabled">';
                     $btn .= '<i class="fa fa-trash"></i> Remover';
                     $btn .= '</button>';
                 }
@@ -182,9 +182,10 @@ str;
                 {
                     if($uuid=$this->model->Id)
                     {
-                        $btn .= '<button class="btn btn-link pull-left remove" type="button" name="'.$this->model->getClass().'[Uuid][]" onclick="remove([this])" value="'.$uuid.'">';
+                        $btn .= '<a class="btn btn-link pull-left remove remove-only" href="javascript:void(0)" onclick="checkeds = $(this).find(\'input\')">';
                         $btn .= '<i class="fa fa-trash"></i> <u>R</u>emover';
-                        $btn .= '</button>';
+                        $btn .= '<input type="checkbox" id="" name="'.$this->model->getClass().'[Uuid][]" value="'.$uuid.'" style="display:none;">';
+                        $btn .= '</a>';
                     }
                 }
             }

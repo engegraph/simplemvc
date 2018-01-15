@@ -1,7 +1,5 @@
 $(document).ready(function(){
 
-    pageSetUp();
-
     /* // DOM Position key index //
 
         l - Length changing (dropdown)

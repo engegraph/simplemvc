@@ -3,6 +3,11 @@
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Events\Dispatcher;
 
+/**
+ * Class Orm Executa as configurações de banco de dados
+ * @package Core
+ */
+
 class Orm
 {
     private $Capsule;
