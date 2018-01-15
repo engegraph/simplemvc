@@ -83,9 +83,10 @@ class Controller
         $this->defaultAssets();
     }
 
-    final protected function view(string $name, $data = null)
+    final protected function view(string $name, $wrapLayout = true)
     {
-        $view = $this->path().DS.'views'.DS.$this->Request->Controller.DS.$name.'.phtml';
+        $name = str_replace('.',DS, $name);
+        $view = $this->path().DS.'views'.DS.$name.'.phtml';
         if(!file_exists($view))
             die('View não encontrada : <code>'.$view.'</code>');
 
@@ -115,6 +116,9 @@ class Controller
             die('Layout não encontrado : <code>'.$layout.'</code>');
 
         require_once $layout;
+
+        # Apagando mensagens
+        $this->clearMessages();
 
         /**
          * Disparando evento onEnd, após a página ter sideo exibida completamente
@@ -247,6 +251,18 @@ class Controller
             $value    = Session::has($sessname) ? Session::get($sessname) : ($eval ? $eval : '');
             return $value;
         }
+    }
+
+    /**
+     * Apaga as mensagens de erros e valores previalmente enviados pelos formulário
+     */
+    final private function clearMessages()
+    {
+        Session::del('err');
+        Session::flush();
+
+        Session::del('val');
+        Session::flush();
     }
 
 

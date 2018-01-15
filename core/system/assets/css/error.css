@@ -1,0 +1,76 @@
+body, html{
+
+}
+
+.content-error{
+    background-color: #eee;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.content-error section{
+    width: 800px;
+    height: 270px;
+    left: 50%;
+    top: 50%;
+    background-color: #fff;
+    position: absolute;
+    margin-left: -400px;
+    margin-top: -300px;
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.content-error section article{
+    font-family: "Open Sans", Arial, Helvetica, Sans-Serif;
+}
+.content-error section article header{
+    padding: 20px;
+    background-color: #ddd;
+}
+.content-error section article header h1{
+    margin: 0;
+    font-weight: normal;
+    font-size: 18px;
+    color: #666;
+}
+.content-error section article header h1 span{
+    border-bottom: 1px dashed #666;
+    padding-bottom: 5px;
+}
+.content-error section article header h1::before{
+    content: 'wSGI';
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    color: #999;
+    background-color: #fff;
+    display: inline-block;
+    font-size: 14px;
+    text-align: center;
+    margin-right: 20px;
+}
+.content-error section article ol{
+    margin: 30px 45px;
+    padding: 0;
+    color: #999;
+    list-style: square;
+
+}
+.content-error section article p{margin: 0;}
+.content-error section article ol li{
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+.content-error section article ol li p{
+
+}
+.content-error section article ol li p span{
+    color: #000;
+    border-bottom: 1px dotted #333;
+    display: inline-block;
+}

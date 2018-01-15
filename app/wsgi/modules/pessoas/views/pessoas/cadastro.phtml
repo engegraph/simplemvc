@@ -141,7 +141,12 @@
                                 <div class="col-md-2">
                                     <div class="form-group<?php $e = $this->err('Pessoa.DataNascimento') ?>">
                                         <label class="control-label">Nascimento</label>
-                                        <input type="date" class="form-control" name="<?= $this->csrf->set('Pessoa[DataNascimento]') ?>" value="<?=($this->val('Pessoa.DataNascimento') == '' ? '' : date('Y-m-d', strtotime($this->val('Pessoa.DataNascimento'))))?>" />
+                                        <div class="input-group date datetime">
+                                            <input type="text" class="form-control" name="<?= $this->csrf->set('Pessoa[DataNascimento]') ?>" value="<?=date_conv($this->val('Pessoa.DataNascimento'))?>" />
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-calendar"></span>
+                                            </span>
+                                        </div>
                                         <span class="help-block"><?= $e ?></span>
                                     </div>
                                 </div>
@@ -237,6 +242,7 @@
                                                             <span class="input-group-btn">
                                                                         <button type="button" id="BtBuscaCEP" class="btn btn-default" style="height: 32px;"><i class="fa fa-search"></i></button>
                                                                     </span>
+                                                            <span class="help-block"><?= $e ?></span>
                                                         </div><!-- /input-group -->
                                                     </div>
                                                 </div>

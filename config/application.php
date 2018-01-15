@@ -1,6 +1,7 @@
 <?php
 
-return [
+return
+[
 
     /**
      *  Nome do template usado pela aplicação

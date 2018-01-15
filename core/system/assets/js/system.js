@@ -3,8 +3,12 @@ autosize($('textarea.autosize'));
 
 /**
  * Datetime  Picker, janela de seleção de datas
+ * @link https://eonasdan.github.io/bootstrap-datetimepicker/
  */
-$('.datetime').datetimepicker();
+$('.datetime').datetimepicker({
+    locale: 'pt-br',
+    format: 'DD/MM/YYYY'
+});
 
 /**
  * Mostra o load na página

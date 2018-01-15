@@ -280,3 +280,26 @@ function array_insert_pos(array &$input, $item, $pos = null)
     else
         $input[] = $item;
 }
+
+
+/**
+ * Função para converter dadas para o formato english e português
+ * @param string|null $datetime Data a ser convertida
+ * @param string $format Formato para a conversão da data: pt,en
+ * @return string Nova data formatada
+ */
+function date_conv(string $datetime = null, string $format = 'pt')
+{
+    if(!$datetime)
+        return '';
+
+    if( (preg_match('/^\d{2}\/\d{2}\/\d{4}/',$datetime) && $format=='pt') || (preg_match('/^\d{4}\-\d{2}\-\d{2}/',$datetime) && $format=='en')  )
+        return $datetime;
+
+    $date = substr($datetime, 0, 10);
+    $time = substr($datetime, 10);
+    $caret = ['pt'=>'-', 'en'=>'/'][$format];
+    $d = explode($caret, $date);
+    $caret = $caret=='/' ? '-' : '/';
+    return "{$d[2]}{$caret}{$d[1]}{$caret}{$d[0]}".$time;
+}

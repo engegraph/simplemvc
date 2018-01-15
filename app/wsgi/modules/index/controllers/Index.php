@@ -5,6 +5,8 @@ use Core\Controller;
 class Index extends Controller
 {
     public $model = null;
+    public $Header = 'wSGI Controle de Imobiliárias';
+    public $pageSubtitle = 'Esse é seu painel';
 
     public function onRun(): void
     {

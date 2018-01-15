@@ -19,4 +19,10 @@ class Container
 
         die('Serviço <code>'.$Class.'</code> não encontrado');
     }
+
+    public static function _error(\stdClass $var)
+    {
+        $file = __DIR__ . './system/error.phtml';
+        require_once $file;
+    }
 }

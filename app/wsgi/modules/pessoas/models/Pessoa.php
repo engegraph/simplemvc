@@ -76,4 +76,9 @@ class Pessoa extends Model
     {
         return $this->hasOne('wSGI\Modules\Controles\Models\Conjuge','Id', 'ConjugeId');
     }
+
+    public function onBeforeSave()
+    {
+        $this->DataNascimento = date_conv($this->DataNascimento, 'en');
+    }
 }

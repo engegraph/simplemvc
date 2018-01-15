@@ -84,7 +84,7 @@ function message (options) {
         else if(settings.type==='warning')
             settings.title = 'wSGI Alerta';
         else
-            settings.title = 'Algo errado não está certo';
+            settings.title = 'Ops ! Temos problemas';
     }
     else
         settings.title = options.title;

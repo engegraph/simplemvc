@@ -9,12 +9,12 @@ trait Crud
 {
     public function index()
     {
-        return $this->view('index');
+        return $this->view($this->App->Controller.'.index');
     }
 
     public function cadastro()
     {
-        return $this->view('cadastro');
+        return $this->view($this->App->Controller.'.cadastro');
     }
 
     /**
@@ -45,6 +45,11 @@ trait Crud
         {
             return Redirect::to($local)->withAlert('danger', $e->getMessage());
         }
+    }
+
+    public function editar($Uuid)
+    {
+        return $this->view($this->App->Controller.'editar');
     }
 
 
@@ -78,11 +83,6 @@ trait Crud
         return ['url'=>$redirect, 'message'=>$message];
     }
 
-    public function editar($Uuid)
-    {
-        return $this->view('editar');
-    }
-
     /**
      * onConfigModel atrela um model ao controlador instanciado
      */
@@ -103,8 +103,9 @@ trait Crud
 
             $Model = new $Class;;
 
-            if(@$Uuid=$this->Request->Params[0])
+            if(isset($this->Request->Params[0]))
             {
+                $Uuid = $this->Request->Params[0];
                 if(is_guid($Uuid) && ($this->Request->Action=='editar' || $this->Request->Action=='save'))
                 {
                     $Model = $Class::find($Uuid);
@@ -126,8 +127,8 @@ trait Crud
         {
             try
             {
-/*                foreach ($Uuids as &$uuid)
-                    $uuid = str_guid($uuid, true);*/
+                foreach ($Uuids as &$uuid)
+                    $uuid = str_guid($uuid, true);
 
                 forward_static_call_array([$this->model, 'destroy'], $Uuids);
                 $msg = (count($Uuids) > 1 ? 'Registros eliminados' : 'Registro eliminado').' com sucesso !';

@@ -126,7 +126,7 @@ page;
     final protected function checks(int $key, string $Id) : string
     {
         $uuid = $Id;
-        //$Id = str_guid($uuid);
+        $Id = str_guid($uuid);
         $page = $this->Request->Module.'/'.$this->Request->Controller;
         $url = backend_url("/{$page}/editar/{$uuid}");
         $name = $this->Model->getClass().'[Uuid][]';
@@ -184,7 +184,7 @@ str;
                     {
                         $btn .= '<a class="btn btn-link pull-left remove remove-only" href="javascript:void(0)" onclick="checkeds = $(this).find(\'input\')">';
                         $btn .= '<i class="fa fa-trash"></i> <u>R</u>emover';
-                        $btn .= '<input type="checkbox" id="" name="'.$this->model->getClass().'[Uuid][]" value="'.$uuid.'" style="display:none;">';
+                        $btn .= '<input type="checkbox" id="" name="'.$this->model->getClass().'[Uuid][]" value="'.str_guid($uuid).'" style="display:none;">';
                         $btn .= '</a>';
                     }
                 }

@@ -1,6 +1,7 @@
 <?php
 
-return [
+return
+[
     'connections' => [
 
         # Conexão padrão. É onde está rodando toda a aplicação wSGI

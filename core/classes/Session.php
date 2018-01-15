@@ -23,7 +23,6 @@ class Session
     public static function del($name)
     {
         self::wrap('del',$name);
-        self::flush();
     }
 
     public static function all()
@@ -33,21 +32,18 @@ class Session
 
     public static function flush()
     {
-        $_SESSION = self::destroy();
+        $sess = self::all();
+        self::destroy();
+        $_SESSION = $sess;
     }
 
     public static function destroy()
     {
-
-        $sess = self::all();
-
-        if(sizeof($sess))
+        //session_start();
+        if(session_status()==PHP_SESSION_NONE)
         {
-            if(isset($_SESSION) && !empty($_SESSION))
-                session_destroy();
+            session_destroy();
         }
-
-        return $sess;
     }
 
     private static function wrap($acao, $name = null, $val = null)

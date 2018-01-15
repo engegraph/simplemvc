@@ -25,4 +25,6 @@ require $functions;
 $Orm = new \Core\Orm();
 $Orm->run();
 
+set_error_handler('Core\\Error::handler');
+
 $App = new \Core\Router($app);
