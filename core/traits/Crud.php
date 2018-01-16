@@ -49,7 +49,7 @@ trait Crud
 
     public function editar($Uuid)
     {
-        return $this->view($this->App->Controller.'editar');
+        return $this->view($this->App->Controller.'.editar');
     }
 
 

@@ -9,7 +9,8 @@ class Controller
         \Core\Traits\Assets,
         \Core\Traits\Navigation,
         \Core\Traits\Crud,
-        \Core\Classes\Modals\Modal;
+        \Core\Classes\Modals\Modal,
+        \wSGI\Modules\Auth\Traits\Text;
 
     /**
      * @var $Nav array informações de navegação do módulo
@@ -83,7 +84,7 @@ class Controller
         $this->defaultAssets();
     }
 
-    final protected function view(string $name, $wrapLayout = true)
+    final protected function view(string $name, $layout = 'default')
     {
         $name = str_replace('.',DS, $name);
         $view = $this->path().DS.'views'.DS.$name.'.phtml';
@@ -101,7 +102,7 @@ class Controller
         $content = ob_get_clean();
         $this->viewFilter($content);
         $this->content = $content;
-        $this->layout();
+        $this->layout($layout);
     }
 
     private function content()
@@ -109,9 +110,9 @@ class Controller
         return $this->content;
     }
 
-    private function layout()
+    private function layout($name)
     {
-        $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'templates'.DS.$this->App->template.DS.'index.phtml';
+        $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'wsgi'.DS.'templates'.DS.$this->App->template.DS.'layouts'.DS.$name.'.phtml';
         if(!file_exists($layout))
             die('Layout não encontrado : <code>'.$layout.'</code>');
 
@@ -156,7 +157,7 @@ class Controller
     final public function path()
     {
         $modulePath = 'modules'.DS.$this->Request->Module;
-        $path = $this->Request->isBack ? 'wsgi'.DS.$modulePath : 'web'.DS.$modulePath;
+        $path = 'wsgi'.DS.$modulePath;
         return __DIR__.'.'.DS.'..'.DS.'app'.DS.$path;
     }
 
@@ -281,6 +282,8 @@ class Controller
         /**
          * Escripts do sistema
          */
+        $this->addScript(tpl_assets('js/plugin/moment/moment.min.js'));
+        $this->addScript(tpl_assets('js/plugin/moment/locale/pt-br.js'));
         $this->addScript(url('/core/system/assets/js/autosize.min.js'));
         $this->addScript(url('/core/system/assets/js/bootstrap-datetimepicker.min.js'));
         $this->addScript(url('/core/system/assets/js/system.js'));

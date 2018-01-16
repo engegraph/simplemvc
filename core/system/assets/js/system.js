@@ -67,3 +67,64 @@ function request(method, options){
     wSGILoad.show();
     $.ajax(options);
 }
+
+/**
+ * Configuração de boxes de mensagens
+ * @param options
+ */
+function message (options) {
+
+    var settings = {
+        'type'    : options.type || 'warning',
+        //'title' : options.title ? options.title : (options.type === 'danger' ? 'Algo errado não está certo' : 'wSGI Informação'),
+        //'icon' : options.icon ? options.icon : (options.type),
+        'content' : options.content || 'Problemas aconteceram. Mais detalhes não estão disponíveis.',
+        'time' : options.time || null
+    };
+
+    if(!options.icon){
+        if(settings.type==='danger')
+            settings.icon = 'fa-close';
+        else if(settings.type==='success')
+            settings.icon = 'fa-check';
+        else if(settings.type==='warning')
+            settings.icon = 'fa-exclamation';
+        else if(settings.type==='info')
+            settings.icon = 'fa-info';
+        else
+            settings.icon = 'fa-bell';
+    }
+    else
+        settings.icon = options.icon;
+
+    if(!options.title){
+        if(settings.type==='success')
+            settings.title = 'Sucesso';
+        else if(settings.type==='info')
+            settings.title = 'wSGI Informa';
+        else if(settings.type==='warning')
+            settings.title = 'wSGI Alerta';
+        else
+            settings.title = 'Ops !';
+    }
+    else
+        settings.title = options.title;
+
+    settings.icon = 'fa '+settings.icon;
+
+    /*if(options.time)
+     settings.timeout = options.time;*/
+    settings.timeout = '7000';
+
+    if(settings.type==='danger'){
+        settings.color = '#C26565';
+    }else if(settings.type === 'warning'){
+        settings.color = '#DFB56C';
+    } else if(settings.type === 'info'){
+        settings.color = '#9CB4C5';
+    } else if(settings.type === 'success'){
+        settings.color = '#8AC38B';
+    }
+
+    $.smallBox(settings);
+}

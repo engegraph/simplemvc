@@ -37,7 +37,7 @@ function active_item($url)
 function tpl_assets($str = null)
 {
     global $app;
-    $path = url('/app/templates/'.$app['template'].'/assets/');
+    $path = url('/app/wsgi/templates/'.$app['template'].'/assets/');
     return ($str ? "{$path}/{$str}" : $path);
 }
 

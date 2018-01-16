@@ -103,7 +103,7 @@
 
 <!-- HEADER -->
 <header id="header">
-    <?php require "header.phtml"; ?>
+    <?php require __DIR__."./../header.phtml"; ?>
 </header>
 <!-- END HEADER -->
 
@@ -402,8 +402,7 @@
 <script src="<?=tpl_assets('js/plugin/datatables/dataTables.tableTools.min.js')?>"></script>
 <script src="<?=tpl_assets('js/plugin/datatables/dataTables.bootstrap.min.js')?>"></script>
 <script src="<?=tpl_assets('js/plugin/datatable-responsive/datatables.responsive.min.js')?>"></script>
-<script src="<?=tpl_assets('js/plugin/moment/moment.min.js')?>"></script>
-<script src="<?=tpl_assets('js/plugin/moment/locale/pt-br.js')?>"></script>
+
 <script>
     $(document).ready(function() {
         // DO NOT REMOVE : GLOBAL FUNCTIONS!
@@ -441,7 +440,7 @@
 </script>
 
 <!-- Exibe os modals -->
-<?php require "controle.phtml"; ?>
+<?php require __DIR__."./../controle.phtml"; ?>
 </body>
 
 </html>
