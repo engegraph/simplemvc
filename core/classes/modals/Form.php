@@ -361,10 +361,10 @@ class Form
         $Value = $Object->$Property;
         preg_match('/(?<name>.+)Id$/', $Property, $Match);
 
-        if($callback=@$Info['callback'])
+        if(isset($Info['callback']))
         {
-            if(method_exists($Object, $callback))
-                return $Object->$callback($Property, $Value);
+            if(method_exists($Object, $Info['callback']))
+                return $Object->$Info['callback']($Property, $Value);
         }
 
         $Refer = function($Param) use ($Info, $Object){
@@ -372,8 +372,9 @@ class Form
             $colValue = 'Id';
             $table = null;
             $model = null;
-            if($r=@$Info['reference'])
+            if(isset($Info['reference']))
             {
+                $r = $Info['reference'];
                 $colName  = isset($r['colName']) ? $r['colName'] : $colName;
                 # $colFk = isset($r['colFk']) ? $r['colFk'] : 'Id';
                 $colValue = isset($r['colValue']) ? $r['colValue'] : $colValue;
@@ -398,8 +399,8 @@ class Form
             $value    = $Object->$Property;
             $table    = @$Refer('table');
 
-            if($Res=@$Info['options'])
-                return $Res[$value];
+            if(isset($Info['options']))
+                return $Info['options'][$value];
 
             if($table)
             {

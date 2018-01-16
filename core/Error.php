@@ -40,6 +40,7 @@ class Error
      */
     public static function handler($errno, $errstr, $errfile, $errline, $backtrace)
     {
+
         $const = self::ERRORS[$errno];
         //$const = ucfirst(strtolower(substr($const,strrpos($const,'_')+1)));
         $var['code']    = $errno;
@@ -48,9 +49,10 @@ class Error
         $var['file']    = $errfile;
         $var['line']    = $errline;
         //$var['trace'] = $backtrace;
-        ob_start();
+        //ob_start();
         Container::_error(json_decode(json_encode($var)));
-        ob_end_flush();
+        //ob_end_flush();
+        http_response_code(500);
         die;
     }
 }

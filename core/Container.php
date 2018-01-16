@@ -1,23 +1,19 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: webcomcafe
- * Date: 31/12/2017
- * Time: 22:26
- */
-
-namespace Core;
+<?php namespace Core;
 
 
 class Container
 {
-    public static function Service(string $Name, $params=null)
+    public static function Service(string $name, $params=null)
     {
-        $Class = 'Core\\Services\\'.$Name;
-        if(class_exists($Class))
-            return new $Class($params);
+        $split = explode('.', $name);
+        $modulo = array_shift($split);
+        $ns = $modulo=='core' ? 'Core\\Services\\' : 'wSGI\\Modules\\'.ucfirst($modulo).'\\Services\\';
+        $class = $ns.implode('\\', $split);
 
-        die('Serviço <code>'.$Class.'</code> não encontrado');
+        if(class_exists($class))
+            return new $class($params);
+
+        trigger_error('Serviço <code>'.$class.'</code> não encontrado', E_USER_ERROR);
     }
 
     public static function _error(\stdClass $var)

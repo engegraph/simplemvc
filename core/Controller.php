@@ -1,6 +1,7 @@
 <?php namespace Core;
 
 use Core\Classes\Message;
+use Core\Classes\Partial;
 use Core\Classes\Session;
 
 class Controller
@@ -9,8 +10,12 @@ class Controller
         \Core\Traits\Assets,
         \Core\Traits\Navigation,
         \Core\Traits\Crud,
-        \Core\Classes\Modals\Modal,
-        \wSGI\Modules\Auth\Traits\Text;
+        \Core\Classes\Modals\Modal;
+
+    /**
+     * @var array
+     */
+    protected $pageInfo = [];
 
     /**
      * @var $Nav array informações de navegação do módulo
@@ -75,8 +80,9 @@ class Controller
         /**
          * Adiconando alguns serviços
          */
-        $this->addService('csrf');
-        #$this->addService('validation.validator');
+        $this->addService('core.partial');
+        $this->addService('core.csrf');
+        $this->addService('core.validation.validator');
 
         /**
          * Adiciona alguns arquivos js/css padrão ao sistema
@@ -84,6 +90,11 @@ class Controller
         $this->defaultAssets();
     }
 
+    /**
+     * Redenriza uma view
+     * @param string $name
+     * @param string $layout
+     */
     final protected function view(string $name, $layout = 'default')
     {
         $name = str_replace('.',DS, $name);
@@ -125,6 +136,32 @@ class Controller
          * Disparando evento onEnd, após a página ter sideo exibida completamente
          */
         $this->onEnd();
+    }
+
+
+    /**
+     * Inclui um bloco de conteúdo
+     * @param $name
+     * @param null $data
+     * @return string
+     */
+    final protected function partial($name, $data = null)
+    {
+        return $this->partial->get($name, $this->model, $data);
+    }
+
+
+    /**
+     * Capturar variaveis definidas na propriedade pageInfo. Util para transportar informações entre as diferentes views
+     * @param string $name
+     * @return string
+     */
+    final protected function get(string $name) : string
+    {
+        if(key_exists($name, $this->pageInfo))
+            return $this->pageInfo[$name];
+
+        return $name;
     }
 
     private function viewFilter(string &$Content)
@@ -175,8 +212,10 @@ class Controller
      */
     final protected function addService(string $name, $alias=null, $params=null) : void
     {
-        $Name = $alias ? $alias : $name;
-        $this->{$Name} = Container::service(ucfirst($name), $params);
+        $name = strtolower(str_replace(['/','\\'], '', $name));
+        $split = explode('.', $name);
+        $service = $alias ? $alias : end($split);
+        $this->{$service} = Container::service($name, $params);
     }
 
 

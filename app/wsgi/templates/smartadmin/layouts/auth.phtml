@@ -59,10 +59,10 @@
 <header id="header">
 
     <div id="logo-group">
-        <span id="logo"> <img src="<?=tpl_assets('img/logo.png');?>" alt="SmartAdmin"> </span>
+        <span id="logo"> <img src="<?=tpl_assets('img/wsgi4.png');?>" alt="SmartAdmin"> </span>
     </div>
 
-    <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs"><?=$this->headerText?></span> <a href="<?=backend_url($this->headerLink)?>" class="btn btn-danger"><?=$this->headerLabel?></a> </span>
+    <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs"><?=$this->get('headerText')?></span> <a href="<?=backend_url($this->get('headerLink'))?>" class="btn btn-primary"><?=$this->get('headerLabel')?></a> </span>
 
 </header>
 

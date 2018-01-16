@@ -9,16 +9,15 @@ use Core\Controller;
 
 class Signin extends Controller
 {
+    use \wSGI\Modules\Auth\Traits\Common;
+
     public $model = null;
 
-    /**
-     * Adicionando arqivos
-     */
-    public function onRun(): void
-    {
-        $this->addStyle('assets/css/auth.css');
-        $this->addScript('assets/js/auth.js');
-    }
+    protected $pageInfo = [
+        'headerText' => 'Deseja testar nosso sistema ?',
+        'headerLabel' => 'CRIE SUA CONTA',
+        'headerLink' => '/auth/register',
+    ];
 
     /**
      * Exibe a página de login
@@ -28,8 +27,17 @@ class Signin extends Controller
         $this->view('signin', 'auth');
     }
 
+    /**
+     * Recebe os dados da página de login e procedo com a autenticação
+     */
     public function onAuth()
     {
-        die('Autenticação em fase de implementação');
+        return [
+            'alert' => [
+                'type'=>'warning',
+                'content'=>'Em breve este serviço estará disponível',
+                'title'=>'Autenticação'
+            ]
+        ];
     }
 }

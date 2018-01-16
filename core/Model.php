@@ -53,12 +53,14 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
     public function __construct(array $attributes = [])
     {
-        $this->Conn = \Illuminate\Database\Capsule\Manager::connection()->getPdo();
+        $this->getConnection();
+        parent::__construct($attributes);
+
+        $this->Conn = \Illuminate\Database\Capsule\Manager::connection($this->getConnectionName())->getPdo();
         #$this->Schema = new \Illuminate\Database\Schema\Builder($this->getConnection());
 
         $this->infoTable();
         $this->applyValidate();
-        parent::__construct($attributes);
     }
 
     /**

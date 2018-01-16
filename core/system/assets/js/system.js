@@ -23,7 +23,7 @@ var wSGILoad = {
     }
 };
 
-$('div.btn-actions').find('button[name=_save]').on('click', function (e) {
+$('form.form-data').on('submit', function (e) {
     wSGILoad.show();
 });
 

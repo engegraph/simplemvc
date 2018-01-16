@@ -61,6 +61,7 @@ class Router
                         $data['X-wSGI-Response'] = true;
                         foreach ($Response as $key => $val)
                             $data[$key] = $val;
+
                         echo json_encode($data);
                         return ;
                     }
