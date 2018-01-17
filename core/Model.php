@@ -50,7 +50,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
     /**
      * @var \PDO
      */
-    protected $Conn;
+    protected static $Conn;
 
     /**
      * @var Partial
@@ -62,7 +62,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         parent::__construct($attributes);
 
-        $this->Conn = \Illuminate\Database\Capsule\Manager::connection($this->getConnectionName())->getPdo();
+        self::$Conn = \Illuminate\Database\Capsule\Manager::connection()->getPdo();
         #$this->Schema = new \Illuminate\Database\Schema\Builder($this->getConnection());
 
         $this->infoTable();
@@ -104,7 +104,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
 
         $command = substr($sql,0,strpos($sql,' '));
-        $stmt = $this->Conn->prepare($sql,[\PDO::ATTR_EMULATE_PREPARES=>true]);
+        $stmt = self::$Conn->prepare($sql,[\PDO::ATTR_EMULATE_PREPARES=>true]);
         if($stmt->execute($bindings))
         {
             switch (strtoupper($command))
@@ -121,7 +121,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
                     return $stmt->rowCount();
                     break;
                 case 'INSERT':
-                    return $this->Conn->lastInsertId();
+                    return self::$Conn->lastInsertId();
                     break;
                 default:
                     return false;
