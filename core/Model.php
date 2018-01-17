@@ -62,7 +62,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         parent::__construct($attributes);
 
-        self::$Conn = \Illuminate\Database\Capsule\Manager::connection()->getPdo();
+        self::$Conn = \Illuminate\Database\Capsule\Manager::connection($this->getConnectionName())->getPdo();
         #$this->Schema = new \Illuminate\Database\Schema\Builder($this->getConnection());
 
         $this->infoTable();
@@ -459,9 +459,12 @@ class Model extends \Illuminate\Database\Eloquent\Model
      */
     public function __set($key, $value)
     {
-        $model = $this->getClass();
-        $val = ($v=$value) ? $v : NULL;
-        Session::set("val.{$model}.{$key}", $val);
-        $this->setAttribute($key, $val);
+        if(is_scalar($value))
+        {
+            $model = $this->getClass();
+            $val = ($v=$value) ? $v : NULL;
+            Session::set("val.{$model}.{$key}", $val);
+            $this->setAttribute($key, $val);
+        }
     }
 }
