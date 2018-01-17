@@ -1,0 +1,110 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+                class="jarviswidget"
+                id="wid-id-0"
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-deletebutton="false"
+                data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Título do widget</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data no-padding">
+
+                    <div class="dt-toolbar toolbar-actions">
+                        <div class="col-sm-6">
+                            <div class="toolbar-actions-text">
+                                <p>Usuários com <span class="label label-success">acesso</span> ao sistema</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="control-actions">
+                                <?=$this->actions();?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table  class="table data-table data-sort table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                            <tr>
+                                <th class="cell-check">
+                                    <div class="checkbox checkbox-danger">
+                                        <input type="checkbox" id="toggle-all">
+                                        <label for="toggle-all">
+                                            <i class="fa fa-hashtag"></i>
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Login</th>
+                                <th>Cadastro</th>
+                                <th>Atualização</th>
+                            </tr>
+                        </thead>
+
+                        <?php if($all = $this->model->all()): ?>
+                        <tbody>
+                        <?php foreach ($all as $i => $o): $i++; ?>
+                            <tr class="row-data">
+                                <td class="cell-check"><?=$this->checks($i, $o->Id);?></td>
+                                <td class="cell-link"><?=$o->Nome;?></td>
+                                <td class="cell-link"><?=$o->Email;?></td>
+                                <td class="cell-link"><?=$o->Login;?></td>
+                                <td class="cell-link"><?=date('d/m/Y',strtotime($o->DataCriacao))?></td>
+                                <td class="cell-link"><?=($d=$o->DataAtualizacao) ? date('d/m/Y',strtotime($d)) : ''?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        </tbody>
+                        <?php endif; ?>
+
+                    </table>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

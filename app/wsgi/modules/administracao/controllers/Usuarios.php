@@ -4,8 +4,6 @@ use Core\Controller;
 
 class Usuarios extends Controller
 {
-    public function teste()
-    {
-
-    }
+    public $pageSubtitle = 'Usuários';
+    public $pageIcon = 'user-circle';
 }

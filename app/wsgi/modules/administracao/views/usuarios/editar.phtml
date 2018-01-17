@@ -1,0 +1,114 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+                class="jarviswidget"
+                id="wid-id-0"
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-deletebutton="false"
+                data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Atualizar dados do usuário</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data">
+                    <form class="form-data" method="post" action="<?=$this->DataPoint();?>">
+                        <input type="hidden" name="<?=$this->csrf->set('_token')?>" value="<?=$this->csrf->token('_token')?>">
+
+                        <fieldset>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group<?php $e = $this->err('Usuario.Nome') ?>">
+                                        <label class="control-label">Nome</label>
+                                        <input type="text" class="form-control" name="<?= $this->csrf->set('Usuario[Nome]') ?>" value="<?=$this->val('Usuario.Nome')?>" placeholder="Nome" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group<?php $e = $this->err('Usuario.Email') ?>">
+                                        <label class="control-label">Email</label>
+                                        <input type="text" class="form-control" name="<?= $this->csrf->set('Usuario[Email]') ?>" value="<?=$this->val('Usuario.Email')?>" placeholder="Email" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group<?php $e = $this->err('Usuario.Login') ?>">
+                                        <label class="control-label">Username</label>
+                                        <input type="text" class="form-control" name="<?= $this->csrf->set('Usuario[Login]') ?>" value="<?=$this->val('Usuario.Login')?>" placeholder="Nome de Usuário" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group<?php $e = $this->err('Usuario.Senha') ?>">
+                                        <label class="control-label">Senha</label>
+                                        <input type="password" class="form-control" name="<?= $this->csrf->set('Usuario[Senha]') ?>" placeholder="Senha" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group<?php $e = $this->err('Usuario.Senha_confirmation') ?>">
+                                        <label class="control-label">Repetir Senha</label>
+                                        <input type="password" class="form-control" name="<?= $this->csrf->set('Usuario[Senha_confirmation]') ?>" placeholder="Confirmar Senha" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?=$this->actions('remove | save | savenew | saveclose | close | new')?>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

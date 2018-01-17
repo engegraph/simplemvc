@@ -6,12 +6,12 @@
 
         <!-- Widget ID (each widget will need unique ID)-->
         <div
-                class="jarviswidget"
-                id="wid-id-0"
-                data-widget-colorbutton="false"
-                data-widget-editbutton="false"
-                data-widget-deletebutton="false"
-                data-widget-custombutton="false"
+            class="jarviswidget"
+            id="wid-id-0"
+            data-widget-colorbutton="false"
+            data-widget-editbutton="false"
+            data-widget-deletebutton="false"
+            data-widget-custombutton="false"
         >
             <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
@@ -28,8 +28,7 @@
             -->
             <header>
                 <span class="widget-icon"> <i class="fa fa-list"></i> </span>
-                <h2>Título do widget </h2>
-
+                <h2>Título do widget</h2>
             </header>
 
             <!-- widget div-->
@@ -43,8 +42,23 @@
                 <!-- end widget edit box -->
 
                 <!-- widget content -->
-                <div class="widget-body no-padding">
-                    Conteúdo do Widget Aqui
+                <div class="widget-body wsgi-data">
+                    <form class="form-data" id="movieForm" method="post" action="<?=$this->DataPoint();?>">
+                        <input type="hidden" name="<?=$this->csrf->set('_token')?>" value="<?=$this->csrf->token('_token')?>">
+
+                        <!--
+                        Conteúdo fo formulário aqui
+                        -->
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?=$this->actions('remove | save | savenew | saveclose | close | new')?>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
                 </div>
                 <!-- end widget content -->
 
@@ -60,16 +74,3 @@
 </div>
 
 <!-- end row -->
-
-<!-- row -->
-
-<div class="row">
-
-    <!-- a blank row to get started -->
-    <div class="col-sm-12">
-
-        <p>Conteúdos extras</p>
-
-    </div>
-
-</div>

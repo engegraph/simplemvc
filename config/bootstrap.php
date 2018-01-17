@@ -7,6 +7,9 @@ session_start();
 ini_set('display_errors',1);
 error_reporting(E_ALL);
 
+date_default_timezone_set('America/Sao_Paulo');
+setlocale (LC_ALL, 'pt_BR');
+
 define('wSGI', microtime());
 define('DS', DIRECTORY_SEPARATOR);
 

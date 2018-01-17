@@ -2,7 +2,7 @@
 
 class Partial
 {
-    public function get($name, $model, $data = null) : void
+    public function get($name, $model, $data = null)
     {
         $name = str_replace(['\\', '/'], '', $name);
         $name = str_replace('.', DS, $name);
@@ -12,5 +12,6 @@ class Partial
             trigger_error('Partial não encontrado '.$file, E_USER_ERROR);
 
         require $file;
+        return '';
     }
 }
