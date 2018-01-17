@@ -30,8 +30,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
     protected $dateFormat = 'Y-m-d H:i:s';
 
-    #protected $dates = ['DataCriacao','DataAtualizacao'];
-
     const CREATED_AT = 'DataCriacao';
 
     const UPDATED_AT = 'DataAtualizacao';
