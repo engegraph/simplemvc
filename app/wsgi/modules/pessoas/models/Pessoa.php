@@ -4,7 +4,6 @@ use Core\Model;
 
 class Pessoa extends Model
 {
-    public $table = 'Pessoas';
 
     protected $rules = [
         'Nome' => 'required',
