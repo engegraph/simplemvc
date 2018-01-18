@@ -6,4 +6,9 @@ class Usuarios extends Controller
 {
     public $pageSubtitle = 'Usuários';
     public $pageIcon = 'user-circle';
+
+    public function onRun(): void
+    {
+
+    }
 }

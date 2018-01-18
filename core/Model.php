@@ -1,11 +1,11 @@
 <?php namespace Core;
 
+use Carbon\Carbon;
 use Core\Classes\Session;
 use Core\Services\Partial;
 use Core\Traits\Validator;
 use Doctrine\Common\Inflector\Inflector;
 use Illuminate\Database\Capsule\Manager;
-use Illuminate\Support\Carbon;
 use Webpatser\Uuid\Uuid;
 
 class Model extends \Illuminate\Database\Eloquent\Model
@@ -24,11 +24,13 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
     public $incrementing = false;
 
+    public $timestamps = false;
+
+    protected $dateFormat = 'Y-m-d H:i:s';
+
     protected $primaryKey = 'Id';
 
     protected $keyType = 'string';
-
-    protected $dateFormat = 'Y-m-d H:i:s';
 
     const CREATED_AT = 'DataCriacao';
 
@@ -42,9 +44,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         'saving'    => 'onBeforeSave',
         'saved'     => 'onAfterSave',
         'deleting'  => 'onBeforeDelete',
-        'deleted'   => 'onAfterDelete',
-        #'restoring' => 'onBeforeRestore',
-        #'restored'  => 'onAfterRestore'
+        'deleted'   => 'onAfterDelete'
     ];
 
     /**
@@ -60,8 +60,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
     public function __construct(array $attributes = [])
     {
-        parent::__construct($attributes);
-
         self::$Conn = \Illuminate\Database\Capsule\Manager::connection($this->getConnectionName())->getPdo();
         #$this->Schema = new \Illuminate\Database\Schema\Builder($this->getConnection());
 
@@ -72,7 +70,10 @@ class Model extends \Illuminate\Database\Eloquent\Model
          * Processa blocos de conteúdo independentes
          */
         $this->partial = new Partial;
+
+        parent::__construct($attributes);
     }
+
 
     /**
      * Recupera as colunas da tabela do atual modelo

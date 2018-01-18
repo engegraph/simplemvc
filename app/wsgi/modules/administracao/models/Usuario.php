@@ -5,6 +5,10 @@ use wSGI\Modules\Auth\Util\Password;
 
 class Usuario extends Model
 {
+    /**
+     * Regras de validação dos cados
+     * @var array $rules Validações
+     */
     public $rules = [
         'Nome' => 'required',
         'Email' => 'required|email',
@@ -12,6 +16,10 @@ class Usuario extends Model
         'Senha' => 'required|min:6|confirmed',
     ];
 
+    /**
+     * Mensagens das validações
+     * @var array $ruleMessages
+     */
     public $ruleMessages = [
         'Nome.required' => 'Informe seu nome',
         'Email.required' => 'Informe seu email',
@@ -23,8 +31,11 @@ class Usuario extends Model
         'Senha.confirmed' => 'As senhas não conferem',
     ];
 
-    protected $dateFormat = 'Y-m-d H:i:s.+';
-
+    /**
+     * ** Conexão a ser utilizada
+     *
+     * @var string $connection
+     */
     public $connection = 'auth';
 
     /**
@@ -37,5 +48,11 @@ class Usuario extends Model
 
         # Criptografando a senha
         $this->Senha = Password::hash($this->Senha);
+    }
+
+    public function onBeforeSave()
+    {
+        var_dump($this->toArray());
+        die;
     }
 }
