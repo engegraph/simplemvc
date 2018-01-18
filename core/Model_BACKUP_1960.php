@@ -1,10 +1,15 @@
 <?php namespace Core;
 
+use Carbon\Carbon;
 use Core\Classes\Session;
 use Core\Services\Partial;
 use Core\Traits\Validator;
 use Doctrine\Common\Inflector\Inflector;
+<<<<<<< HEAD
+use Illuminate\Database\Capsule\Manager;
+=======
 use Illuminate\Support\Carbon;
+>>>>>>> 1474adc2e6c27b7d299ac9dc6fefb6cb44e0bde9
 use Webpatser\Uuid\Uuid;
 
 class Model extends \Illuminate\Database\Eloquent\Model
@@ -21,9 +26,17 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
     public $incrementing = false;
 
-    public $primaryKey = 'Id';
+<<<<<<< HEAD
+    public $timestamps = false;
 
     protected $dateFormat = 'Y-m-d H:i:s';
+
+    protected $primaryKey = 'Id';
+
+    protected $keyType = 'string';
+=======
+    public $primaryKey = 'Id';
+>>>>>>> 1474adc2e6c27b7d299ac9dc6fefb6cb44e0bde9
 
     const CREATED_AT = 'DataCriacao';
     const UPDATED_AT = 'DataAtualizacao';
@@ -35,9 +48,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         'saving'    => 'onBeforeSave',
         'saved'     => 'onAfterSave',
         'deleting'  => 'onBeforeDelete',
-        'deleted'   => 'onAfterDelete',
-        #'restoring' => 'onBeforeRestore',
-        #'restored'  => 'onAfterRestore'
+        'deleted'   => 'onAfterDelete'
     ];
 
     /**
@@ -48,9 +59,25 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
     public function __construct(array $attributes = [])
     {
+<<<<<<< HEAD
+        self::$Conn = \Illuminate\Database\Capsule\Manager::connection($this->getConnectionName())->getPdo();
+        #$this->Schema = new \Illuminate\Database\Schema\Builder($this->getConnection());
+
+        $this->infoTable();
+        $this->applyValidate();
+
+        /**
+         * Processa blocos de conteúdo independentes
+         */
+        $this->partial = new Partial;
+
+        parent::__construct($attributes);
+=======
         parent::__construct($attributes);
         self::$DB = new DB;
+>>>>>>> 1474adc2e6c27b7d299ac9dc6fefb6cb44e0bde9
     }
+
 
     /**
      * Retorna o nome da classe atual
