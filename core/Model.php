@@ -189,7 +189,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
 
 
-
         foreach ($this->references as $name => $reference)
         {
             $class = array_shift($reference);
