@@ -9,7 +9,6 @@ class Pessoas extends Controller
         $this->addScript('assets/js/pessoas.js');
     }
 
-
     public function teste()
     {
         $Request = [
@@ -26,11 +25,6 @@ class Pessoas extends Controller
                             'Uf' => 'GO',
                         ],
                         'Capital' => 'Sim',
-                        'User' => [
-                            'Username' => 'web.comcafe',
-                            'pass'    => '123456',
-                        ],
-                        'Praiana' => 'Não'
                     ],
                     'Complemento' => 'Casa',
                     'Quadra' => '21',
@@ -44,33 +38,56 @@ class Pessoas extends Controller
 
         $Model = 'User';
 
-        $SearchData = function(array $Request, $Data = null) use (&$SearchData, $Model){
-            if(count($Data))
+        $SearchData = function(array $Request) use (&$SearchData, $Model){
+            if(count($Request))
             {
-                if($Data)
-                {
-                    var_dump($Data);
-                    die;
-                }
-
+                $Res = [];
                 foreach ($Request as $Prop => $Val)
                 {
                     if(is_array($Val))
                     {
+                        echo $Prop.'<br>';
                         if($Prop == $Model)
                         {
-                            echo 'OPA';
+                            $Res = array_filter($Val, 'is_scalar');
+                            break;
                         }
-
-                        $SearchData($Val, $Data);
+                        $SearchData($Val);
                     }
                 }
+
+                return $Res;
             }
         };
 
         #$all = $this->model::$DB->connection('auth')->select('select * from Usuarios WHERE Id=:Id', ['Id'=> 'BA7911E0-FC77-11E7-9931-251E59201CE4']);
 
-        $SearchData($Request);
+        #$Res = $this->saveAll($Request);
 
+        $this->model->dump($Request);
+
+
+    }
+
+    private function saveAll(array $Request = []) : array
+    {
+        $Attr = [];
+        foreach ($Request as $Prop => $Val)
+        {
+            if(is_array($Val))
+            {
+                if($Prop == $this->getClass())
+                    return array_filter($Val, 'is_scalar');
+
+                $Attr = $this->saveAll($Val);
+            }
+        }
+
+        return $Attr;
+    }
+
+    private function getClass()
+    {
+        return 'Estado';
     }
 }

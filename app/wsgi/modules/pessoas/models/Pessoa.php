@@ -4,6 +4,16 @@ use Core\Model;
 
 class Pessoa extends Model
 {
+    protected $formReferences = [
+        'Endereco'      => ['wSGI\Modules\Controles\Models\Endereco', 'EnderecoId'],
+        'Conjuge'       => ['wSGI\Modules\Pessoas\Models\Pessoa', 'ConjugeId'],
+        'Mae'           => ['wSGI\Modules\Pessoas\Models\Pessoa', 'MaeId'],
+        'Pai'           => ['wSGI\Modules\Pessoas\Models\Pessoa', 'PaiId'],
+        'EstadoCivil'   => ['wSGI\Modules\Controles\Models\EstadoCivil', 'EstadoCivilId'],
+        'Nacionalidade' => ['wSGI\Modules\Controles\Models\Nacionalidade', 'NacionalidadeId'],
+        'Naturalidade'  => ['wSGI\Modules\Controles\Models\Naturalidade', 'NaturalidadeId'],
+        'Profissao'     => ['wSGI\Modules\Controles\Models\Profissao', 'ProfissaoId'],
+    ];
 
     protected $rules = [
         'Nome' => 'required',

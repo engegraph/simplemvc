@@ -8,7 +8,7 @@ use Illuminate\Database\Capsule\Manager;
 use Illuminate\Support\Carbon;
 use Webpatser\Uuid\Uuid;
 
-class Model extends \Illuminate\Database\Eloquent\Model
+class Model_Bkp extends \Illuminate\Database\Eloquent\Model
 {
     use Validator;
 
