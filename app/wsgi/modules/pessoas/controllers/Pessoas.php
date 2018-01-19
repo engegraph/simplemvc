@@ -44,34 +44,33 @@ class Pessoas extends Controller
 
         $Model = 'User';
 
-        $SearchData = function(array $Data) use (&$SearchData, $Model){
+        $SearchData = function(array $Request, $Data = null) use (&$SearchData, $Model){
             if(count($Data))
             {
-                foreach ($Data as $Name => $Val)
+                if($Data)
                 {
-                    if (is_array($Val))
-                    {
-                        if($Name == $Model)
-                        {
-                            $Attr = [];
-                            foreach ($Val as $K => $V)
-                                if(is_scalar($V))
-                                    $Attr[$K] = $V;
+                    var_dump($Data);
+                    die;
+                }
 
-                            return $Attr;
+                foreach ($Request as $Prop => $Val)
+                {
+                    if(is_array($Val))
+                    {
+                        if($Prop == $Model)
+                        {
+                            echo 'OPA';
                         }
-                        return $SearchData($Val);
+
+                        $SearchData($Val, $Data);
                     }
-                    else
-                        continue;
                 }
             }
         };
 
         #$all = $this->model::$DB->connection('auth')->select('select * from Usuarios WHERE Id=:Id', ['Id'=> 'BA7911E0-FC77-11E7-9931-251E59201CE4']);
 
-        $Data = $SearchData($Request);
+        $SearchData($Request);
 
-        var_dump($Data);
     }
 }

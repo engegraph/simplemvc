@@ -26,7 +26,8 @@ class Usuario extends Model
         'Senha.confirmed' => 'As senhas não conferem',
     ];
 
-    protected $dateFormat = null;
+    protected $dateFormat = '';
+
     public $connection = 'auth';
 
 
