@@ -24,6 +24,13 @@ class Pessoas extends Controller
                             'Nome' => 'Goiás',
                             'Uf' => 'GO',
                         ],
+                        'Users' =>[
+                            'nome' => 'Airton',
+                            'Permissions' =>[
+                                'gravar', 'atualizar', 'Deletar'
+                            ],
+                            'sobrenome' => 'Lopes',
+                        ],
                         'Capital' => 'Sim',
                     ],
                     'Complemento' => 'Casa',
@@ -64,9 +71,9 @@ class Pessoas extends Controller
 
         #$Res = $this->saveAll($Request);
 
-        $this->model->dump($Request);
+        $res = $this->model->dump();
 
-
+        var_dump($res);
     }
 
     private function saveAll(array $Request = []) : array

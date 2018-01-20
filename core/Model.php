@@ -73,7 +73,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
      */
     public function populate(array $data = []) : bool
     {
-        $data = !empty($data) ? $data : $this->searhData();
+        $data = !empty($data) ? $data : $this->findData();
         if(!empty($data))
         {
             /**
@@ -119,7 +119,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * @param array $Request
      * @return array
      */
-    public function searhData(array $data = [], $name = null) : array
+    public function findData(array $data = [], $name = null) : array
     {
         $data  = !empty($data) ? $data : post();
         $model = $name ? $name : $this->getClass();
@@ -131,7 +131,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
                 if($prop == $model)
                     return array_filter($val, 'is_scalar');
 
-                $attr = $this->searhData($val);
+                $attr = $this->findData($val, $model);
             }
         }
         return $attr;
@@ -176,18 +176,9 @@ class Model extends \Illuminate\Database\Eloquent\Model
     }
 
 
-    public function dump(array $relations = [])
+    public function dump()
     {
         $key  = $this->{$this->primaryKey};
-
-        foreach ($this->references as $name => $reference)
-        {
-            if($data = $this->searhData())
-            {
-
-            }
-        }
-
 
         foreach ($this->references as $name => $reference)
         {
@@ -195,9 +186,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
             $fk    = array_shift($reference);
             $field = ($f=array_shift($reference)) ? $f : $this->primaryKey;
 
-            $model = $key ? $class::where($field, $key) : new $class;
-            $data  = $model->searhData($relations);
-            $model->populate($name);
+            $model = $key ? $class::where($field, $key)->first() : new $class;
 
             if($refer = $model->dump()){
                 $this->{$fk} = $refer;
