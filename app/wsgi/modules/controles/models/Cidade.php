@@ -4,6 +4,10 @@ use Core\Model;
 
 class Cidade extends Model
 {
+    protected $references = [
+        'Estado' => ['wSGI\Modules\Controles\Models\Estado', 'EstadoId']
+    ];
+
     public $table = 'TbCidades';
 
     public $modalColumns = [

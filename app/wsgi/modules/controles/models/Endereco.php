@@ -4,6 +4,11 @@ use Core\Model;
 
 class Endereco extends Model
 {
+    protected $references = [
+        'Cidade' => ['wSGI\Modules\Controles\Models\Cidade', 'CidadeId'],
+        'Pessoa' => ['wSGI\Modules\Pessoas\Models\Pessoa', 'PessoaId'],
+    ];
+
     protected $rules = [
         'Cep' => 'required',
     ];
