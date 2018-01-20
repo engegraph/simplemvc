@@ -176,37 +176,10 @@ class Model extends \Illuminate\Database\Eloquent\Model
     }
 
 
+
     public function dump(array $relations = [])
     {
-        $key  = $this->{$this->primaryKey};
 
-        foreach ($this->references as $name => $reference)
-        {
-            if($data = $this->searhData())
-            {
-
-            }
-        }
-
-
-        foreach ($this->references as $name => $reference)
-        {
-            $class = array_shift($reference);
-            $fk    = array_shift($reference);
-            $field = ($f=array_shift($reference)) ? $f : $this->primaryKey;
-
-            $model = $key ? $class::where($field, $key) : new $class;
-            $data  = $model->searhData($relations);
-            $model->populate($name);
-
-            if($refer = $model->dump()){
-                $this->{$fk} = $refer;
-            }
-        }
-
-        if($res=$this->save()){
-            return $key ? $key : $res;
-        }
     }
 
 
