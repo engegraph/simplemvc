@@ -3,6 +3,7 @@
 use Core\Controller;
 use wSGI\Modules\Controles\Models\Cidade;
 use wSGI\Modules\Controles\Models\Endereco;
+use wSGI\Modules\Pessoas\Models\Pessoa;
 
 class Pessoas extends Controller
 {
@@ -16,7 +17,9 @@ class Pessoas extends Controller
         $Request = [
             'Pessoa' => [
                 'Nome'  => 'Airton Lopes',
+                'NomeFantasia'  => 'Almeida',
                 'Email' => 'airton.engegraph.com.br',
+                'TipoPessoa' => 1,
                 'Endereco' => [
                     'Rua' => 'Praça T-24',
                     'Numero' => '51',
@@ -26,76 +29,27 @@ class Pessoas extends Controller
                             'Nome' => 'Goiás',
                             'Uf' => 'GO',
                         ],
-                        'Capital' => 'Sim',
+                        'User' => [
+                            'Nome' => 'Airton Lopes',
+                            'Email' => 'airton@hotmail.com',
+                            'Password' => '123456'
+                        ],
+                        'Capital' => 1,
+                    ],
+                    'Enge' => [
+                        'teste'
                     ],
                     'Complemento' => 'Casa',
                     'Quadra' => '21',
-                    'Lote' => '04'
+                    'Lote' => '04',
+                    'Cep ' => '6542000',
                 ],
-                'Nascimento' => '1988',
-                'Sexo' => 'Masculino'
+                'CpfCnpj' => '87996666'
             ]
         ];
 
-
-        $Model = 'User';
-
-        $SearchData = function(array $Request) use (&$SearchData, $Model){
-            if(count($Request))
-            {
-                $Res = [];
-                foreach ($Request as $Prop => $Val)
-                {
-                    if(is_array($Val))
-                    {
-                        echo $Prop.'<br>';
-                        if($Prop == $Model)
-                        {
-                            $Res = array_filter($Val, 'is_scalar');
-                            break;
-                        }
-                        $SearchData($Val);
-                    }
-                }
-
-                return $Res;
-            }
-        };
-
-        #$all = $this->model::$DB->connection('auth')->select('select * from Usuarios WHERE Id=:Id', ['Id'=> 'BA7911E0-FC77-11E7-9931-251E59201CE4']);
-
-        #$Res = $this->saveAll($Request);
-
-
-        $dump = [
-            'Endereco' => [
-                'Logradouro' => 'Rosa Mistica 2',
-                'Complemento' => 'Casa',
-                'Bairro' => 'Bueno',
-                'Cep'  => '74223200',
-                'Quadra'  => '20',
-                'Lote'  => '07',
-                'Numero'  => '51',
-                'Cidade' => [
-                    'Nome' => 'Goiânia_',
-                    'Estado' => [
-                        'Nome' => '_Goáis',
-                        'Uf'   => 'GO'
-                    ],
-                    'Capital' => '1',
-                ],
-                'Pessoa' => [
-                    'Nome' => 'Airton Lopes',
-                    'TipoPessoa' => 1,
-                    'CpfCnpj' => 2894606389,
-                ]
-            ]
-        ];
-
-
-        #$Cidade = Cidade::find('0827DFD0-FDE2-11E7-94D8-CD7C51B59826');
-        $Endereco = Endereco::find('B8B0AD60-FDEA-11E7-92E8-D73E9AF406F1');
-        $res = $Endereco->dump($dump);
+        $Pessoa = new Pessoa;
+        $res = $Pessoa->push($Request);
         var_dump($res);
 
 
