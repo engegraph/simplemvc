@@ -177,7 +177,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
 
 
-    public function dump(array $relations = [], $fmodel = null)
+    public function dump(array &$relations = [], $fmodel = null)
     {
         if($data = $this->findData($relations, $fmodel))
             if($this->populate($data))
