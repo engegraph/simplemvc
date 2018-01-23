@@ -42,6 +42,8 @@ class Model extends \Illuminate\Database\Eloquent\Model
         #'restored'  => 'onAfterRestore'
     ];
 
+    protected $connection = 'default';
+
     /**
      * @var DB $DB Eloquent Capsule
      */
@@ -71,7 +73,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * com os valores do formulário submetido
      * @return bool
      */
-    public function populate(array $data) : bool
+    public function populate(array $data = []) : bool
     {
         if(!empty($data))
         {
@@ -118,23 +120,25 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * @param array $Request
      * @return array
      */
-    public function findData(array $data = [], $name = null) : array
+    public function findData(array $data, $model = null, $result = []) : array
     {
-        $data  = !empty($data) ? $data : post();
-        $model = $name ? $name : $this->getClass();
-        $attr  = [];
-        foreach ($data as $prop => $val)
+        $model  = $model ? $model : $this->getClass();
+        if(sizeof($data))
         {
-            if(is_array($val))
+            foreach ($data as $name => $val)
             {
-                if($prop == $model)
-                    return array_filter($val, 'is_scalar');
+                if(is_array($val))
+                {
+                    if($name == $model)
+                        return $val;
 
-                $attr = $this->findData($val);
+                    $result = $this->findData($val, $model, $result);
+                }
             }
         }
-        return $attr;
+        return $result;
     }
+
 
     /**
      * GUID para chave primária - Utilizar biblioteca do laravel ou função manual
@@ -172,29 +176,72 @@ class Model extends \Illuminate\Database\Eloquent\Model
     }
 
 
-    public function dump(array $relations = [], $refer = false)
-    {
-        $relations = !empty($relations) ? $relations : post();
 
-        if(!$refer)
-            if($data = $this->findData($relations))
-                if($this->populate($data))
+    public function dump(array $relations = [], $fmodel = null)
+    {
+        if($data = $this->findData($relations, $fmodel))
+            if($this->populate($data))
 
         foreach ($this->references as $name => $reference)
         {
-            if($data = $this->findData($relations, $name))
-            {
-                $class = array_shift($reference);
-                $dbofk = ($k=array_shift($reference)) ? $k : $name.'Id';
-                $field = ($f=array_shift($reference)) ? $f : $this->primaryKey;
+            $class = array_shift($reference);
+            $fk    = array_shift($reference);
+            $field = ($f=array_shift($reference)) ? $f : $this->primaryKey;
 
-                $model = ($fk=$this->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
-                $res   = $model->dump($relations, true);
-                $this->{$dbofk} = $fk ? $fk : $res;
-            }
+            $model = ($key=$this->{$fk}) ? $class::where($field, $key)->first() : new $class;
+            $refer = $model->dump($data, $name);
+            $this->{$fk} = $key ? $key : $refer;
         }
 
         return $this->save();
+    }
+
+
+    public function push(array $relations = [])
+    {
+        $conn = $this->getConnectionName();
+        try
+        {
+            DB::connection($conn)->beginTransaction();
+            $result = $this->dump($relations);
+            DB::connection($conn)->commit();
+            return $result;
+        }
+        catch (\Exception $e)
+        {
+            echo $e->getMessage();
+            DB::connection($conn)->rollBack();
+        }
+    }
+
+    public function dump2(array $relations = [], $obj = null)
+    {
+        $relations = !empty($relations) ? $relations : post();
+        $obj = $obj ? $obj : new \stdClass;
+
+        foreach ($relations as $name => $value)
+        {
+            if(is_array($value))
+            {
+                if(key_exists($name, $this->references))
+                {
+                    $refer = $this->references[$name];
+                    $class = array_shift($refer);
+                    $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
+                    $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
+                    $model = ($fk=$this->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
+
+                    /*if($model->populate($value))
+                    {
+                        $res = $model->save();
+                        $this->{$dbofk} = $fk ? $fk : $res;
+                    }*/
+
+                }
+                $this->dump2($value, $obj);
+            }
+        }
+
     }
 
 
