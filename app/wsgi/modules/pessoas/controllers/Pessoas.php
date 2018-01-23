@@ -77,10 +77,10 @@ class Pessoas extends Controller
                 'Lote'  => '07',
                 'Numero'  => '51',
                 'Cidade' => [
-                    'Nome' => 'Goiânia_',
+                    'Nome' => 'Nova Iorque',
                     'Estado' => [
-                        'Nome' => '_Goáis',
-                        'Uf'   => 'GO'
+                        'Nome' => 'YORK',
+                        'Uf'   => 'YK'
                     ],
                     'Capital' => '1',
                 ],
@@ -94,7 +94,7 @@ class Pessoas extends Controller
 
 
         #$Cidade = Cidade::find('0827DFD0-FDE2-11E7-94D8-CD7C51B59826');
-        $Endereco = Endereco::find('B8B0AD60-FDEA-11E7-92E8-D73E9AF406F1');
+        $Endereco = new Endereco;
         $res = $Endereco->dump($dump);
         var_dump($res);
 

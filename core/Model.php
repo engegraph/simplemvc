@@ -71,7 +71,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * com os valores do formulário submetido
      * @return bool
      */
-    public function populate(array $data = []) : bool
+    public function populate(array $data) : bool
     {
         if(!empty($data))
         {
@@ -172,23 +172,29 @@ class Model extends \Illuminate\Database\Eloquent\Model
     }
 
 
-
-    public function dump(array $relations = [])
+    public function dump(array $relations = [], $refer = false)
     {
+        $relations = !empty($relations) ? $relations : post();
+
+        if(!$refer)
+            if($data = $this->findData($relations))
+                if($this->populate($data))
+
         foreach ($this->references as $name => $reference)
         {
-            $class = array_shift($reference);
-            $fk    = array_shift($reference);
-            $field = ($f=array_shift($reference)) ? $f : $this->primaryKey;
+            if($data = $this->findData($relations, $name))
+            {
+                $class = array_shift($reference);
+                $dbofk = ($k=array_shift($reference)) ? $k : $name.'Id';
+                $field = ($f=array_shift($reference)) ? $f : $this->primaryKey;
 
-            $model = ($key=$this->{$fk}) ? $class::where($field, $key)->first() : new $class;
-            $refer = $model->dump($relations);
-            $this->{$fk} = $key ? $key : $refer;
+                $model = ($fk=$this->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
+                $res   = $model->dump($relations, true);
+                $this->{$dbofk} = $fk ? $fk : $res;
+            }
         }
 
-        if($data = $this->findData($relations))
-            if($this->populate($data))
-                return $this->save();
+        return $this->save();
     }
 
 
