@@ -110,10 +110,19 @@ class Controller
         $this->onRender();
 
         require_once $view;
-        $content = ob_get_clean();
-        $this->viewFilter($content);
-        $this->content = $content;
-        $this->layout($layout);
+
+        if($layout)
+        {
+            $content = ob_get_clean();
+            $this->viewFilter($content);
+            $this->content = $content;
+            $this->layout($layout);
+        }
+
+        /**
+         * Disparando evento onEnd, após a página ter sideo exibida completamente
+         */
+        $this->onEnd();
     }
 
     private function content()
@@ -131,11 +140,6 @@ class Controller
 
         # Apagando mensagens
         $this->clearMessages();
-
-        /**
-         * Disparando evento onEnd, após a página ter sideo exibida completamente
-         */
-        $this->onEnd();
     }
 
 
