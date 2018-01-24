@@ -32,7 +32,7 @@ trait Crud
             {
                 if(post('_save'))
                 {
-                    if($res = $this->model->push())
+                    if($res = $this->model->saveAll())
                     {
                         $to = $this->getRedirectInfo($base, $res, $Uuid);
                         return Redirect::to($to['url'])->withAlert('success', $to['message']);

@@ -5,16 +5,11 @@ use Core\Model;
 class Pessoa extends Model
 {
     protected $references = [
-        'Endereco'      => ['wSGI\Modules\Controles\Models\Endereco', 'EnderecoId'],
-        'Cidade'      => ['wSGI\Modules\Controles\Models\Cidade', 'CidadeId'],
-        'Estado'      => ['wSGI\Modules\Controles\Models\Estado', 'EstadoId'],
-        /*'Conjuge'       => ['wSGI\Modules\Pessoas\Models\Pessoa', 'ConjugeId'],
-        'Mae'           => ['wSGI\Modules\Pessoas\Models\Pessoa', 'MaeId'],
-        'Pai'           => ['wSGI\Modules\Pessoas\Models\Pessoa', 'PaiId'],
-        'EstadoCivil'   => ['wSGI\Modules\Controles\Models\EstadoCivil', 'EstadoCivilId'],
-        'Nacionalidade' => ['wSGI\Modules\Controles\Models\Nacionalidade', 'NacionalidadeId'],
-        'Naturalidade'  => ['wSGI\Modules\Controles\Models\Naturalidade', 'NaturalidadeId'],
-        'Profissao'     => ['wSGI\Modules\Controles\Models\Profissao', 'ProfissaoId'],*/
+        'Endereco'      => ['wSGI\Modules\Controles\Models\Endereco'],
+        'Conjuge'       => ['wSGI\Modules\Pessoas\Models\Pessoa'],
+        'Mae'           => ['wSGI\Modules\Pessoas\Models\Pessoa'],
+        'Pai'           => ['wSGI\Modules\Pessoas\Models\Pessoa'],
+        'Civil'         => ['wSGI\Modules\Controles\Models\EstadoCivil', 'EstadoCivilId']
     ];
 
     protected $rules = [

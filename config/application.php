@@ -5,7 +5,7 @@ return
 
     /**
      *  Nome do template usado pela aplicação
-     * -- app/templates/meutemplate
+     * -- app/templates/meu-template
      */
     'template' => 'smartadmin',
 

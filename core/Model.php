@@ -6,10 +6,13 @@ use Core\Traits\Validator;
 use Doctrine\Common\Inflector\Inflector;
 use Illuminate\Support\Carbon;
 use Webpatser\Uuid\Uuid;
+use wSGI\Modules\Auth\Util\Password;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
     use Validator;
+
+    protected $formname;
 
     protected $references = [];
 
@@ -141,7 +144,6 @@ class Model extends \Illuminate\Database\Eloquent\Model
                 }
             }
         }
-
         return $result;
     }
 
@@ -182,36 +184,49 @@ class Model extends \Illuminate\Database\Eloquent\Model
     }
 
 
-
-    public function dump(array &$relations = [], $fmodel = null)
+    public function dump(array $relations, &$model = null)
     {
-        if($data = $this->findData($relations, $fmodel, [], true))
-        {
-            if($this->populate($data))
-            {
-                foreach ($this->references as $name => $reference)
-                {
-                    $class = array_shift($reference);
-                    $fk    = array_shift($reference);
-                    $field = ($f=array_shift($reference)) ? $f : $this->primaryKey;
-
-                    $model = ($key=$this->{$fk}) ? $class::where($field, $key)->first() : new $class;
-                    $refer = $model->dump($relations, $name);
-                    $this->{$fk} = $key ? $key : $refer;
-                }
+        if(!$model){
+            if($data = $this->findData($relations)){
+                $relations = $data;
+                $this->populate($data);
             }
-            return $this->save();
+            $model = $this;
         }
+
+        foreach ($relations as $name => $value)
+        {
+            if(is_array($value))
+            {
+                if(key_exists($name, $model->references))
+                {
+                    $refer = $model->references[$name];
+                    $class = array_shift($refer);
+                    $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
+                    $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
+                    $obj   = ($fk=$model->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
+                    if($obj->populate($value))
+                    {
+                        $refer = $this->dump($value, $obj);
+                        $model->$dbofk = $fk ? $fk : $refer;
+                    }
+                }
+                else
+                    $this->dump($value);
+            }
+        }
+
+        return $model->save();
     }
 
-
-    public function push(array $relations = [])
+    public function saveAll(array $relations = [])
     {
+        $data = !empty($relations) ? $relations : post();
         $conn = $this->getConnectionName();
         try
         {
             DB::connection($conn)->beginTransaction();
-            $result = $this->dump3($relations);
+            $result = $this->dump($data);
             DB::connection($conn)->commit();
             return $result;
         }
@@ -222,64 +237,112 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
     }
 
-    public function dump3(array $relations)
-    {
-        if($data = $this->findData($relations))
-        {
-            $this->populate($data);
 
-            foreach ($data as $name => $value)
+    /**
+     * Recupera o nome da tabela do modelo atual. Para posteriormente recuperar suas colunas
+     * e seta-las como como atributos do modelo
+     * @return void
+     */
+    private function infoTable()
+    {
+        $model = $this->getClass();
+        $this->table = ($t=$this->table) ? $t : Inflector::pluralize($model);
+        $columns = $this->getColumnsTable();
+        if(sizeof($columns))
+        {
+            foreach ($columns as $obj)
             {
-                if(is_array($value))
+                $Name  = $obj->COLUMN_NAME;
+                $this->attributes[$Name] = $obj->COLUMN_DEFAULT;
+                $Size  = ($Size=$obj->CHARACTER_MAXIMUM_LENGTH) ? $Size : '0';
+                $Type  = $this->getFieldDbType($Name, ['type'=>$obj->DATA_TYPE, 'size'=>$Size]);
+                $Label = Inflector::ucwords(str_replace('_',' ',Inflector::tableize($Name)));
+                $Column = [
+                    'type'      => $Type,
+                    'label'     => $Label,
+                    'showlabel' => true,
+                    'form'      => true,
+                    'list'      => true,
+                    'link'      => true,
+                ];
+
+                if($Name=='DataCriacao')
                 {
-                    if(key_exists($name, $this->references))
-                    {
-                        $refer = $this->references[$name];
-                        $class = array_shift($refer);
-                        $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
-                        $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
-                        $model = ($fk=$this->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
-                        $refer = $model->dump3($value);
-                        $this->$dbofk = $fk ? $fk : $refer;
-                    }
-                    $this->dump3($value);
+                    $Column['form'] = false;
+                    $Column['list'] = false;
                 }
+                if($Name=='DataAtualizacao')
+                {
+                    $Column['form'] = false;
+                    $Column['list'] = false;
+                }
+
+                $Modal = isset($this->modalColumns[$Name]) ? $this->modalColumns[$Name] : [];
+                $Merge = array_merge($Column, $Modal);
+                $Merge['type_raw'] = $obj->DATA_TYPE;
+                $Merge['size'] = $Size;
+                $Merge['default'] = $obj->COLUMN_DEFAULT;
+                $Merge['nullable'] = $obj->IS_NULLABLE;
+                $this->columns[$Name] = $Merge;
             }
-            return $this->save();
         }
+        else
+            trigger_error('Não possível ler as informações da tabela '.$this->table, E_USER_ERROR);
     }
 
-    public function dump2(array $relations = [], $obj = null)
+    /**
+     * Recupera as colunas da tabela do atual modelo
+     * @return bool|int|string|array
+     */
+    private function getColumnsTable() : array
     {
-        /*$relations = !empty($relations) ? $relations : post();*/
-        $obj = $obj ? $obj : $this;
+        $sql = "SELECT COLUMN_NAME,COLUMN_DEFAULT,DATA_TYPE,CHARACTER_MAXIMUM_LENGTH,IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = ':table'";
+        $res = $this->rawQuery($sql,['table'=>'this']);
+        return $res;
+    }
 
-        foreach ($relations as $name => $value)
-        {
-            if(is_array($value))
-            {
-                if(!key_exists($name, $this->references))
-                    $this->dump2($value);
+    /**
+     * Faz uma avaliação do campo do banco para ver qual melhor elemento de formulário lhe será atribuído
+     * @param string $Name
+     * @param array $Info
+     * @return string
+     */
+    private function getFieldDbType(string $Name, array $Info) : string
+    {
+        $Type = 'text';
 
-                $refer = $this->references[$name];
-                $class = array_shift($refer);
-                $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
-                $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
-                $model = ($fk=$this->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
-                if($model->populate($value))
-                {
-                    $model->dump2($value);
-                    /*
-                    echo $name.'<br>';
-                    $model->dump2($value);
-                    $refer = $this->dump2($value, $model);
-                    $this->{$dbofk} = $fk ? $fk : $refer;
-                    */
-                }
-            }
-        }
+        if(preg_match('/(?<model>.+)Id$/', $Name, $match) && $Info['type']=='uniqueidentifier')
+            $Type = 'select';
 
-        return $obj;
+        if($Info['type']=='bit')
+            $Type = 'radio';
+
+        if($Info['size'] > 200)
+            $Type = 'textarea';
+
+        return $Type;
+    }
+
+
+    /**
+     * Retorna o hash de uma string
+     * @param string $password
+     * @return string
+     */
+    public function hash(string $password) : string
+    {
+        return Password::hash($password);
+    }
+
+    /**
+     * Confere se uma string bate com o seu hash
+     * @param string $pass
+     * @param string $hash
+     * @return bool
+     */
+    public function verify(string $pass, string $hash) : bool
+    {
+        return Password::verify($pass, $hash);
     }
 
 
@@ -288,7 +351,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * @param array $Relations
      * @return bool|string
      */
-    public function saveAll(array $Relations = [])
+    /*public function saveAll(array $Relations = [])
     {
         $Model = $this->getClass();
         $Data = $Relations ? $Relations : post($Model);
@@ -325,7 +388,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
             DB::connection($Conn)->rollBack();
             throw new \Exception($e->getMessage());
         }
-    }
+    }*/
 
     /**
      * Retorna todos os registros de um modelo

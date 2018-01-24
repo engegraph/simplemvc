@@ -5,7 +5,7 @@ use Core\Model;
 class Cidade extends Model
 {
     protected $references = [
-        'Estado' => ['wSGI\Modules\Controles\Models\Estado', 'EstadoId']
+        'Estado' => ['wSGI\Modules\Controles\Models\Estado']
     ];
 
     public $table = 'TbCidades';

@@ -17,14 +17,20 @@ class Boletos extends Controller
     public $Codigo;
 
 
+    /**
+     * Usando o evento onRun para pegar os parâmetros existentes na url
+     * Com o código recuperado pode-se fazer as consultas no banco para pegar informações do boleto
+     */
     public function onRun(): void
     {
-        /**
-         * Pegando o parâmetro código diretamente da url
-         * Com o código recuperado pode-se fazer as consultas no banco para pegar informações do boleto
-         */
-        $codigo = $this->Request->Params[0]; # Ou siplesmente $this->Request->Params[0]
-        $this->Codigo = 'Código direto da URL: '.$codigo;
+        // Recuperando parâmetros
+        $params = $this->Request->Params;
+
+        // Pegando o primeiro parâmetro, no cado o código
+        $codigo = array_shift($params);
+
+        // Atribuindo à propriedade da classe, para que seja possível recuperála na view ou em qualquer outro lugar
+        $this->Codigo = $codigo;
     }
 
 
@@ -36,15 +42,16 @@ class Boletos extends Controller
     {
         /*
         *
-         * Recebendo o código por parâmetro do método
+         * Recebendo o código por parâmetro do método, esta forma é bem mais prática do que a definida no evento onRun
          * Com o código recuperado pode-se fazer as consultas no banco para pegar informações do boleto
          */
-        $this->Codigo = 'Código através do método: '.$codigo;
+        $this->Codigo = $codigo;
 
         //
         // Método view é responsável por renderizar as páginas do sistema
         // Recebe dois parâmetros, sendo o primeiro o nome da view a ser renderizada.
-        // O nome da view pode ter pontos como sendo separadores de diretórios.
+        // O nome da view pode ter pontos como sendo separadores de diretórios. barras e contra-barras não são aceitas.
+        // As view são sempre referente ao módulo em questão. O primeiro nome antes do ponto indica o controller da view
         // O Segundo parâmetro é o nome do layout a ser utilizado como container para a view, se for omitido, por
         // padrão o sistema usa o layout default da pasta referente ao template definido em config/application
         // Mas pode-se usar outro layout, desde que o mesmo seja criado no diretório layouts.
@@ -55,7 +62,7 @@ class Boletos extends Controller
         // um novo layout específico e dentro deste inserir todas as chamadas de estilos, funções, exatamente como é
         // o layout principal. Daí bastaria chamar a view dentro do seu novo layout recem-criado.
         //
-        $this->view('boletos.aluguel', false);
+        $this->view('boletos.aluguel', null);
 
     }
 }

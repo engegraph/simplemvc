@@ -1,8 +1,6 @@
 <?php namespace wSGI\Modules\Administracao\Models;
 
-use Carbon\Carbon;
 use Core\Model;
-use wSGI\Modules\Auth\Util\Password;
 
 class Usuario extends Model
 {
@@ -12,7 +10,7 @@ class Usuario extends Model
         'Nome' => 'required',
         'Email' => 'required|email',
         'Login' => 'required|username',
-        'Senha' => 'required|min:6',
+        'Senha' => 'required|min:6|confirmed',
     ];
 
     public $ruleMessages = [
@@ -26,9 +24,21 @@ class Usuario extends Model
         'Senha.confirmed' => 'As senhas não conferem',
     ];
 
-    protected $dateFormat = '';
+    protected $dateFormat = null;
 
     public $connection = 'auth';
+
+
+    /**
+     * Trabalhando a senha
+     */
+    public function onBeforeValidate()
+    {
+        if($this->Id)
+        {
+            $this->rules['Senha'] = 'min:6|confirmed';
+        }
+    }
 
 
     /**
@@ -40,9 +50,6 @@ class Usuario extends Model
         unset($this->Senha_confirmation);
 
         # Criptografando a senha
-        $this->Senha = ($pass=post('Usuario.Senha')) ? Password::hash($pass) : $this->Senha;
-
-        /*var_dump($this->toArray(), $this->attributes);
-        die;*/
+        $this->Senha = ($pass = trim(post('Usuario.Senha'))) ? $this->hash($pass) : $this->Senha;
     }
 }

@@ -1,0 +1,16 @@
+body{
+    background-color: #f9f9f9;
+}
+.content-boleto{
+    width: 800px;
+    margin: 100px auto;
+    background-color: #fff;
+    position: relative;
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 20px;
+}
+.content-boleto::before{
+    content: 'Conteúdo do boleto';
+    display: inline-block;
+}

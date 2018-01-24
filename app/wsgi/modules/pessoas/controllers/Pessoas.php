@@ -1,8 +1,6 @@
 <?php namespace wSGI\Modules\Pessoas\Controllers;
 
 use Core\Controller;
-use wSGI\Modules\Controles\Models\Cidade;
-use wSGI\Modules\Controles\Models\Endereco;
 use wSGI\Modules\Pessoas\Models\Pessoa;
 
 class Pessoas extends Controller
@@ -19,72 +17,49 @@ class Pessoas extends Controller
             'Pessoa' => [
                 'Nome'  => 'Airton Lopes',
                 'NomeFantasia'  => 'Almeida',
-                'Email' => 'airton.engegraph.com.br',
+                'Email' => 'airtonlopes_@hotmail.com',
                 'TipoPessoa' => 1,
                 'Endereco' => [
-                    'Logradouro' => 'Praça T-24',
-                    'Numero' => '51',
+                    'Logradouro' => 'Rua Mundoca Alvim',
+                    'Numero' => '728',
                     'Cidade' => [
-                        'Nome' => 'Goiânia 8',
+                        'Nome' => 'Timbiras',
                         'Estado'=> [
-                            'Nome' => 'Goiás 8',
-                            'Uf' => 'G8',
+                            'Nome' => 'Maranhão AT',
+                            'Uf' => 'MA',
                         ],
-                        'Capital' => 1,
+                        'Capital' => 1
                     ],
-                    'Complemento' => 'Casa',
-                    'Quadra' => '21',
-                    'Lote' => '04',
-                    'Cep' => '6542000',
+                    'Complemento' => 'Casa de Barro',
+                    'Quadra' => '00',
+                    'Lote' => '00',
+                    'Cep' => '74223200',
                 ],
-                'CpfCnpj' => '87996666'
+                'CpfCnpj' => '289466389',
+                'Mae' => [
+                    'Nome'  => 'Rosa Lopes',
+                    'NomeFantasia'  => 'Dr Rosa',
+                    'Email' => 'rosa.lopes@teste.com',
+                    'CpfCnpj' => '887788',
+                    'TipoPessoa' => 1,
+                ],
+                'Pai' => [
+                    'Nome'  => 'Otávio Francisco',
+                    'NomeFantasia'  => 'Sr. Otávio',
+                    'Email' => 'otavio.francisco@teste.com',
+                    'CpfCnpj' => '88556',
+                    'TipoPessoa' => 1,
+                ],
+                'Civil' => [
+                    'Nome' => 'Junto',
+                    'Descricao' => 'Relacionamento sem casamento, apenas juntos e misturado',
+                ]
             ]
         ];
 
-        $Endereco = new Pessoa;
-        $res = $Endereco->push($Request);
+        $Obj = Pessoa::find('6E2E4C80-012E-11E8-A8ED-C3C33D872B94');
+        $res = $Obj->saveAll($Request);
         echo '<pre>';
         print_r($res);
-    }
-
-
-    private function dump(array $data, $result = [])
-    {
-        foreach ($data as $name => $value)
-        {
-            if(is_array($value))
-            {
-                $obj = array_filter($value, 'is_scalar');
-                $res = $this->dump($value, $obj);
-                $f   = $name.'Id';
-                $result[$f] = $res;
-            }
-        }
-        return $result;
-    }
-
-
-
-
-    private function saveAll(array $Request = []) : array
-    {
-        $Attr = [];
-        foreach ($Request as $Prop => $Val)
-        {
-            if(is_array($Val))
-            {
-                if($Prop == $this->getClass())
-                    return array_filter($Val, 'is_scalar');
-
-                $Attr = $this->saveAll($Val);
-            }
-        }
-
-        return $Attr;
-    }
-
-    private function getClass()
-    {
-        return 'Pessoa';
     }
 }

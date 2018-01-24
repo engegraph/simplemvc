@@ -97,10 +97,12 @@ class Controller
      */
     final protected function view(string $name, $layout = 'default')
     {
+        if(!$this->viewExists($name))
+            die('View não encontrada : <code>'.$name.'</code>');
+
+        $name = str_replace(['/','\\'], '', $name);
         $name = str_replace('.',DS, $name);
         $view = $this->path().DS.'views'.DS.$name.'.phtml';
-        if(!file_exists($view))
-            die('View não encontrada : <code>'.$view.'</code>');
 
         $this->setBreadCrumbs();
 
@@ -152,6 +154,21 @@ class Controller
     final protected function partial($name, $data = null)
     {
         return $this->partial->get($name, $this->model, $data);
+    }
+
+    /**
+     * Verifica se uma view existe
+     * @param string $name
+     * @return bool
+     */
+    final protected function viewExists(string $name) : bool
+    {
+        $name = str_replace(['/','\\'], '', $name);
+        $name = str_replace('.',DS, $name);
+        $view = $this->path().DS.'views'.DS.$name.'.phtml';
+        if(file_exists($view))
+            return true;
+        return false;
     }
 
 
