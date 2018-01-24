@@ -225,22 +225,28 @@ class Model extends \Illuminate\Database\Eloquent\Model
     public function dump3(array $relations)
     {
         if($data = $this->findData($relations))
+        {
             $this->populate($data);
 
-        foreach ($data as $name => $value)
-        {
-            if(is_array($value))
+            foreach ($data as $name => $value)
             {
-                $refer = $this->references[$name];
-                $class = array_shift($refer);
-                $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
-                $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
-                $model = ($fk=$this->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
-                $refer = $model->dump3([$name=$value]);
-                $this->$dbofk = $fk ? $fk : $refer;
+                if(is_array($value))
+                {
+                    if(key_exists($name, $this->references))
+                    {
+                        $refer = $this->references[$name];
+                        $class = array_shift($refer);
+                        $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
+                        $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
+                        $model = ($fk=$this->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
+                        $refer = $model->dump3($value);
+                        $this->$dbofk = $fk ? $fk : $refer;
+                    }
+                    $this->dump3($value);
+                }
             }
+            return $this->save();
         }
-        return $this->save();
     }
 
     public function dump2(array $relations = [], $obj = null)

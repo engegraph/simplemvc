@@ -22,7 +22,7 @@ class Pessoas extends Controller
                 'Email' => 'airton.engegraph.com.br',
                 'TipoPessoa' => 1,
                 'Endereco' => [
-                    'Rua' => 'Praça T-24',
+                    'Logradouro' => 'Praça T-24',
                     'Numero' => '51',
                     'Cidade' => [
                         'Nome' => 'Goiânia 8',
@@ -35,25 +35,13 @@ class Pessoas extends Controller
                     'Complemento' => 'Casa',
                     'Quadra' => '21',
                     'Lote' => '04',
-                    'Cep ' => '6542000',
+                    'Cep' => '6542000',
                 ],
                 'CpfCnpj' => '87996666'
             ]
         ];
 
-        $obj1 = new \stdClass();
-        $obj1->Nome = 'Objeto 1';
-        $obj2 = new \stdClass();
-        $obj2->Nome = 'Objeto 2';
-        $obj1->Obj2 = $obj2;
-        $obj3 = new \stdClass();
-        $obj3->Nome = 'Objeto 3';
-        $obj2->Obj3 = $obj3;
-        $obj4 = new \stdClass();
-        $obj4->Nome = 'Objeto 4';
-        $obj3->Obj4 = $obj4;
-
-        $Endereco = new Endereco;
+        $Endereco = new Pessoa;
         $res = $Endereco->push($Request);
         echo '<pre>';
         print_r($res);

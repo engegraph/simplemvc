@@ -6,6 +6,8 @@ class Pessoa extends Model
 {
     protected $references = [
         'Endereco'      => ['wSGI\Modules\Controles\Models\Endereco', 'EnderecoId'],
+        'Cidade'      => ['wSGI\Modules\Controles\Models\Cidade', 'CidadeId'],
+        'Estado'      => ['wSGI\Modules\Controles\Models\Estado', 'EstadoId'],
         /*'Conjuge'       => ['wSGI\Modules\Pessoas\Models\Pessoa', 'ConjugeId'],
         'Mae'           => ['wSGI\Modules\Pessoas\Models\Pessoa', 'MaeId'],
         'Pai'           => ['wSGI\Modules\Pessoas\Models\Pessoa', 'PaiId'],
