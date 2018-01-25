@@ -42,4 +42,14 @@ class Validator
         }
     }
 
+    public function exception($validator)
+    {
+        $erro = $validator->errors();
+        foreach ($validator->failed() as $field => $format)
+        {
+            $message = $erro->first($field);
+            #throw new \Exception($message);
+            return $message;
+        }
+    }
 }

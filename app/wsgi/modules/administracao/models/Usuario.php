@@ -28,7 +28,6 @@ class Usuario extends Model
 
     public $connection = 'auth';
 
-
     /**
      * Trabalhando a senha
      */
@@ -44,12 +43,12 @@ class Usuario extends Model
     /**
      * Validação manul de alguns campos
      */
-    public function onBeforeSave()
+    public function onBeforePopulate(&$attributes)
     {
         # Removendo campo de confirmação de senha
-        unset($this->Senha_confirmation);
+        unset($attributes['Senha_confirmation']);
 
         # Criptografando a senha
-        $this->Senha = ($pass = trim(post('Usuario.Senha'))) ? $this->hash($pass) : $this->Senha;
+        $attributes['Senha'] = ($pass = trim($attributes['Senha'])) ? $this->hash($pass) : $this->Senha;
     }
 }

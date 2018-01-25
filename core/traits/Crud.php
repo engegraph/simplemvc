@@ -9,12 +9,12 @@ trait Crud
 {
     public function index()
     {
-        return $this->view($this->App->Controller.'.index');
+        if($this->crud) return $this->view($this->App->Controller.'.index');
     }
 
     public function cadastro()
     {
-        return $this->view($this->App->Controller.'.cadastro');
+        if($this->crud) return $this->view($this->App->Controller.'.cadastro');
     }
 
     /**
@@ -49,7 +49,7 @@ trait Crud
 
     public function editar($Uuid)
     {
-        return $this->view($this->App->Controller.'.editar');
+        if($this->crud) return $this->view($this->App->Controller.'.editar');
     }
 
 

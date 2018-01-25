@@ -117,6 +117,13 @@
 </script>
 
 <?=$this->scripts();?>
+<?php if($Alerts=$this->alerts()): ?>
+    <script type="text/javascript">
+        $(function () {
+            showAlerts('<?=addslashes(json_encode($Alerts))?>');
+        });
+    </script>
+<?php endif; ?>
 
 </body>
 </html>
