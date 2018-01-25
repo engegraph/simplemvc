@@ -39,7 +39,7 @@
 /*
  * GLOBAL: Sound Config (define sound path, enable or disable all sounds)
  */
-	$.sound_path = "/app/templates/smartadmin/assets/sound/";
+	$.sound_path = "/app/wsgi/templates/smartadmin/assets/sound/";
 	$.sound_on = true; 
 /*
  * SAVE INSTANCE REFERENCE (DO NOT CHANGE)

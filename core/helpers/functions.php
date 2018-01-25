@@ -37,14 +37,14 @@ function active_item($url)
 function tpl_assets($str = null)
 {
     global $app;
-    $path = url('/app/wsgi/templates/'.$app['template'].'/assets/');
-    return ($str ? "{$path}/{$str}" : $path);
+    $path = url('/app/wsgi/templates/'.$app['template'].'/assets\/');
+    return ($str ? $path.$str : $path);
 }
 
-function path_assets(string $file = null)
+function common_assets($str = null)
 {
-    $path = url('/app/modules/' . (defined('ADMIN') ? 'wsgi' : 'site') . '/assets');
-    return ($file ? $path.'/'.$file : $path);
+    $path = url('/app/wsgi/common/assets\/');
+    return $str ? $path.$str : $path;
 }
 
 function path_storage(string $file = null)

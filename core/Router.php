@@ -49,7 +49,7 @@ class Router
                 $Controller->onRun();
 
                 if(!method_exists($Controller, $App->Action))
-                    die('Método não encontrado');
+                    trigger_error('Método <code>'.$App->Action.'</code> não definido no controller <code>'.$App->Controller.'</code>', E_USER_ERROR);
 
                 $Response = call_user_func_array([$Controller, $App->Action], $Request->Params);
 

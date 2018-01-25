@@ -1,7 +1,6 @@
 <?php namespace Core;
 
 use Core\Classes\Message;
-use Core\Classes\Partial;
 use Core\Classes\Session;
 
 class Controller
@@ -10,7 +9,8 @@ class Controller
         \Core\Traits\Assets,
         \Core\Traits\Navigation,
         \Core\Traits\Crud,
-        \Core\Classes\Modals\Modal;
+        \Core\Classes\Modals\Modal,
+        \wSGI\Common\Util\Globals;
 
     /**
      * @var array
@@ -338,6 +338,7 @@ class Controller
         $this->addStyle(url('/core/system/assets/css/system.css'));
         $this->addStyle(url('/core/system/assets/css/inputs.elegant.css'));
         $this->addStyle(url('/core/system/assets/css/bootstrap-datetimepicker.min.css'));
+        $this->addStyle(common_assets('css/globals.css'));
 
         /**
          * Escripts do sistema
@@ -347,5 +348,6 @@ class Controller
         $this->addScript(url('/core/system/assets/js/autosize.min.js'));
         $this->addScript(url('/core/system/assets/js/bootstrap-datetimepicker.min.js'));
         $this->addScript(url('/core/system/assets/js/system.js'));
+        $this->addScript(common_assets('js/globals.js'));
     }
 }

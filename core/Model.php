@@ -1,5 +1,6 @@
 <?php namespace Core;
 
+use Core\Classes\Message;
 use Core\Classes\Session;
 use Core\Services\Partial;
 use Core\Traits\Validator;
@@ -232,7 +233,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
         catch (\Exception $e)
         {
-            echo $e->getMessage();
+            Message::danger($e->getMessage());
             DB::connection($conn)->rollBack();
         }
     }

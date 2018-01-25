@@ -6,12 +6,12 @@
 
         <!-- Widget ID (each widget will need unique ID)-->
         <div
-                class="jarviswidget"
-                id="wid-id-0"
-                data-widget-colorbutton="false"
-                data-widget-editbutton="false"
-                data-widget-deletebutton="false"
-                data-widget-custombutton="false"
+            class="jarviswidget"
+            id="wid-id-0"
+            data-widget-colorbutton="false"
+            data-widget-editbutton="false"
+            data-widget-deletebutton="false"
+            data-widget-custombutton="false"
         >
             <!-- widget options:
                 usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
@@ -28,7 +28,7 @@
             -->
             <header>
                 <span class="widget-icon"> <i class="fa fa-list"></i> </span>
-                <h2>Editar registro de pessoa</h2>
+                <h2>Cadastro de pessoas</h2>
             </header>
 
             <!-- widget div-->
@@ -239,15 +239,15 @@
                                     <!--2ª Linha informaçóes basicas -->
                                     <div class="row">
                                         <div class="col-sm-3">
-                                            <div class="form-group<?php $e = $this->err('Pessoa.Endereco.Cep') ?>">
+                                            <div class="form-group<?php $e = $this->err('Pessoa.Endereco.CEP') ?>">
                                                 <label for="EdCEP">CEP</label>
                                                 <div class="input-group">
                                                     <input type="text" id="EdCEP" class="form-control" name="<?= $this->csrf->set('Pessoa[Endereco][Cep]') ?>" value="<?=$this->val('Pessoa.Endereco.Cep')?>">
                                                     <span class="input-group-btn">
                                                                         <button type="button" id="BtBuscaCEP" class="btn btn-default" style="height: 32px;"><i class="fa fa-search"></i></button>
                                                                     </span>
+                                                    <span class="help-block"><?= $e ?></span>
                                                 </div><!-- /input-group -->
-                                                <span class="help-block"><?= $e ?></span>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">

@@ -9,12 +9,12 @@ trait Crud
 {
     public function index()
     {
-        return $this->view($this->App->Controller.'.index');
+        return $this->view($this->Request->Controller.'.index');
     }
 
     public function cadastro()
     {
-        return $this->view($this->App->Controller.'.cadastro');
+        return $this->view($this->Request->Controller.'.cadastro');
     }
 
     /**

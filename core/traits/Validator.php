@@ -22,7 +22,7 @@ trait Validator
         /**
          * Realizando validação
          */
-        $data = post(($name=$this->formname) ? $name : $this->getClass());
+        $data = $this->toArray(); #post(($name=$this->formname) ? $name : $this->getClass());
         if(!empty($this->rules))
         {
 

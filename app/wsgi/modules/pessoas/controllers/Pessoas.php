@@ -11,6 +11,11 @@ class Pessoas extends Controller
         $this->addScript('assets/js/pessoas.js');
     }
 
+    public function create()
+    {
+        $this->view('pessoas.create');
+    }
+
     public function teste()
     {
         $Request = [
