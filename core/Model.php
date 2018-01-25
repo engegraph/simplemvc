@@ -194,6 +194,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
             $model = $this;
         }
 
+        // Validando
         if(!$model->validate())
             return false;
 
