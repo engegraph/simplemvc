@@ -1,5 +1,7 @@
 <?php  namespace wSGI\Modules\Auth\Controllers;
 
+use Core\Classes\Cookie;
+use Core\Classes\Message;
 use Core\Controller;
 
 /**
@@ -28,16 +30,34 @@ class Signin extends Controller
     }
 
     /**
-     * Recebe os dados da página de login e procedo com a autenticação
+     * Recebe os dados da página de login e prossegue com a autenticação
      */
     public function onAuth()
     {
-        return [
-            'alert' => [
-                'type'=>'warning',
-                'content'=>'Em breve este serviço estará disponível',
-                'title'=>'Autenticação'
+        $v = $this->validator::make(post('Auth'),[
+                'username'=>'required|username',
+                'password'=>'required'
+                ],[
+                'username.required' => 'Informe seu email ou nome de usuário',
+                'username.username' => 'Nome de usuário inválido',
+                'password.required' => 'Informe sua senha',
             ]
-        ];
+        );
+
+        if($v->fails())
+        {
+            $message = $this->validator->exception($v);
+            return ['alert' => ['type'=>'danger', 'content'=>$message, 'title'=>'Dados incorretos']];
+        }
+
+        // Executa a autenticação
+        return $this->auth->login(post('Auth.username'), post('Auth.password'));
+    }
+
+    public function teste()
+    {
+        //Cookie::set('auth.user.email', 'airton.lopes@engegraph.com.br');
+        Cookie::trash();
+        var_dump($_COOKIE);
     }
 }

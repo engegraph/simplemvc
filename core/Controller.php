@@ -25,7 +25,7 @@ class Controller
     /**
      * @var bool $Model Model Atrelado ao controlador
      */
-    public $model = TRUE, $Model = TRUE;
+    public $model = TRUE, $Model = TRUE, $crud = true;
 
     /**
      * @var \stdClass $App Informações da aplicação
@@ -83,6 +83,7 @@ class Controller
         $this->addService('core.partial');
         $this->addService('core.csrf');
         $this->addService('core.validation.validator');
+        $this->addService('auth.authentication', 'auth');
 
         /**
          * Adiciona alguns arquivos js/css padrão ao sistema
@@ -348,6 +349,7 @@ class Controller
         $this->addScript(url('/core/system/assets/js/autosize.min.js'));
         $this->addScript(url('/core/system/assets/js/bootstrap-datetimepicker.min.js'));
         $this->addScript(url('/core/system/assets/js/system.js'));
+        $this->addScript(tpl_assets('js/wsgi.app.js'));
         $this->addScript(common_assets('js/globals.js'));
     }
 }

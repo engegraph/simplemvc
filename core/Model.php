@@ -13,7 +13,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
 {
     use Validator;
 
-    protected $formname;
+    public $formname;
 
     protected $references = [];
 
@@ -79,44 +79,33 @@ class Model extends \Illuminate\Database\Eloquent\Model
      */
     public function populate(array $data = []) : bool
     {
+        $data = !empty($data) ? $data : $this->findData(post(), ($name=$this->formname) ? $name : $this->getClass());
+        $data = array_filter($data, 'is_scalar');
         if(!empty($data))
         {
             /**
              * Disparando evento onBeforePopulate
              */
-            $this->onBeforePopulate();
+            if(method_exists($this, 'onBeforePopulate')) $this->onBeforePopulate($data);
 
             /**
              * Iterando os elementos e atribuindo ao modelo
              */
             foreach ($data as $prop => $val)
             {
-                if(is_scalar($val))
-                {
-                    $model = $this->getClass();
-                    Session::set("val.{$model}.{$prop}", $val);
-                    $this->$prop = $val;
-                }
+                $model = $this->getClass();
+                Session::set("val.{$model}.{$prop}", $val);
+                $this->$prop = $val;
             }
 
             /**
              * Disparando evento onAfterPopulate
              */
-            $this->onAfterPopulate();
+            if(method_exists($this, 'onAfterPopulate')) $this->onAfterPopulate($data);
         }
 
         return true;
     }
-
-    /**
-     * Evento realizado antes do ojbeto ser completamente populado
-     */
-    protected function onBeforePopulate(){}
-
-    /**
-     * Evento realizado logo após o objeto ter sido populado
-     */
-    protected function onAfterPopulate(){}
 
 
     /**
@@ -124,7 +113,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
      * @param array $Request
      * @return array
      */
-    public function findData(array &$data, $model = null, $result = [], $reference = false) : array
+    public function findData(array $data, $model = null, $result = []) : array
     {
         $model  = $model ? $model : $this->getClass();
         if(sizeof($data))
@@ -134,12 +123,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
                 if(is_array($val))
                 {
                     if($name == $model)
-                    {
-                        if($reference)
-                            $val['hack'] = $name;
-
                         return $val;
-                    }
 
                     $result = $this->findData($val, $model, $result);
                 }
@@ -190,51 +174,53 @@ class Model extends \Illuminate\Database\Eloquent\Model
         if(!$model){
             if($data = $this->findData($relations)){
                 $relations = $data;
-                $this->populate($data);
             }
             $model = $this;
         }
 
-        foreach ($relations as $name => $value)
+        if($model->validate($relations))
         {
-            if(is_array($value))
+            if($model->populate($relations))
             {
-                if(key_exists($name, $model->references))
+                foreach ($relations as $name => $value)
                 {
-                    $refer = $model->references[$name];
-                    $class = array_shift($refer);
-                    $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
-                    $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
-                    $obj   = ($fk=$model->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
-                    if($obj->populate($value))
+                    if(is_array($value))
                     {
-                        $refer = $this->dump($value, $obj);
-                        $model->$dbofk = $fk ? $fk : $refer;
+                        if(key_exists($name, $model->references))
+                        {
+                            $refer = $model->references[$name];
+                            $class = array_shift($refer);
+                            $dbofk = ($k=array_shift($refer)) ? $k : $name.'Id';
+                            $field = ($f=array_shift($refer)) ? $f : $this->primaryKey;
+                            $obj   = ($fk=$model->{$dbofk}) ? $class::where($field, $fk)->first() : new $class;
+                            $obj->formname = $name;
+                            $refer = $this->dump($value, $obj);
+                            $model->$dbofk = $fk ? $fk : $refer;
+                        }
+                        else
+                            $this->dump($value);
                     }
                 }
-                else
-                    $this->dump($value);
+                return $model->save();
             }
         }
-
-        return $model->save();
     }
 
     public function saveAll(array $relations = [])
     {
         $data = !empty($relations) ? $relations : post();
-        $conn = $this->getConnectionName();
+        $conn = DB::connection($this->getConnectionName());
         try
         {
-            DB::connection($conn)->beginTransaction();
+            $conn->beginTransaction();
             $result = $this->dump($data);
-            DB::connection($conn)->commit();
+            $conn->commit();
             return $result;
         }
         catch (\Exception $e)
         {
             Message::danger($e->getMessage());
-            DB::connection($conn)->rollBack();
+            $conn->rollBack();
         }
     }
 

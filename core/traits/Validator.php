@@ -14,22 +14,26 @@ trait Validator
 
     protected $ruleMessages = [];
 
+
     /**
+     * @param array $data
      * @return bool
+     * @throws \Exception
      */
-    private function validate() : bool
+    private function validate(array $data = []) : bool
     {
         /**
          * Realizando validação
          */
-        $data = $this->toArray(); #post(($name=$this->formname) ? $name : $this->getClass());
+        $data = !empty($data) ? $data : $this->findData(post(), ($name=$this->formname) ? $name : $this->getClass());
+        $data = array_filter($data, 'is_scalar');
         if(!empty($this->rules))
         {
 
             /**
              * Disparando evento onBeforeValidate
              */
-            $this->onBeforeValidate();
+            if(method_exists($this, 'onBeforeValidate')) $this->onBeforeValidate($data);
 
 
             $v = \Core\Services\Validation\Validator::make($data, $this->rules, $this->ruleMessages);
@@ -48,19 +52,9 @@ trait Validator
             /**
              * Disparando evento onAfterValidate
              */
-            $this->onAfterValidate();
+            if(method_exists($this, 'onAfterValidate')) $this->onAfterValidate($data);
         }
 
         return true;
     }
-
-    /**
-     * Evento realizado antes de iniciar a validação
-     */
-    protected function onBeforeValidate(){}
-
-    /**
-     * Evento realizado após a validação
-     */
-    protected function onAfterValidate(){}
 }
