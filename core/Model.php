@@ -194,6 +194,9 @@ class Model extends \Illuminate\Database\Eloquent\Model
             $model = $this;
         }
 
+        if(!$model->validate())
+            return false;
+
         foreach ($relations as $name => $value)
         {
             if(is_array($value))
