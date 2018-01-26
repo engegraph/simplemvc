@@ -2,6 +2,7 @@
 
 use Core\Classes\Cookie;
 use Core\Classes\Message;
+use Core\Classes\Session2 as Sess;
 use Core\Controller;
 
 /**
@@ -52,5 +53,25 @@ class Signin extends Controller
 
         // Executa a autenticação
         return $this->auth->login(post('Auth.username'), post('Auth.password'));
+    }
+
+    public function teste()
+    {
+       /* $user = new \stdClass();
+        $user->Nome = 'Airton Lopes';
+        $user->Email = 'airton.lopes@engegraph.com.br';
+        $user->Logado = true;
+        $user->Permissions = [
+            'Gravar' => 'Sim',
+            'Editar' => 'Sim',
+            'Deletar' => 'Não'
+        ];
+        Sess::set('auth.token', 'sifjsfiwfwfwwfffwq');
+        Sess::set('auth.rememver', false);
+        Sess::set('auth.user', $user);
+       */
+        //Sess::trash('auth.rememver');
+        Sess::destroy();
+        var_dump(Sess::all());
     }
 }

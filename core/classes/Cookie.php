@@ -66,7 +66,7 @@ class Cookie
      * @param string|null $name
      * @return bool
      */
-    public static function trash(string $name = null) : bool
+    public static function del(string $name = null) : bool
     {
         $trash = self::wrap($name, true);
         eval('unset($_COOKIE'.$trash.');');

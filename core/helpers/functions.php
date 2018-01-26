@@ -23,10 +23,6 @@ function backend_url($url)
     return rtrim($url, '/');
 }
 
-function request($param)
-{
-
-}
 
 function active_item($url)
 {
@@ -302,4 +298,63 @@ function date_conv(string $datetime = null, string $format = 'pt')
     $d = explode($caret, $date);
     $caret = $caret=='/' ? '-' : '/';
     return "{$d[2]}{$caret}{$d[1]}{$caret}{$d[0]}".$time;
+}
+
+
+/**
+ * * Convete uma nomeclatura com pontos para notação de arrays
+ *
+ * @param $name
+ * @param bool $aspas
+ * @return string
+ */
+function wrap($name, $aspas=false) : string
+{
+    $count = strlen($name);
+    $fpos  = strpos($name, '.');  // Primeira ocorrencia de ponto
+    $lpos  = strrpos($name, '.'); // Ultima ocorrencia de ponto
+
+    if($fpos !== FALSE)
+    {
+        $str   = $aspas ? '["' : '';
+        for ($i=0; $i < $count; $i++)
+        {
+            $char = $name{$i};
+
+            if($char=='.')
+            {
+                if($i==$fpos)
+                    $char = $aspas ? '"]["' : '[';
+
+                if( $i > $fpos && $i <= $lpos )
+                    $char =  $aspas ? '"]["' : '][';
+            }
+            $str .= $char;
+        }
+        $str .= $aspas ? '"]' : ']';
+        $name = $str;
+    }
+    else
+        $name = $aspas ? '["'.$name.'"]' : $name;
+
+    return $name;
+}
+
+/**
+ * * Função que para iniciar sessões
+ *
+ * @param string $name
+ * @param bool $secure
+ * @param bool $httponly
+ */
+function sec_session_init($name='WSGISESSID', $secure=true, $httponly=true)
+{
+    if(ini_set('session.use_only_cookies',1) === FALSE)
+        die('Problemas ao tentar definir sessões seguras (session.use_only_cookies)');
+
+    $params = session_get_cookie_params();
+    session_set_cookie_params($params['lifetime'], $params['path'], $params['domain'], $secure, $httponly);
+    session_name($name);
+    session_start();
+    session_regenerate_id();
 }
