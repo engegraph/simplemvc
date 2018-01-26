@@ -1,0 +1,207 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+            class="jarviswidget"
+            id="wid-id-0"
+            data-widget-colorbutton="false"
+            data-widget-editbutton="false"
+            data-widget-deletebutton="false"
+            data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Título do widget</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data">
+                    <form id="movieForm" method="post" action="<?=$this->DataPoint();?>">
+                        <input type="hidden" name="<?=$this->csrf->set('_token')?>" value="<?=$this->csrf->token('_token')?>">
+                        <fieldset>
+                            <legend>
+                                Dados do cliente
+                            </legend>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <input type="hidden" id="EdPessoaId" name="<?= $this->csrf->set('Recepcao[PessoaId]') ?>" value="<?=$this->val('CrmRecepcao.PessoaId')?>">
+                                    <input type="hidden" id="EdImovelId" name="<?= $this->csrf->set('Recepcao[ImovelId]') ?>" value="<?=$this->val('CrmRecepcao.ImovelId')?>">
+
+                                    <div class="form-group<?php $e = $this->err('CrmRecepcao.NomeCliente') ?>">
+                                        <label class="control-label">Nome</label>
+                                        <input type="text" class="form-control" id="EdNomeCliente" name="<?= $this->csrf->set('Recepcao[NomeCliente]') ?>" value="<?=$this->val('CrmRecepcao.NomeCliente')?>" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group<?php $e = $this->err('CrmRecepcao.TelefoneCliente') ?>">
+                                        <label class="control-label">Telefone</label>
+                                        <input type="text" class="form-control" name="<?= $this->csrf->set('Recepcao[TelefoneCliente]') ?>" value="<?=$this->val('CrmRecepcao.TelefoneCliente')?>" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <div class="form-group<?php $e = $this->err('CrmRecepcao.ClienteCadastrado') ?>">
+                                                <br>
+                                                <?php $v = $this->val('CrmRecepcao.ClienteCadastrado'); ?>
+                                                <label class="radio radio-inline no-margin">
+                                                    <input type="checkbox" id="CkClienteCadastrado" name="<?= $this->csrf->set('Recepcao[ClienteCadastrado]') ?>" value="1" class="checkbox style-1" <?=$v=='1' ? 'checked' : '' ?>/>
+                                                    <span>Cliente cadastrado</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>
+                                Dados do imóvel
+                            </legend>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group<?php $e = $this->err('CrmRecepcao.NomeImovel') ?>">
+                                        <label class="control-label">Nome do imovel ou descrição</label>
+                                        <input type="text" class="form-control" name="<?= $this->csrf->set('Recepcao[NomeImovel]') ?>" value="<?=$this->val('CrmRecepcao.NomeImovel')?>" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group<?php $e = $this->err('CrmRecepcao.NumSiteImovel') ?>">
+                                        <label class="control-label">Nº Site ou Pasta</label>
+                                        <input type="text" class="form-control" id="EdPastaNumSite" name="<?= $this->csrf->set('Recepcao[NumSiteImovel]') ?>" value="<?=$this->val('CrmRecepcao.NumSiteImovel')?>" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <div class="form-group<?php $e = $this->err('CrmRecepcao.ImovelCadastrado') ?>">
+                                                <br>
+                                                <?php $t = $this->val('CrmRecepcao.ImovelCadastrado'); ?>
+                                                <label class="radio radio-inline no-margin">
+                                                    <input type="checkbox" id="CkImovelCadastrado" name="<?= $this->csrf->set('Recepcao[ImovelCadastrado]') ?>" value="1" class="checkbox style-1" <?=$t=='1' ? 'checked' : '' ?>/>
+                                                    <span>Imóvel cadastro cadastrado</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>
+                                Dados da ligação
+                            </legend>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group<?php $e = $this->err('CrmRecepcao.InteressadoEm') ?>">
+                                        <label class="control-label">Interessado em</label>
+                                        <?php $v = $this->val('CrmRecepcao.InteressadoEm');?>
+                                        <select class="form-control" name="<?= $this->csrf->set('Recepcao[InteressadoEm]') ?>">
+                                            <option value="">-- Interessado em --</option>
+                                            <option value="A"<?=($v=='A' ? ' selected' : '')?>>Aluguel</option>
+                                            <option value="V"<?=($v=='V' ? ' selected' : '')?>>Venda</option>
+                                        </select>
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group<?php $e = $this->err('CrmRecepcao.TipoMidiaId') ?>">
+                                        <label class="control-label">Tipo de mídia</label>
+                                        <?php $v = $this->val('CrmRecepcao.TipoMidiaId'); ?>
+                                        <select class="form-control" name="<?= $this->csrf->set('Recepcao[TipoMidiaId]') ?>">
+                                            <option value="">-- Tipo de mídia --</option>
+                                            <?php foreach ($this->model->TipoMidias() as $obj): $_v = $obj->Id; ?>
+                                                <option value="<?=$_v?>"<?=($v==$_v ? ' selected' : '')?>><?=$obj->Nome?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="row">
+                                        <div class="col-sm-5">
+                                            <div class="form-group<?php $e = $this->err('CrmRecepcao.Encerrado') ?>">
+                                                <br>
+                                                <?php $t = $this->val('CrmRecepcao.Encerrado'); ?>
+                                                <label class="radio radio-inline no-margin">
+                                                    <input type="checkbox" name="<?= $this->csrf->set('Recepcao[Encerrado]') ?>" value="1" class="checkbox style-1" <?=$t=='1' ? 'checked' : '' ?>/>
+                                                    <span>Ligação encerrada</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-6">
+                                    <div class="form-group<?php $e = $this->err('CrmRecepcao.DetalhesLigacao') ?>">
+                                        <div class="form-group<?php $e = $this->err('CrmRecepcao.DetalhesLigacao') ?>">
+                                            <label class="control-label">Detalhes da ligação</label>
+                                            <?=$this->val('CrmRecepcao.DetalhesLigacao')?>
+                                            <textarea class="form-control" name="<?= $this->csrf->set('Recepcao[DetalhesLigacao]')?>"><?=$this->val('CrmRecepcao.DetalhesLigacao')?></textarea>
+                                            <span class="help-block"><?= $e ?></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+
+
+
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?=$this->actions('remove | save | savenew | saveclose | close')?>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

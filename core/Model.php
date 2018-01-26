@@ -53,11 +53,16 @@ class Model extends \Illuminate\Database\Eloquent\Model
      */
     public static $DB;
 
+    protected $Conn;
+
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
         self::$DB = new DB;
+        $this->Conn = DB::connection($this->getConnectionName())->getPdo();
+        #$this->infoTable();
+        $this->applyValidate();
     }
 
     /**
@@ -224,6 +229,20 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
     }
 
+    /**
+     * Aplicando validação nos campos que não aceitam nulos
+     */
+    private function applyValidate()
+    {
+        foreach ($this->columns as $Name => $Column)
+        {
+            if(in_array($Name, array_keys($this->rules)) || in_array($Name,['Id','DataCriacao']) || ($Column['nullable']=='YES') || $Column['type_raw']=='bit')
+                continue;
+
+            $this->rules[$Name] = 'required';
+            $this->ruleMessages["{$Name}.required"] = 'O campo <strong>:attr</strong> não aceita nulo. Por favor informe-o.';
+        }
+    }
 
     /**
      * Recupera o nome da tabela do modelo atual. Para posteriormente recuperar suas colunas
@@ -275,6 +294,53 @@ class Model extends \Illuminate\Database\Eloquent\Model
         }
         else
             trigger_error('Não possível ler as informações da tabela '.$this->table, E_USER_ERROR);
+    }
+
+    /**
+     * Executa uma query manual
+     * @param $sql
+     * @param array $bindings
+     * @return bool|int|string
+     */
+    public function rawQuery($sql, array $bindings = [])
+    {
+        $sql = trim($sql);
+        if(!empty($bindings))
+        {
+            foreach ($bindings as $bind => &$value)
+            {
+                if($value == 'this') $value = $this->table;
+                $sql = str_replace(":{$bind}",$value, $sql);
+            }
+        }
+
+        $command = substr($sql,0,strpos($sql,' '));
+        $stmt = $this->Conn->prepare($sql,[\PDO::ATTR_EMULATE_PREPARES=>true]);
+        if($stmt->execute($bindings))
+        {
+            switch (strtoupper($command))
+            {
+                case 'SELECT':
+                    if($stmt->rowCount())
+                    {
+                        $data = $stmt->fetchAll(\PDO::FETCH_OBJ);
+                        return sizeof($data) > 1 ? $data : $data[0];
+                    }
+                    break;
+                case 'UPDATE':
+                case 'DELETE':
+                    return $stmt->rowCount();
+                    break;
+                case 'INSERT':
+                    return $this->Conn->lastInsertId();
+                    break;
+                default:
+                    return false;
+                    break;
+            }
+        }
+        else
+            return false;
     }
 
     /**

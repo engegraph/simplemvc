@@ -1,0 +1,152 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+                class="jarviswidget"
+                id="wid-id-0"
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-deletebutton="false"
+                data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Título do widget</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data no-padding">
+
+                    <div class="dt-toolbar toolbar-actions">
+                        <div class="col-sm-6">
+                            <div class="toolbar-actions-text">
+                                <p>Uma mensagem qualquer <span class="label label-default">aqui</span>, ou <span class="label label-danger">não</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="control-actions">
+                                <?=$this->actions();?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table id="dt_basic" class="table data-table data-sort table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                        <tr>
+                            <th class="cell-check" data-hide="phone">
+                                <div class="checkbox checkbox-danger">
+                                    <input type="checkbox" name="dsd" id="toggle-all">
+                                    <label for="toggle-all">
+                                        <i class="fa fa-hashtag"></i>
+                                    </label>
+                                </div>
+                            </th>
+                            <th data-class="expand"><i class="fa fa-fw fa-cloud  text-muted hidden-md hidden-sm hidden-xs"></i> Imóvel nº site</th>
+                            <th data-hide="phone"><i class="fa fa-fw fa-building text-muted hidden-md hidden-sm hidden-xs"></i> Imóvel</th>
+                            <th data-hide="phone" style="text-align: center">Interessado em</th>
+                            <th>Nome cliente</th>
+                            <th><i class="fa fa-fw fa-phone text-muted hidden-md hidden-sm hidden-xs"></i> Telefone cliente</th>
+                            <th>Tipo Mídia</th>
+                            <th data-hide="phone,tablet" style="text-align: center">Imóvel cadastrado</th>
+                            <th data-hide="phone,tablet" style="text-align: center">Cliente cadastrado</th>
+                            <th data-hide="phone,tablet" style="text-align: center">Encerrado</th>
+                            <th data-hide="phone,tablet">
+                                <i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data cadastro</th>
+                        </tr>
+                        </thead>
+
+                        <?php if($all = $this->model->all()): //echo '<pre>';var_dump($all);?>
+                            <tbody>
+                            <?php foreach ($all as $i => $o): $i++; ?>
+                                <tr class="row-data">
+                                    <td class="cell-check"><?=$this->checks($i, $o->Id);?></td>
+                                    <td class="cell-link"><?=$o->NumSiteImovel?></td>
+                                    <td class="cell-link"><?=$o->NomeImovel?></td>
+                                    <td class="cell-link" style="text-align: center">
+                                        <?php
+                                        if ($o->InteressadoEm == 'A')
+                                            echo '<span class="center-block padding-5 label label-primary">Aluguel</span>';
+                                        else
+                                            echo '<span class="center-block padding-5 label label-info">Venda</span>';
+                                        ?>
+                                    </td>
+                                    <td class="cell-link"><?=$o->NomeCliente?></td>
+                                    <td class="cell-link"><?=$o->NumSiteImovel?></td>
+                                    <td class="cell-link"><?php if (@$o->TipoMidia->Nome <> null) echo @$o->TipoMidia->Nome;?></td>
+                                    <td class="cell-link" style="text-align: center">
+                                        <?php
+                                        if ($o->ImovelCadastrado)
+                                            echo '<span class="label label-success">Sim</span>';
+                                        else
+                                            echo '<span class="label label-danger">Não</span>';
+
+                                        ?>
+                                    </td>
+                                    <td class="cell-link" style="text-align: center">
+                                        <?php
+                                        if ($o->ClienteCadastrado)
+                                            echo '<span class="label label-success">Sim</span>';
+                                        else
+                                            echo '<span class="label label-danger">Não</span>';
+
+                                        ?>
+                                    </td>
+                                    <td class="cell-link" style="text-align: center">
+                                        <?php
+                                        if ($o->Encerrado)
+                                            echo '<span class="label label-success">Sim</span>';
+                                        else
+                                            echo '<span class="label label-danger">Não</span>';
+
+                                        ?>
+                                    </td>
+                                    <td class="cell-link"><?=date('d/m/Y H:i', strtotime($o->DataCriacao));?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        <?php endif; ?>
+
+                    </table>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

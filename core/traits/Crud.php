@@ -30,6 +30,12 @@ trait Crud
         {
             if($this->csrf->resolve())
             {
+                if(post('debug'))
+                {
+                    var_dump(post());
+                    die;
+                }
+
                 if(post('_save'))
                 {
                     if($res = $this->model->saveAll())
