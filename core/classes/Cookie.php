@@ -8,12 +8,14 @@
 class Cookie
 {
     /**
-     * @var string $prefix Trabalhar todos os cookies com este prefixo. Definir null para desabilitar.
+     * @var string $prefix Prefixo usado em todos os cookies. Util para identificar os cookies específicos do sistema
      */
-    public static $prefix = '__wsgi';
+    private static $prefix = '__wsgi';
 
 
     /**
+     * ** Define um cookie
+     *
      * bool setcookie ( string $name [, string $value = "" [, int $expire = 0 [, string $path = "" [, string $domain = "" [, bool $secure = false [, bool $httponly = false ]]]]]] )
      * @link http://php.net/manual/pt_BR/function.setcookie.php
      * @param string $name
@@ -23,7 +25,7 @@ class Cookie
      */
     public static function set(string $name, string $value, array $opt = [])
     {
-        $params = ['expire'=>0, 'path'=>self::get('path'), 'domain'=>self::get('host'), 'secure'=>true, 'httponly'=>true];
+        $params = ['expire'=>0, 'path'=>self::info('path'), 'domain'=>self::info('host'), 'secure'=>true, 'httponly'=>true];
         $assin = '"'.self::wrap($name).'", "'.$value.'"';
         foreach ($params as $k => $v)
         {
@@ -34,21 +36,27 @@ class Cookie
     }
 
     /**
+     * * Verifica se um cokkie existe
+     *
      * @param string $name
      * @return bool
      */
     public static function has(string $name) : bool
     {
-        return self::wrap('has', $name);
+        $Name = self::wrap($name, true);
+        return eval('return isset($_COOKIE'.$Name.') ? TRUE : FALSE;');
     }
 
     /**
+     * * Recupera um cookie
+     *
      * @param string $name
      * @return string
      */
-    public static function pull(string $name) : string
+    public static function get(string $name) : string
     {
-        return self::wrap('get', $name);
+        $Name = self::wrap($name, true);
+        return eval('return isset($_COOKIE'.$Name.') ? $_COOKIE'.$Name.' : NULL;');
     }
 
 
@@ -60,24 +68,21 @@ class Cookie
      */
     public static function trash(string $name = null) : bool
     {
-        $prefix = self::$prefix;
-        self::$prefix = null;
-        $name = $name ? $name : $prefix;
-        $trash  = self::wrap($name, true);
+        $trash = self::wrap($name, true);
         eval('unset($_COOKIE'.$trash.');');
         return setcookie(self::wrap($name), "", time()-3600);
     }
 
 
     /**
-     * * Converte a nomeclatura de nome de pontos para arrays, para suprir a nomeclatura padrão de cookie
+     * * Resolve a nomeclatura de cookie com pontos para a nomeclatura de array
      *
      * @param $name string Nome amigável do cookie
      * @return string nome readl do cooke
      */
-    private static function wrap($name, $aspas=false) : string
+    private static function wrap($name = null, $aspas=false) : string
     {
-        $name  = ($prefix=self::$prefix) ? $prefix.'.'.$name : $name;
+        $name  = $name ? self::$prefix.'.'.$name : self::$prefix;
         $count = strlen($name);
         $fpos  = strpos($name, '.'); // Primeira ocorrencia de ponto
         $lpos  = strrpos($name, '.'); // Ultima ocorrencia de ponto
@@ -110,41 +115,10 @@ class Cookie
 
 
     /**
-     * @param string $name
-     * @param string|null $var
-     * @param string|null $val
-     * @return bool
-     */
-    private static function resolve(string $name, string $var = null, string $val = null)
-    {
-        switch ($name)
-        {
-            case 'set':
-                echo self::wrap($var);
-                break;
-
-            case 'has':
-                // Verifica cookie
-                break;
-
-            case 'get':
-                // Recupera cookie
-                break;
-
-            case 'trash':
-                // Remover cookie
-                break;
-
-        }
-
-        return true;
-    }
-
-    /**
      * informações do domínio
      * @return string
      */
-    private static function get($info) : string
+    private static function info($info) : string
     {
         $parse = parse_url(url());
         return $parse[$info];

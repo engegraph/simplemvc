@@ -53,11 +53,4 @@ class Signin extends Controller
         // Executa a autenticação
         return $this->auth->login(post('Auth.username'), post('Auth.password'));
     }
-
-    public function teste()
-    {
-        //Cookie::set('auth.user.email', 'airton.lopes@engegraph.com.br');
-        Cookie::trash();
-        var_dump($_COOKIE);
-    }
 }

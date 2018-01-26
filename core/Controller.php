@@ -99,7 +99,7 @@ class Controller
     final protected function view(string $name, $layout = 'default')
     {
         if(!$this->viewExists($name))
-            die('View não encontrada : <code>'.$name.'</code>');
+            trigger_error('View não encontrada : <code>'.$name.'</code>', E_USER_ERROR);
 
         $name = str_replace(['/','\\'], '', $name);
         $name = str_replace('.',DS, $name);
@@ -137,7 +137,7 @@ class Controller
     {
         $layout = __DIR__.'.'.DS.'..'.DS.'app'.DS.'wsgi'.DS.'templates'.DS.$this->App->template.DS.'layouts'.DS.$name.'.phtml';
         if(!file_exists($layout))
-            die('Layout não encontrado : <code>'.$layout.'</code>');
+            trigger_error('Layout não encontrado : <code>'.$layout.'</code>', E_USER_ERROR);
 
         require_once $layout;
 

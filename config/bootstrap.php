@@ -8,7 +8,7 @@ ini_set('display_errors',1);
 error_reporting(E_ALL);
 
 date_default_timezone_set('America/Sao_Paulo');
-#setlocale (LC_ALL, 'pt_BR');
+setlocale (LC_ALL, 'pt_BR');
 setlocale(LC_ALL, "en_US.UTF-8");
 
 define('wSGI', microtime());

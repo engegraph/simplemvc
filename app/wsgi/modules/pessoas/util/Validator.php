@@ -1,6 +1,6 @@
 <?php namespace wSGI\Modules\Pessoas\Util;
 
-class Validator extends \wSGI\Common\Validation\Validator
+class Validator extends \wSGI\Common\Util\Validator
 {
     public function validateWsgi($attribute, $value, $parameters)
     {
