@@ -19,6 +19,8 @@ class Model extends \Illuminate\Database\Eloquent\Model
 
     public $columns = [];
 
+    public $attrmodal = [];
+
     public $modalColumns = [];
 
     protected $guarded = ['*'];
@@ -61,7 +63,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         parent::__construct($attributes);
         self::$DB = new DB;
         $this->Conn = DB::connection($this->getConnectionName())->getPdo();
-        #$this->infoTable();
+        $this->infoTable();
         $this->applyValidate();
     }
 
@@ -259,7 +261,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
             foreach ($columns as $obj)
             {
                 $Name  = $obj->COLUMN_NAME;
-                $this->attributes[$Name] = $obj->COLUMN_DEFAULT;
+                $this->attrmodal[$Name] = $obj->COLUMN_DEFAULT;
                 $Size  = ($Size=$obj->CHARACTER_MAXIMUM_LENGTH) ? $Size : '0';
                 $Type  = $this->getFieldDbType($Name, ['type'=>$obj->DATA_TYPE, 'size'=>$Size]);
                 $Label = Inflector::ucwords(str_replace('_',' ',Inflector::tableize($Name)));

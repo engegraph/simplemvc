@@ -215,16 +215,17 @@ class Controller
 
     final public function path()
     {
-        $modulePath = 'modules'.DS.$this->Request->Module;
+        $modulePath = 'modules'.DS.$this->App->Module;
         $path = 'wsgi'.DS.$modulePath;
-        return __DIR__.'.'.DS.'..'.DS.'app'.DS.$path;
+        $path = __DIR__.DS.'..'.DS.'app'.DS.$path;
+        return strtolower($path);
     }
 
     final public function pathAssets(string $file = null)
     {
-        $modulePath = 'modules'.'/'.$this->Request->Module;
+        $modulePath = 'modules'.'/'.$this->App->Module;
         $path = '/app/'.($this->Request->isBack ? 'wsgi'.'/'.$modulePath : 'web'.'/'.$modulePath).'/assets';
-        return url($file ? $path.'/'.$file : $path);
+        return url(strtolower($file ? $path.'/'.$file : $path));
     }
 
     /**

@@ -68,7 +68,7 @@ class Session2
 
 
     /**
-     * * Mantem o fluxo das ssessões atual
+     * * Destroi completamente a sessão
      *
      * @return void
      */

@@ -45,14 +45,14 @@
                 <div class="widget-body wsgi-data">
                     <form id="movieForm" method="post" action="<?=$this->DataPoint();?>">
                         <input type="hidden" name="<?=$this->csrf->set('_token')?>" value="<?=$this->csrf->token('_token')?>">
-                        <input type="hidden" name="debug" value="1">
+                        <input type="hidden" name="debug" value="0">
                         <fieldset>
                             <legend>
                                 Dados do cliente
                             </legend>
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <input type="hidden" id="EdPessoaId" name="<?= $this->csrf->set('Recepcao[PessoaId]') ?>" value="<?=$this->val('Recepcao.PessoaId')?>">
+                                    <!-- <input type="hidden" id="EdPessoaId" name="<?= $this->csrf->set('Recepcao[PessoaId]') ?>" value="<?=$this->val('Recepcao.PessoaId')?>"> -->
                                     <input type="hidden" id="EdImovelId" name="<?= $this->csrf->set('Recepcao[ImovelId]') ?>" value="<?=$this->val('Recepcao.ImovelId')?>">
 
                                     <div class="form-group<?php $e = $this->err('Recepcao.NomeCliente') ?>">
