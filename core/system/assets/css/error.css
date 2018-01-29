@@ -72,6 +72,9 @@ body, html{
 .content-error section article ol li p{
 
 }
+.content-error section article ol li.e-msg{
+
+}
 .content-error section article ol li p span{
     color: #000;
     border-bottom: 1px dotted #333;

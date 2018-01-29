@@ -41,6 +41,10 @@ class Router
                 }
 
                 $Class = "wSGI\\Modules\\{$App->Module}\\Controllers\\{$App->Controller}";
+
+                if(!class_exists($Class))
+                    trigger_error('Controller não encontrado <code>'.$Class.'</code>', E_USER_ERROR);
+
                 $Controller = new $Class($Request, $App); #Container::Controller($Class);
 
                 /**

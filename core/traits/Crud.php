@@ -89,10 +89,13 @@ trait Crud
         return ['url'=>$redirect, 'message'=>$message];
     }
 
+
     /**
-     * onConfigModel atrela um model ao controlador instanciado
+     * * onConfigModel atrela um model ao controlador instanciado
+     *
+     * @param string|null $model
      */
-    private function onConfigModel() : void
+    private function onConfigModel(string $model = null) : void
     {
         if($Name = $this->model)
         {
@@ -103,9 +106,12 @@ trait Crud
             }
             else
             {
-                $Name = Inflector::singularize($this->Request->Controller);
+                $Name = ucfirst(Inflector::camelize(Inflector::singularize($this->Request->Controller)));
                 $Class = $Ns.$Name;
             }
+
+            if(!class_exists($Class))
+                trigger_error('Model não encontrado <code>'.$Class.'</code>', E_USER_ERROR);
 
             $Model = new $Class;;
 
@@ -119,6 +125,24 @@ trait Crud
             }
             $this->model = $this->Model = $Model;
         }
+    }
+
+    /**
+     * * Seta o model para ser usado na view
+     *
+     * @param string $name
+     * @param null $module
+     */
+    final protected function setModel(string $name, $module = null) : void
+    {
+        $ns = 'wSGI\\Modules\\'.($module ? ucfirst($module) : $this->App->Module).'\\Models\\';
+        $name = str_replace(['\\','/'], '', $name);
+        $class = str_replace('.','\\', $name);
+        $model = $ns.$class;
+        if(!class_exists($model))
+            trigger_error('Model não encontrado <code>'.$model.'</code>', E_USER_ERROR);
+
+        $this->Model = $this->model = new $model;
     }
 
 

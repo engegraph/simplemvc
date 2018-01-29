@@ -14,7 +14,7 @@ class Module extends ModuleBase
                 'permissions' => ['*'],
                 'childs' => [
                     [
-                        'url' => backend_url('/nejs/ctrl-notificaos'),
+                        'url' => backend_url('/nejs/notificacoes'),
                         'label' => 'Controle de notificações extrajudiciais',
                         'permissions' => ['*'],
                     ],

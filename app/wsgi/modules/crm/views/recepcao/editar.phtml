@@ -43,7 +43,7 @@
 
                 <!-- widget content -->
                 <div class="widget-body wsgi-data">
-                    <form id="movieForm" method="post" action="<?=$this->DataPoint();?>">
+                    <form class="form-data" id="movieForm" method="post" action="<?=$this->DataPoint();?>">
                         <input type="hidden" name="<?=$this->csrf->set('_token')?>" value="<?=$this->csrf->token('_token')?>">
                         <input type="hidden" name="debug" value="0">
                         <fieldset>

@@ -1,0 +1,116 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+                class="jarviswidget"
+                id="wid-id-0"
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-deletebutton="false"
+                data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Título do widget</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data no-padding">
+
+                    <div class="dt-toolbar toolbar-actions">
+                        <div class="col-sm-6">
+                            <div class="toolbar-actions-text">
+                                <p>Uma mensagem qualquer <span class="label label-default">aqui</span>, ou <span class="label label-danger">não</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="control-actions">
+                                <?=$this->actions();?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table id="dt_basic" class="table data-table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                        <tr>
+                            <th data-hide="phone">
+                                <div class="checkbox checkbox-danger">
+                                    <input type="checkbox" name="dsd" id="toggle-all">
+                                    <label for="toggle-all">
+                                        <i class="fa fa-hashtag"></i>
+                                    </label>
+                                </div>
+                            </th>
+                            <th data-class="expand" class="centralizado"><i class="fa fa-fw fa-folder  text-muted hidden-md hidden-sm hidden-xs"></i> Pasta</th>
+                            <th data-hide="phone" class="centralizado"><i class="fa fa-fw fa-cloud text-muted hidden-md hidden-sm hidden-xs"></i> Nº Site</th>
+                            <th><i class="fa fa-fw fa-map-marker text-muted hidden-md hidden-sm hidden-xs"></i> Endereço</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-eye text-muted hidden-md hidden-sm hidden-xs"></i> Tipo vistoria</th>
+                            <th data-hide="phone,tablet" class="centralizado"><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data vistoria</th>
+                            <th data-hide="phone,tablet">Situação geral do imóvel</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-user hidden-md hidden-sm hidden-xs"></i> Vistoriador</th>
+                            <th data-hide="phone,tablet" class=""><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data cadastro</th>
+                        </tr>
+                        </thead>
+
+                        <?php if($all = $this->model->all()): ?>
+                            <tbody>
+                            <?php foreach ($all as $i => $o): $i++; ?>
+                                <tr class="row-data">
+                                    <td class="cell-check"><?=$this->checks($i, $o->Id);?></td>
+                                    <td class="cell-link text-align-center"><?=$o->Imovel->Pasta?></td>
+                                    <td class="cell-link text-align-center"><?=$o->Imovel->NumSite?></td>
+                                    <td class="cell-link"><?=$o->Imovel->Endereco->Logradouro?></td>
+                                    <td class="cell-link"><?=$o->TipoVistoria->Nome?></td>
+                                    <td class="cell-link centralizado"><?=($o->DataVistoria == '' ? '' : date('d/m/Y', strtotime($o->DataVistoria)));?></td>
+                                    <td class="cell-link"><?=$o->SituacaoGeralImovel?></td>
+                                    <td class="cell-link"></td>
+                                    <td class="cell-link"><?=date('d/m/Y H:i', strtotime($o->DataCriacao));?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        <?php endif; ?>
+
+                    </table>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

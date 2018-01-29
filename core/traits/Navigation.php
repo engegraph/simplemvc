@@ -87,7 +87,7 @@ trait Navigation
             $this->pageTitle = ucfirst($this->Request->Controller);
 
         if(!$this->Header)
-            $this->Header = isset($this->Module->Menu->label) ? $this->Module->Menu->label : $this->pageTitle;
+            $this->Header = $this->pageModulo;
 
         if(!$this->pageSubtitle)
             $this->pageSubtitle = ($this->App->Action=='index' ? $this->App->list : ucfirst($this->App->Action));
@@ -110,7 +110,7 @@ bread;
         $this->pageHeader = <<<page
         <h1 class="page-title txt-color-blueDark">
             <!-- PAGE HEADER -->
-            <i class="fa-fw fa fa-{$this->pageIcon}"></i> {$this->Header} <span> > {$this->pageSubtitle} </span>
+            <i class="fa-fw fa fa-{$this->pageIcon}"></i> {$this->Header} > {$this->pageTitle} <span> > {$this->pageSubtitle} </span>
         </h1>
 page;
 
@@ -142,86 +142,105 @@ str;
 
 
     /**
-     * Cria uma toolbar com os botões de ações das páginas
-     * new | save | saveclose | savenew | remove | close
+     * * Cria uma toolbar com os botões de ações das páginas
+     *
      * @param string $tool
      * @param bool $group
      * @return string
      */
-    final protected function actions(string $tool = 'new|remove', $group = false) : string
+    final protected function actions($tool = 'new|remove', $group = false) : string
     {
         $bar = [];
-        $tool = explode('|', $tool);
-        #$url = backend_url('/'.str_replace('_','-',Inflector::tableize($this->page)));
-        $url = backend_url('/'.$this->Request->Module.'/'.$this->Request->Controller);
-        foreach ($tool as $val)
+
+        if(is_string($tool))
         {
-            $val = trim($val);
-            $btn = '';
-
-            if($val == 'new')
+            $buttons = explode('|', $tool);
+            #$url = backend_url('/'.str_replace('_','-',Inflector::tableize($this->page)));
+            $url = backend_url('/'.$this->Request->Module.'/'.$this->Request->Controller);
+            foreach ($buttons as $val)
             {
-                if($url == url())
-                {
-                    $btn .= "<a href='{$url}/cadastro' class='btn btn-primary' title='Cadastro'>";
-                    $btn .= '<i class="fa fa-plus-square"></i> Novo';
-                    $btn .= '</a>';
-                }
-            }
+                $val = trim($val);
+                $btn = '';
 
-            if($val == 'remove')
-            {
-                if($url == url())
+                if($val == 'new')
                 {
-                    $btn .= '<button type="button" class="btn btn-danger remove disabled" disabled="disabled">';
-                    $btn .= '<i class="fa fa-trash"></i> Remover';
-                    $btn .= '</button>';
-                }
-
-                if(__REQUEST_ACTION=='editar')
-                {
-                    if($uuid=$this->model->Id)
+                    if($url == url())
                     {
-                        $btn .= '<a class="btn btn-link pull-left remove remove-only" href="javascript:void(0)" onclick="checkeds = $(this).find(\'input\')">';
-                        $btn .= '<i class="fa fa-trash"></i> <u>R</u>emover';
-                        $btn .= '<input type="checkbox" id="" name="'.$this->model->getClass().'[Uuid][]" value="'.str_guid($uuid).'" style="display:none;">';
+                        $btn .= "<a href='{$url}/cadastro' class='btn btn-primary' title='Cadastro'>";
+                        $btn .= '<i class="fa fa-plus-square"></i> Novo';
                         $btn .= '</a>';
                     }
                 }
+
+                if($val == 'remove')
+                {
+                    if($url == url())
+                    {
+                        $btn .= '<button type="button" class="btn btn-danger remove disabled" disabled="disabled">';
+                        $btn .= '<i class="fa fa-trash"></i> Remover';
+                        $btn .= '</button>';
+                    }
+
+                    if(__REQUEST_ACTION=='editar')
+                    {
+                        if($uuid=$this->model->Id)
+                        {
+                            $btn .= '<a class="btn btn-link pull-left remove remove-only" href="javascript:void(0)" onclick="checkeds = $(this).find(\'input\')">';
+                            $btn .= '<i class="fa fa-trash"></i> <u>R</u>emover';
+                            $btn .= '<input type="checkbox" id="" name="'.$this->model->getClass().'[Uuid][]" value="'.str_guid($uuid).'" style="display:none;">';
+                            $btn .= '</a>';
+                        }
+                    }
+                }
+
+                $name = '_save';
+
+                if($val == 'save')
+                {
+                    $btn .= '<button class="btn btn-success" type="submit" name="'.$name.'" value="-1">';
+                    $btn .= '<i class="fa fa-save"></i> <u>S</u>alvar';
+                    $btn .= '</button>';
+                }
+
+                if($val == 'savenew')
+                {
+                    $btn .= '<button class="btn btn-primary" type="submit" name="'.$name.'" value="1">';
+                    $btn .= '<i class="fa fa-save"></i> <u>S</u>alvar e novo';
+                    $btn .= '</button>';
+                }
+
+                if($val == 'saveclose')
+                {
+                    $btn .= '<button class="btn btn-warning" type="submit" name="'.$name.'" value="2">';
+                    $btn .= '<i class="fa fa-save"></i> <u>S</u>alvar e fechar';
+                    $btn .= '</button>';
+                }
+
+                if($val == 'close')
+                {
+                    $btn .= "<a href='{$url}' class='btn btn-danger'>";
+                    $btn .= '<i class="fa fa-close"></i> <u>F</u>echar';
+                    $btn .= '</a>';
+                }
+
+                $bar[$val] = $btn;
             }
-
-            $name = '_save';
-
-            if($val == 'save')
-            {
-                $btn .= '<button class="btn btn-success" type="submit" name="'.$name.'" value="-1">';
-                $btn .= '<i class="fa fa-save"></i> <u>S</u>alvar';
-                $btn .= '</button>';
-            }
-
-            if($val == 'savenew')
-            {
-                $btn .= '<button class="btn btn-primary" type="submit" name="'.$name.'" value="1">';
-                $btn .= '<i class="fa fa-save"></i> <u>S</u>alvar e novo';
-                $btn .= '</button>';
-            }
-
-            if($val == 'saveclose')
-            {
-                $btn .= '<button class="btn btn-warning" type="submit" name="'.$name.'" value="2">';
-                $btn .= '<i class="fa fa-save"></i> <u>S</u>alvar e fechar';
-                $btn .= '</button>';
-            }
-
-            if($val == 'close')
-            {
-                $btn .= "<a href='{$url}' class='btn btn-danger'>";
-                $btn .= '<i class="fa fa-close"></i> <u>F</u>echar';
-                $btn .= '</a>';
-            }
-
-            $bar[$val] = $btn;
         }
+
+        if(is_array($tool))
+        {
+            foreach ($tool as $tag => $info)
+            {
+                $s  = "<{$tag}";
+                if(isset($info['attrs']))
+                    foreach ($info['attrs'] as $att => $val)
+                        $s .= ' '.$att.' = "'.$val.'"';
+                $s .= '><i class="fa fa-'.$info['icon'].'"></i> '.$info['text'];
+                $s .= '</'.$tag.'>';
+                $bar[] = $s;
+            }
+        }
+
 
         $htm = '<div class="btn-actions'.($group ? ' btn-group' : '').'">';
 

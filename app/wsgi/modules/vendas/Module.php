@@ -29,22 +29,22 @@ class Module extends ModuleBase
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/vendas/controle-parcelas'),
+                        'url' => backend_url('/vendas/parcelas'),
                         'label' => 'Controle de parcelas',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/vendas/simulador-financiamento'),
+                        'url' => backend_url('/vendas/simulador/financiamento'),
                         'label' => 'Simulador de financiamento',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/vendas/transferencia-contrato'),
+                        'url' => backend_url('/vendas/transferencia/contrato'),
                         'label' => 'Transferência de contratos',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/vendas/autorizacao-escritura'),
+                        'url' => backend_url('/vendas/autorizacao/escritura'),
                         'label' => 'Autorização de escritura',
                         'permissions' => ['*'],
                     ]

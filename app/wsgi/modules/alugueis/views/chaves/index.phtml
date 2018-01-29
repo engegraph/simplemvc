@@ -1,0 +1,139 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+                class="jarviswidget"
+                id="wid-id-0"
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-deletebutton="false"
+                data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Título do widget</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data no-padding">
+
+                    <div class="dt-toolbar toolbar-actions">
+                        <div class="col-sm-6">
+                            <div class="toolbar-actions-text">
+                                <p>Uma mensagem qualquer <span class="label label-default">aqui</span>, ou <span class="label label-danger">não</span></p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="control-actions">
+                                <?=$this->actions();?>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table id="dt_basic" class="table data-table table-striped table-bordered table-hover" width="100%">
+                        <thead>
+                        <tr>
+                            <th data-hide="phone">
+                                <div class="checkbox checkbox-danger">
+                                    <input type="checkbox" name="dsd" id="toggle-all">
+                                    <label for="toggle-all">
+                                        <i class="fa fa-hashtag"></i>
+                                    </label>
+                                </div>
+                            </th>
+                            <th data-class="expand" class="text-align-center">Devolvido</th>
+                            <th data-hide="phone"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> Nome retirante</th>
+                            <th>Tipo Documento</th>
+                            <th data-hide="phone,tablet">Documento</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-phone hidden-md hidden-sm hidden-xs"></i> Telefone</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-tag hidden-md hidden-sm hidden-xs"></i> Identificação chaveiro</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data retirada</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data entrega</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-folder hidden-md hidden-sm hidden-xs"></i> Pasta/Contrato Imóvel</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-home hidden-md hidden-sm hidden-xs"></i> Nº Site Imóvel</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker hidden-md hidden-sm hidden-xs"></i> Endereço Imóvel</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data cadastro</th>
+                        </tr>
+                        </thead>
+
+                        <?php if($all = $this->model->all()): ?>
+                            <tbody>
+                            <?php foreach ($all as $i => $o): $i++; ?>
+                                <tr class="row-data">
+                                    <td class="cell-check"><?=$this->checks($i, $o->Id);?></td>
+                                    <td class="cell-link text-align-center">
+                                        <?php
+                                        if ($o->Devolvido)
+                                            echo '<span class="label label-success">Sim</span>';
+                                        else
+                                            echo '<span class="label label-danger">Não</span>';
+
+                                        ?>
+                                    </td>
+                                    <td class="cell-link"><?=$o->NomeRetirante?></td>
+                                    <td class="cell-link centralizado"><?php if ($o->TipoDocumento <> null) echo $o->TipoDocumento->Nome?></td>
+                                    <td class="cell-link"><?=$o->DocumentoRetirante?></td>
+                                    <td class="cell-link">
+                                        <?php
+                                        if (strlen($o->TelefoneRetirante) == 11)
+                                            echo mask($o->TelefoneRetirante,'(##) #####-####');
+                                        else
+                                            echo mask($o->TelefoneRetirante,'(##) ####-####');
+                                        ?>
+                                    </td>
+                                    <td class="cell-link centralizado"><?=$o->IdentificacaoChaveiro?></td>
+                                    <td class="cell-link centralizado"><?=($o->DataRetirada == '' ? '' : date('d/m/Y', strtotime($o->DataRetirada)));?></td>
+                                    <td class="cell-link centralizado"><?=($o->DataEntrega == '' ? '' : date('d/m/Y', strtotime($o->DataEntrega)));?></td>
+                                    <td class="cell-link centralizado"><?=$o->Imovel->Pasta?></td>
+                                    <td class="cell-link centralizado"><?=$o->Imovel->NumSite?></td>
+                                    <td class="cell-link"><?=$o->Imovel->Endereco->Logradouro?></td>
+                                    <td class="cell-link"><?=date('d/m/Y H:i', strtotime($o->DataCriacao));?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        <?php endif; ?>
+
+                    </table>
+
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

@@ -1,4 +1,4 @@
-<?php namespace wsgi\Modules\Controles\Models;
+<?php namespace wSGI\Modules\Controles\Models;
 
 use Core\Model;
 

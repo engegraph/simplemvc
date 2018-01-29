@@ -20,6 +20,7 @@ class Signin extends Controller
         'headerLink' => '/auth/register',
     ];
 
+
     /**
      * Exibe a página de login
      */
@@ -27,6 +28,7 @@ class Signin extends Controller
     {
         $this->view('signin', 'auth');
     }
+
 
     /**
      * Recebe os dados da página de login e prossegue com a autenticação

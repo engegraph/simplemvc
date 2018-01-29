@@ -1,0 +1,188 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+            class="jarviswidget"
+            id="wid-id-0"
+            data-widget-colorbutton="false"
+            data-widget-editbutton="false"
+            data-widget-deletebutton="false"
+            data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Título do widget</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data">
+                    <form class="form-data" method="post" action="<?=$this->DataPoint();?>">
+                        <input type="hidden" name="<?=$this->csrf->set('_token')?>" value="<?=$this->csrf->token('_token')?>">
+
+
+                        <fieldset>
+                            <legend>Dados do imóvel</legend>
+                            <div class="row">
+                                <input type="hidden" id="ImovelId" name="<?= $this->csrf->set('ImovelControleVistoria.ImovelId') ?>" value="<?=$this->val('ImovelControleVistoria.ImovelId')?>">
+                                <div class="col-md-2">
+                                    <div class="form-group<?php $e = $this->err('ImovelControleVistoria.ImovelId') ?>">
+                                        <label class="control-label">Pasta/Contrato</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="EdNumPasta" name="<?= $this->csrf->set('ImovelControleVistoria.Imovel[Pasta]') ?>" value="<?=$this->val('ImovelControleVistoria.Imovel.Pasta')?>" />
+                                            <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-primary" style="height: 32px" id="BtLocalizarPelaPasta" name="BtLocalizarPelaPasta"><i class="fa fa-search"></i></button>
+                                                </span>
+                                        </div>
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group<?php $e = $this->err('ImovelControleVistoria.Imovel.NumSite') ?>">
+                                        <label class="control-label">Nº Site</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="EdNumSite" name="<?= $this->csrf->set('ImovelControleVistoria.Imovel[NumSite]') ?>" value="<?=$this->val('ImovelControleVistoria.Imovel.NumSite')?>" />
+                                            <span class="input-group-btn">
+                                                    <button type="button" id="BtLocalizarPelaNumSite" class="btn btn-primary" style="height: 32px"><i class="fa fa-search"></i></button>
+                                                </span>
+                                        </div>
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group<?php $e = $this->err('ImovelControleVistoria.Imovel.Enderece.Logradouro') ?>">
+                                        <label class="control-label">Endereço</label>
+                                        <input type="text" class="form-control" id="EdEndereco" name="<?= $this->csrf->set('ImovelControleVistoria.Imovel.Endereco[Logradouro]') ?>" value="<?=$this->val('ImovelControleVistoria.Imovel.Endereco.Logradouro')?>" disabled="disabled"/>
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <fieldset>
+                            <legend>Dados gerais</legend>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group<?php $e = $this->err('ImovelControleVistoria.TipoVistoriaId') ?>">
+                                        <label class="control-label">Tipo vistoria</label>
+                                        <?php $v = $this->val('ImovelControleVistoria.TipoVistoriaId'); ?>
+                                        <select class="form-control" name="<?= $this->csrf->set('ImovelControleVistoria[TipoVistoriaId]') ?>">
+                                            <option value="">-- Tipo vistoria --</option>
+                                            <?php foreach ($this->model->TipoVistorias() as $obj): $_v = $obj->Id; ?>
+                                                <option value="<?=$_v?>"<?=($v==$_v ? ' selected' : '')?>><?=$obj->Nome?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group<?php $e = $this->err('ImovelControleVistoria.TipoVistoriaId') ?>">
+                                        <label class="control-label">Vistoriador</label>
+                                        <?php $v = $this->val('ImovelControleVistoria.TipoVistoriaId'); ?>
+                                        <select class="form-control" name="<?= $this->csrf->set('ImovelControleVistoria[TipoVistoriaId]') ?>">
+                                            <option value="">-- Tipo vistoria --</option>
+                                            <?php foreach ($this->model->TipoVistorias() as $obj): $_v = $obj->Id; ?>
+                                                <option value="<?=$_v?>"<?=($v==$_v ? ' selected' : '')?>><?=$obj->Nome?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group<?php $e = $this->err('ImovelControleVistoria.SituacaoGeralImovel') ?>">
+                                        <label class="control-label">Situação geral do imóvel</label>
+                                        <input type="text" class="form-control" name="<?= $this->csrf->set('ImovelControleVistoria[SituacaoGeralImovel]') ?>" value="<?=$this->val('ImovelControleVistoria.SituacaoGeralImovel')?>" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group<?php $e = $this->err('ImovelControleVistoria.DataVistoria') ?>">
+                                        <label class="control-label">Data da vistoria</label>
+                                        <input type="date" class="form-control" name="<?= $this->csrf->set('ImovelControleVistoria[DataVistoria]') ?>" value="<?=($this->val('ImovelControleVistoria.DataVistoria') == '' ? '' : date('Y-m-d', strtotime($this->val('ImovelControleVistoria.DataVistoria'))))?>" />
+                                        <span class="help-block"><?= $e ?></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <ul id="myTab1" class="nav nav-tabs bordered">
+                            <li class="active"><a href="#s1" data-toggle="tab"><i class="fa fa-fw fa-lg fa-eye"></i>Vistoria</a></li>
+                            <li><a href="#s2" data-toggle="tab"><i class="fa fa-fw fa-lg fa-user"></i>Parecer do vistoriador</a></li>
+                            <li><a href="#s3" data-toggle="tab"><i class="fa fa-fw fa-lg fa-picture-o"></i> Fotos</a></li>
+                        </ul>
+                        <div id="myTabContent1" class="tab-content padding-10">
+                            <div class="tab-pane fade in active" id="s1" style="padding-left: 10px">
+                                <div class="summernote"></div>
+                                <div class="form-group<?php $e = $this->err('ImovelControleVistoria.Texto') ?>">
+                                    <textarea class="form-control" rows="10" name="<?= $this->csrf->set('ImovelControleVistoria[Texto]') ?>"><?=$this->val('ImovelControleVistoria.Texto')?></textarea>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade in" id="s2" style="padding-left: 10px">
+                                <div class="summernote"></div>
+                                <div class="form-group<?php $e = $this->err('ImovelControleVistoria.Texto') ?>">
+                                    <textarea class="form-control" rows="10" name="<?= $this->csrf->set('ImovelControleVistoria[ParecerVistoriador]')?>"><?=$this->val('ImovelControleVistoria.ParecerVistoriador')?></textarea>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade in" id="s3" style="padding-left: 10px">
+
+                                <div action="upload.php" class="dropzone" id="mydropzone" style="height: 100px; min-height: 100px">
+                                    <input type="hidden" name="ImovelControleVistoriaId" id="ImovelControleVistoriaId" value="<?=$this->val('ImovelControleVistoria.Id')?>">
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                        <span id="spErro"></span>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <?=$this->actions('save | savenew | saveclose | close | new')?>
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

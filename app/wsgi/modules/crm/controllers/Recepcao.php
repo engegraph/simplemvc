@@ -4,7 +4,7 @@ use Core\Controller;
 
 class Recepcao extends Controller
 {
-    public $pageTitle = 'CRM - Recepção';
+    public $pageTitle = 'Recepção';
 
     public function onImovelVerificaPessoaCadastrada()  {
         //Pega os dados do imovel

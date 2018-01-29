@@ -17,7 +17,7 @@ class Module extends ModuleBase
                 'permissions' => ['*'],
                 'childs' => [
                     [
-                        'url' => backend_url('/alugueis/central-alugueis'),
+                        'url' => backend_url('/alugueis/central'),
                         'label' => 'Central de aluguéis',
                         'permissions' => ['*'],
                     ],
@@ -27,11 +27,11 @@ class Module extends ModuleBase
                         'permissions' => ['*'],
                         'childs' => [
                             [
-                                'url' => backend_url('/alugueis/imovel-controle-chaves'),
+                                'url' => backend_url('/alugueis/controle-chaves'),
                                 'label' => 'Controle de chaves',
                                 'permissions' => ['*'],
                             ],                [
-                                'url' => backend_url('/alugueis/imovel-controle-vistorias'),
+                                'url' => backend_url('/alugueis/vistorias'),
                                 'label' => 'Central de vistorias',
                                 'permissions' => ['*'],
                             ]
@@ -54,17 +54,17 @@ class Module extends ModuleBase
                         ]
                     ],
                     [
-                        'url' => backend_url('/alugueis/imovel-lancamento'),
+                        'url' => backend_url('/alugueis/lancamentos'),
                         'label' => 'Lançamentos',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/alugueis/pagamento-aluguel'),
+                        'url' => backend_url('/alugueis/pagamentos'),
                         'label' => 'Pagamento de aluguéis',
                         'permissions' => ['*'],
                     ],
                     [
-                        'url' => backend_url('/alugueis/lista-inadimplente'),
+                        'url' => backend_url('/alugueis/inadimplentes'),
                         'label' => 'Lista de inadimplmentes',
                         'permissions' => ['*'],
                     ]

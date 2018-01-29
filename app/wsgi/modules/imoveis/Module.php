@@ -8,21 +8,10 @@ class Module extends ModuleBase
     {
         return [
             'imoveis' => [
-                'url' => 'javascript:void(0)',
+                'url' => backend_url('/imoveis/imoveis'),
                 'label' => 'Imóveis',
                 'permissions' => ['*'],
-                'icon' => 'home',
-                'childs' => [
-                    [
-                        'url' => backend_url('/imoveis/RelImoveisListagem'),
-                        'label' => 'Listagem',
-                        'permissions' => ['*'],
-                    ],[
-                        'url' => backend_url('/imoveis/rel-imovel-divulgacao'),
-                        'label' => 'Divulgações',
-                        'permissions' => ['*'],
-                    ],
-                ]
+                'icon' => 'home'
             ]
         ];
     }
