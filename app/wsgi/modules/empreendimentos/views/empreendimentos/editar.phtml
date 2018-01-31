@@ -1,0 +1,442 @@
+<!-- row -->
+<div class="row">
+
+    <!-- NEW WIDGET START -->
+    <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+        <!-- Widget ID (each widget will need unique ID)-->
+        <div
+                class="jarviswidget"
+                id="wid-id-0"
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-deletebutton="false"
+                data-widget-custombutton="false"
+        >
+            <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+            -->
+            <header>
+                <span class="widget-icon"> <i class="fa fa-list"></i> </span>
+                <h2>Dados do empreendimento</h2>
+            </header>
+
+            <!-- widget div-->
+            <div>
+
+                <!-- widget edit box -->
+                <div class="jarviswidget-editbox">
+                    <!-- This area used as dropdown edit box -->
+                    <input class="form-control" type="text">
+                </div>
+                <!-- end widget edit box -->
+
+                <!-- widget content -->
+                <div class="widget-body wsgi-data">
+                        <form class="form-data" id="movieForm" method="post" action="<?=$this->DataPoint();?>">
+                            <input type="hidden" name="<?=$this->csrf->set('_token')?>" value="<?=$this->csrf->token('_token')?>">
+                            <ul id="myTab1" class="nav nav-tabs bordered">
+                                <li class="active"><a href="#s1" data-toggle="tab">Informações gerais</a></li>
+                                <li><a href="#s2" data-toggle="tab">Relação de imóveis</a></li>
+                                <li><a href="#s3" data-toggle="tab"><i class="fa fa-fw fa-lg fa-pie-chart"></i> Gráficos e estatísticas</a></li>
+                                <li><a href="#s4" data-toggle="tab"><i class="fa fa-fw fa-lg fa-paperclip"></i> Anexos</a></li>
+                            </ul>
+
+                            <input type="hidden" class="form-control" id="EdEmpreendimentoId"  value="<?=$this->val('Empreendimento.Id')?>" />
+                            <div id="myTabContent1" class="tab-content padding-10">
+                                <div class="tab-pane fade in active" id="s1">
+
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.Nome') ?>">
+                                                <label class="control-label">Nome do Empreendimento</label>
+                                                <input type="text" class="form-control" name="<?= $this->csrf->set('Empreendimento[Nome]') ?>" value="<?=$this->val('Empreendimento.Nome')?>" />
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.CNPJ') ?>">
+                                                <label class="control-label">CNPJ</label>
+                                                <input type="text" class="form-control" data-mask="999.999.999/9999-9" name="<?= $this->csrf->set('Empreendimento[CNPJ]') ?>" value="<?=$this->val('Empreendimento.CNPJ')?>" />
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.PrazoDias') ?>">
+                                                <label class="control-label">Prazo Dias</label>
+                                                <input type="number" min="1" class="form-control" name="<?= $this->csrf->set('Empreendimento[PrazoDias]') ?>" value="<?=$this->val('Empreendimento.PrazoDias')?>" />
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.Status') ?>">
+                                                <label class="control-label label-block">Status</label>
+                                                <?php
+                                                $Val  = $this->val('Empreendimento.Status');
+                                                $Name = $this->csrf->set('Empreendimento[Status]');
+                                                ?>
+                                                <div class="radio radio-inline">
+                                                    <input type="radio" name="<?=$Name?>" id="Es1" value="1" <?=($Val=='1' ? 'checked' : '')?> />
+                                                    <label for="Es1">Publicado</label>
+                                                </div>
+                                                <div class="radio radio-inline">
+                                                    <input type="radio" name="<?=$Name?>" id="Es2" value="0" <?=($Val=='0' ? 'checked' : '')?> />
+                                                    <label for="Es2">Não publicado</label>
+                                                </div>
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.TipoEmpreendimentoId') ?>">
+                                                <label class="control-label">Tipo do empreendimento</label>
+                                                <?php $v = $this->val('Empreendimento.TipoEmpreendimentoId'); ?>
+                                                <select class="form-control" name="<?= $this->csrf->set('Empreendimento[TipoEmpreendimentoId]') ?>">
+                                                    <option value="">-- Tipo do empreendimento --</option>
+                                                    <?php foreach ($this->model->TipoEmpreendimentos() as $obj): $_v = $obj->Id; ?>
+                                                        <option value="<?=$_v?>"<?=($v==$_v ? ' selected' : '')?>><?=$obj->Nome?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.TipoImovelId') ?>">
+                                                <label class="control-label">Tipo do imóvel</label>
+                                                <?php $v = $this->val('Empreendimento.TipoImovelId'); ?>
+                                                <select class="form-control" name="<?= $this->csrf->set('Empreendimento[TipoImovelId]') ?>">
+                                                    <option value="">-- Tipo do imóvel --</option>
+                                                    <?php foreach ($this->model->TipoImoveis() as $obj): $_v = $obj->Id; ?>
+                                                        <option value="<?=$_v?>"<?=($v==$_v ? ' selected' : '')?>><?=$obj->Nome?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.FinalidadeImovelId') ?>">
+                                                <label class="control-label">Finalidade do imóvel</label>
+                                                <?php $v = $this->val('Empreendimento.FinalidadeImovelId'); ?>
+                                                <select class="form-control" name="<?= $this->csrf->set('Empreendimento[FinalidadeImovelId]') ?>">
+                                                    <option value="">-- Finalidade do imóvell --</option>
+                                                    <?php foreach ($this->model->FinalidadeImoveis() as $obj): $_v = $obj->Id; ?>
+                                                        <option value="<?=$_v?>"<?=($v==$_v ? ' selected' : '')?>><?=$obj->Nome?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-8">
+                                            <div class="form-group<?php $e = $this->err('Empreendimento.Descricao') ?>">
+                                                <label class="control-label">Descrição</label>
+                                                <textarea name="<?= $this->csrf->set('Empreendimento[Descricao]') ?>" class="form-control autosize" rows="3"><?=$this->val('Empreendimento.Descricao')?></textarea>
+                                                <span class="help-block"><?= $e ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!--Dados bancarios-->
+                                    <fieldset>
+                                        <legend>Dados Bancários</legend>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <div class="form-group<?php $e = $this->err('Empreendimento.BancoNome') ?>">
+                                                    <label class="control-label">Nome do banco</label>
+                                                    <input type="text" class="form-control" name="<?= $this->csrf->set('Empreendimento[BancoNome]') ?>" value="<?=$this->val('Empreendimento.BancoNome')?>" />
+                                                    <span class="help-block"><?= $e ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="form-group<?php $e = $this->err('Empreendimento.BancoTitular') ?>">
+                                                    <label class="control-label">Titular</label>
+                                                    <input type="text" class="form-control" name="<?= $this->csrf->set('Empreendimento[BancoTitular]') ?>" value="<?=$this->val('Empreendimento.BancoTitular')?>" />
+                                                    <span class="help-block"><?= $e ?></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row">
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.BancoAgencia') ?>">
+                                                            <label class="control-label">Agência</label>
+                                                            <input type="text" class="form-control" name="<?= $this->csrf->set('Empreendimento[BancoAgencia]') ?>" value="<?=$this->val('Empreendimento.BancoAgencia')?>" />
+                                                            <span class="help-block"><?= $e ?></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-2">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.BancoConta') ?>">
+                                                            <label class="control-label">Conta</label>
+                                                            <input type="text" class="form-control" name="<?= $this->csrf->set('Empreendimento[BancoConta]') ?>" value="<?=$this->val('Empreendimento.BancoConta')?>" />
+                                                            <span class="help-block"><?= $e ?></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-1">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.BancoDigito') ?>">
+                                                            <label class="control-label">Dígito</label>
+                                                            <input type="text" class="form-control" name="<?= $this->csrf->set('Empreendimento[BancoDigito]') ?>" value="<?=$this->val('Empreendimento.BancoDigito')?>" />
+                                                            <span class="help-block"><?= $e ?></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                    <!--Endereço-->
+                                    <fieldset>
+                                        <legend>Endereço</legend>
+                                        <!-- Informações basicas-->
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!--2ª Linha informaçóes basicas -->
+                                                <div class="row">
+                                                    <div class="col-xs-2">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.CEP') ?>">
+                                                            <label for="EdCEP">CEP</label>
+                                                            <div class="input-group">
+                                                                <input type="text" id="EdCEP" class="form-control" name="<?= $this->csrf->set('Empreendimento[Endereco[Cep]]') ?>" value="<?=$this->val('Empreendimento.Endereco.Cep')?>">
+                                                                <span class="input-group-btn">
+                                                                    <button type="button" id="BtBuscaCEP" class="btn btn-default" style="height: 32px;"><i class="fa fa-search"></i></button>
+                                                                </span>
+                                                            </div><!-- /input-group -->
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.Logradouro') ?>">
+                                                            <label for="EdLogradouro">Logradouro</label>
+                                                            <input type="text" id="EdLogradouro" class="form-control" placeholder="" name="<?= $this->csrf->set('Empreendimento[Endereco[Logradouro]]') ?>" value="<?=$this->val('Empreendimento.Endereco.Logradouro')?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.Complemento') ?>">
+                                                            <label for="EdComplemento">Complemento</label>
+                                                            <input type="text" id="EdComplemento" class="form-control" placeholder="" name="<?= $this->csrf->set('Empreendimento[Endereco[Complemento]]') ?>" value="<?=$this->val('Empreendimento.Endereco.Complemento')?>">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--3ª Linha informaçóes basicas -->
+                                                <div class="row">
+                                                    <div class="col-xs-2">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.Bairro') ?>">
+                                                            <label for="EdBairro">Bairro</label>
+                                                            <input type="text" id="EdBairro" class="form-control" placeholder="" name="<?= $this->csrf->set('Empreendimento[Endereco[Bairro]]') ?>" value="<?=$this->val('Imovel.Endereco.Bairro')?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-1">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.Numero') ?>">
+                                                            <label for="EdEnderecoNumero">Número</label>
+                                                            <input type="text" id="EdEnderecoNumero" class="form-control" placeholder="" name="<?= $this->csrf->set('Empreendimento[Endereco[Numero]]') ?>" value="<?=$this->val('Imovel.Endereco.Numero')?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-1">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.Quadra') ?>">
+                                                            <label for="EdEnderecoQuadra">Quadra</label>
+                                                            <input type="text" id="EdEnderecoQuadra" class="form-control" placeholder="" name="<?= $this->csrf->set('Empreendimento[Endereco[Quadra]]') ?>" value="<?=$this->val('Imovel.Endereco.Quadra')?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-1">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.Lote') ?>">
+                                                            <label for="EdEnderecoLote">Lote</label>
+                                                            <input type="text" id="EdEnderecoLote" class="form-control" placeholder="" name="<?= $this->csrf->set('Empreendimento[Endereco[Lote]]') ?>" value="<?=$this->val('Empreendimento.Endereco.Lote')?>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-3">
+                                                        <div class="form-group<?php $e = $this->err('Empreendimento.Endereco.Cidade.Id') ?>">
+                                                            <label for="CbCidade">Cidades</label>
+                                                            <span><a style="float: right; font-size: 12px; font-weight: bold; cursor: pointer">Novo</a></span>
+                                                            <?php $v = $this->val('Empreendimento.Endereco.CidadeId'); ?>
+                                                            <select class="form-control" id="CbEnderecoCidade" name="<?= $this->csrf->set('Empreendimento[Endereco[CidadeId]]') ?>">
+                                                                <option value="">-- Cidade --</option>
+                                                                <?php foreach ($this->model->Cidades() as $obj): $_v = $obj->Id; ?>
+                                                                    <option value="<?=$_v?>"<?=($v==$_v ? ' selected' : '')?>><?=$obj->Nome?></option>
+                                                                <?php endforeach; ?>
+                                                            </select>
+                                                            <span class="help-block"><?= $e ?></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+                                </div>
+                                <div class="tab-pane fade" id="s2">
+                                    <table id="dt_basic" class="table data-table table-striped table-bordered table-hover" width="100%">
+                                        <thead>
+                                        <tr>
+                                            <th data-class="expand" class="centralizado"><i class="fa fa-fw fa-folder text-muted hidden-md hidden-sm hidden-xs"></i> Pasta / Contrato</th>
+                                            <th data-class="expand" class="centralizado"><i class="fa fa-fw fa-cloud text-muted hidden-md hidden-sm hidden-xs"></i> Nº Site</th>
+                                            <th>Disponibilidade</th>
+                                            <th>Situação</th>
+                                            <th data-class="expand"><i class="fa fa-fw fa-building text-muted hidden-md hidden-sm hidden-xs"></i> Empreendimento</th>
+                                            <th data-class="expand"><i class="fa fa-fw fa-map-marker  text-muted hidden-md hidden-sm hidden-xs"></i> Logradouro</th>
+                                            <th data-class="expand"><i class="fa fa-fw fa-map-marker  text-muted hidden-md hidden-sm hidden-xs"></i> Bairro</th>
+                                            <th data-hide="phone" class="centralizado"><i class="fa fa-fw fa-map-marker text-muted hidden-md hidden-sm hidden-xs"></i> Quadra</th>
+                                            <th data-hide="phone" class="centralizado"><i class="fa fa-fw fa-map-marker text-muted hidden-md hidden-sm hidden-xs"></i> Lote</th>
+                                            <th data-hide="phone" class="centralizado"><i class="fa fa-fw fa-map-marker text-muted hidden-md hidden-sm hidden-xs"></i> Número</th>
+                                            <th data-hide="phone"><i class="fa fa-fw fa-map-marker text-muted hidden-md hidden-sm hidden-xs"></i> Cidade</th>
+                                            <th data-hide="phone" class="centralizado"><i class="fa fa-fw fa-map-marker text-muted hidden-md hidden-sm hidden-xs"></i> UF</th>
+                                            <th data-hide="phone" class="centralizado"><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Data cadastro</th>
+
+                                        </tr>
+                                        </thead>
+
+                                        <?php if($all = $this->model->ImoveisRelacionados->all()) : //echo '<pre>';  var_dump($all)?>
+                                            <tbody>
+                                            <?php foreach ($all as $i => $o): $i++; ?>
+                                                <tr class="row-data">
+                                                    <td class="cell-link centralizado"><?=$o->Pasta?></td>
+                                                    <td class="cell-link centralizado"><?=$o->NumSite?></td>
+                                                    <td class="cell-link">
+                                                        <?php
+                                                        $sDisponivelPara = '';
+                                                        if ($o->DisponivelVenda == 1)
+                                                            $sDisponivelPara = '<span class="label bg-color-blueDark txt-color-white">Venda</span> &nbsp;';
+
+                                                        if ($o->DisponivelAluguel == 1)
+                                                            $sDisponivelPara .= '<span class="label bg-color-blue txt-color-white">Aluguel</span>';
+
+                                                        echo $sDisponivelPara;
+
+                                                        ?>
+                                                    </td>
+                                                    <td class="cell-link">
+                                                        <?php
+                                                        $sSituacao = '';
+                                                        if ($o->Situacao == 'Alugado')   $sSituacao = '<span class="center-block padding-5 label label-primary">Alugado</span>';
+                                                        if ($o->Situacao == 'Livre')     $sSituacao = '<span class="center-block padding-5 label label-success">Livre</span>';
+                                                        if ($o->Situacao == 'Vendido')   $sSituacao = '<span class="center-block padding-5 label label-danger">Vendido</span>';
+                                                        if ($o->Situacao == 'Reservado') $sSituacao = '<span class="center-block padding-5 label label-warning">Reservado</span>';
+                                                        if ($o->Situacao == 'Negociação') $sSituacao = '<span class="center-block padding-5 label bg-color-purple txt-color-white">Negociação</span>';
+
+                                                        echo $sSituacao;
+
+                                                        ?>
+                                                    </td>
+                                                    <td class="cell-link1">
+                                                        <?=$o->Empreendimento ? '<a rel="tooltip" data-placement="right" data-original-title="<i class=\'fa fa-info-circle text-primary\'></i> Clique aqui para abrir esse empreendimento em uma nova aba" data-html="true" target="_blank" href='.backend_url('/empreendimentos/editar/'.$o->Empreendimento->Id).'>'.$o->Empreendimento->Nome.'</a>' : '' ?>
+                                                    </td>
+                                                    <td class="cell-link"><?php if ($o->Endereco <> null) echo $o->Endereco->Logradouro; ?></td>
+                                                    <td class="cell-link"><?php if ($o->Endereco <> null) echo $o->Endereco->Bairro; ?></td>
+                                                    <td class="cell-link centralizado"><?=@$o->Endereco->Quadra; ?></td>
+                                                    <td class="cell-link centralizado"><?=@$o->Endereco->Lote; ?></td>
+                                                    <td class="cell-link centralizado"><?=@$o->Endereco->Numero; ?></td>
+                                                    <td class="cell-link"><?=@$o->Endereco->Cidade->Nome; ?></td>
+                                                    <td class="cell-link centralizado" style=""><?php if ($o->Endereco <> null) echo $o->Endereco->Cidade->Estado->Uf; ?></td>
+                                                    <td class="cell-link centralizado"><?=date('d/m/Y H:i', strtotime($o->DataCriacao));?></td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                            </tbody>
+                                        <?php endif; ?>
+
+                                    </table>
+
+                                </div>
+                                <div class="tab-pane fade" id="s3">
+                                    <div class="row">
+                                        <div class="col-xs-9">
+                                            <table id="dt_basic" class="table data-table table-striped table-bordered table-hover" width="100%">
+                                                <thead>
+                                                <tr>
+                                                    <th data-class="expand" class="centralizado"> Quadra</th>
+                                                    <th data-class="expand" class="centralizado"> Lotes na quadra</th>
+                                                    <th>Vendidos</th>
+                                                    <th>% Vendido</th>
+                                                </tr>
+                                                </thead>
+
+                                                <?php if($all = $this->EstatisticasPorQuadra) : //echo '<pre>';  var_dump($all)?>
+                                                    <tbody>
+                                                    <?php foreach ($all as $i => $o): $i++; ?>
+                                                        <tr class="row-data">
+                                                            <td class="cell-link centralizado"><?=$o->Quadra?></td>
+                                                            <td class="cell-link centralizado"><?=$o->LoteNaQuadra?></td>
+                                                            <td class="cell-link centralizado"><?=$o->Vendidos?></td>
+                                                            <td class="cell-link centralizado"><?=($o->Vendidos * 100) / $o->LoteNaQuadra?>%</td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                    </tbody>
+                                                <?php endif; ?>
+
+                                            </table>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <h3 class="panel-title">Lotes vendidos</h3>
+                                                </div>
+                                                <div class="panel-body">
+                                                    <!--<canvas id="bar" class="chart chart-bar" chart-data="dataBarra" chart-labels="labelsBarra"></canvas>-->
+                                                    <div style="display: block">
+                                                        <canvas id="myChart"></canvas>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tab-pane fade" id="s4">
+
+                                    <div class="row">
+                                        <div class="col-xs-12">
+
+                                            <div action="upload.php" class="dropzone" id="mydropzoneEmpreendimento">
+                                                <input type="hidden" name="ImovelId" id="ImovelId" value="<?=$this->val('Imoveis.Id')?>">
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top: 15px">
+                                        <div class="col-xs-12" id="TunbNails">
+                                            <div id="lightgallery">
+                                                <?php foreach ($this->Anexos as $o): $i++; ?>
+
+                                                    <a href="<?=$o?>">
+                                                        <img src="<?=$o?>" width="100px" height="100px;" style="margin-right: 7px; margin-top: 10px" />
+                                                    </a>
+
+                                                <?php endforeach; ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <?=$this->actions('remove | save | savenew | saveclose | close | new')?>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+                <!-- end widget content -->
+
+            </div>
+            <!-- end widget div -->
+
+        </div>
+        <!-- end widget -->
+
+    </article>
+    <!-- WIDGET END -->
+
+</div>
+
+<!-- end row -->

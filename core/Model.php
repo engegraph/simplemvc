@@ -242,7 +242,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
                 continue;
 
             $this->rules[$Name] = 'required';
-            $this->ruleMessages["{$Name}.required"] = 'O campo <strong>:attr</strong> não aceita nulo. Por favor informe-o.';
+            $this->ruleMessages["{$Name}.required"] = 'O campo <strong>'.$Name.'</strong> não aceita nulo. Por favor informe-o.';
         }
     }
 

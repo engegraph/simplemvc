@@ -98,12 +98,20 @@ class Empreendimentos extends Controller
 
 
     public function onRun(): void    {
-        $this->addStyle('assets/js/plugin/lightGallery-master/dist/css/lightgallery.css');
 
-        $this->addScript('assets/js/plugin/lightGallery-master/dist/js/lightgallery.min.js');
+        //Adiciona o lightGallery
+        $this->addStyle(common_assets('plugin/lightGallery-master/dist/css/lightgallery.css'));
+        $this->addScript(common_assets('plugin/lightGallery-master/dist/js/lightgallery.min.js'));
         $this->addScript('https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.13/jquery.mousewheel.min.js');
-        $this->addScript('assets/js/plugin/lightGallery-master/modules/lg-thumbnail.min.js');
-        $this->addScript('assets/js/plugin/lightGallery-master/modules/lg-fullscreen.min.js');
+        $this->addScript(common_assets('plugin/lightGallery-master/modules/lg-thumbnail.min.js'));
+        $this->addScript(common_assets('plugin/lightGallery-master/modules/lg-fullscreen.min.js'));
+
+        //Adiciona o dropzone
+        $this->addScript(tpl_assets('js/plugin/dropzone/dropzone.min.js'));
+
+        //Adiciona o ChartsJS
+        $this->addScript(tpl_assets('js/plugin/chartjs/chart.min.js'));
+
 
 
         $this->addScript('assets/js/empreendimentos.js');

@@ -9,6 +9,6 @@ class Profissao extends Model
     public $modalColumns = [
         'Nome'                => ['label'=>'Nome'],
         'Descricao'           => ['label'=>'Descrição'],
-        'ImobiliariaFilialId' => ['label'=>'Imobiliaria Filial','reference'=>['App\Modules\wSGI\Models\ImobiliariaFilial'], 'list'=> false, 'form'=> false],
+        'ImobiliariaFilialId' => ['label'=>'Imobiliaria Filial','reference'=>['wSGI\Modules\Controles\Models\ImobiliariaFilial'], 'list'=> false, 'form'=> false],
     ];
 }

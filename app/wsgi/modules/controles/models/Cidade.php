@@ -13,7 +13,7 @@ class Cidade extends Model
     public $modalColumns = [
         'Capital' =>  ['type'=>'radio', 'options'=>['Não','Sim']],
         'Nome' =>  ['cssClass'=>'nome-class'],
-        'EstadoId' => ['label'=>'Estado', 'reference'=>['App\Modules\wSGI\Models\Estado']],
+        'EstadoId' => ['label'=>'Estado', 'reference'=>['wSGI\Modules\Controles\Models\Estado']],
         'DataCriacao' => ['label'=>'Criação', 'format'=>'d/m/Y', 'form'=>false],
         'DataAtualizacao' => ['label'=>'Atualização', 'callback'=>'formatData'],
     ];

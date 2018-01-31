@@ -1,6 +1,8 @@
 <?php namespace wSGI\Modules\Imoveis\Models;
 
 use Core\Model;
+use wSGI\Modules\Imoveis\Models\Endereco;
+use wSGI\Modules\Controles\Models\TipoVinculo;
 
 class Imovel extends Model
 {
@@ -10,28 +12,28 @@ class Imovel extends Model
     //Relacionamentos
     public function Endereco()
     {
-        return $this->hasOne('wSGI\Modules\Controles\Models\Endereco','Id', 'EnderecoId');
+        return $this->hasOne('wSGI\Modules\Imoveis\Models\Endereco','Id', 'EnderecoId');
     }
 
     public function Empreendimento()
     {
-        return $this->hasOne('App\Modules\wSGI\Models\Empreendimento','Id', 'EmpreendimentoId');
+        return $this->hasOne('wSGI\Modules\empreendimentos\Models\Empreendimento','Id', 'EmpreendimentoId');
     }
 
     public function Contratos() {
-        return $this->hasMany('App\Modules\wSGI\Models\ImovelContrato','ImovelId', 'Id');
+        return $this->hasMany('wSGI\Modules\Alugueis\Models\ImovelContrato','ImovelId', 'Id');
     }
 
     public function PessoasVinculadas() {
-        return $this->hasMany('App\Modules\wSGI\Models\VinculoPessoaImovel','ImovelId', 'Id');
+        return $this->hasMany('wSGI\Modules\Imoveis\Models\VinculoPessoaImovel','ImovelId', 'Id');
     }
 
     public function CaracteristicasAvancadas() {
-        return $this->hasMany('App\Modules\wSGI\Models\ImovelCaracteristicas','ImovelId', 'Id');
+        return $this->hasMany('wSGI\Modules\Imoveis\Models\ImovelCaracteristicas','ImovelId', 'Id');
     }
 
     public function PropostasVenda() {
-        return $this->hasMany('App\Modules\wSGI\Models\CentralVenda','ImovelId', 'Id');
+        return $this->hasMany('wSGI\Modules\vendas\Models\Central','ImovelId', 'Id');
     }
 
 
@@ -41,58 +43,57 @@ class Imovel extends Model
     //Tabelas basicas
     public function Empreendimentos()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\Empreendimento');
+        return $this->hasAll('wSGI\Modules\empreendimentos\Models\Empreendimento');
     }
 
     public function AnexoCategorias()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\AnexoCategoria');
+        return $this->hasAll('wSGI\Modules\controles\Models\AnexoCategoria');
     }
 
     public function TiposImovel()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\TipoImovel');
+        return $this->hasAll('wSGI\Modules\controles\models\TipoImovel');
     }
 
     public function TiposParteProposta()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\TipoParteProposta');
+        return $this->hasAll('wSGI\Modules\controles\models\TipoParteProposta');
     }
 
     public function TiposPagamento()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\TipoPagamento');
+        return $this->hasAll('wSGI\Modules\controles\models\TipoPagamento');
 //        return [];
     }
 
     public function TiposLaje()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\TipoLaje');
+        return $this->hasAll('wSGI\Modules\controles\models\TipoLaje');
     }
 
     public function Cidades()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\Cidade');
+        return $this->hasAll('wSGI\Modules\controles\models\Cidade');
     }
 
     public function Caracteristicas()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\CaracteristicasImovel');
+        return $this->hasAll('wSGI\Modules\controles\models\CaracteristicasImovel');
     }
 
     public function TipoVinculos()
     {
-//        return $this->hasAll('App\Modules\wSGI\Models\TipoVinculo');
         return TipoVinculo::where('Nome','<>','Locatário')->get();
     }
 
     public function FinalidadesImovel()
     {
-        return $this->hasAll('App\Modules\wSGI\Models\FinalidadeImovel');
+        return $this->hasAll('wSGI\Modules\controles\models\FinalidadeImovel');
     }
 
     public function LigacoesTelefonicas()   {
-        return $this->hasMany('App\Modules\wSGI\Models\CrmRecepcao', 'ImovelId', 'Id');
+        return $this->hasMany('wSGI\Modules\crm\Models\Recepcao', 'ImovelId', 'Id');
     }
 
     public function GraficoLigacoesMes() {

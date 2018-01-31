@@ -28,7 +28,7 @@
             -->
             <header>
                 <span class="widget-icon"> <i class="fa fa-list"></i> </span>
-                <h2>Título do widget</h2>
+                <h2>Empreendimentos cadastrados</h2>
             </header>
 
             <!-- widget div-->
@@ -47,7 +47,6 @@
                     <div class="dt-toolbar toolbar-actions">
                         <div class="col-sm-6">
                             <div class="toolbar-actions-text">
-                                <p>Uma mensagem qualquer <span class="label label-default">aqui</span>, ou <span class="label label-danger">não</span></p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -57,9 +56,55 @@
                         </div>
                     </div>
 
-                    <!---------------------------
-                    ----- SUA DATAGRID AQUI -----
-                    ---------------------------->
+                    <table id="dt_basic" class="table data-table table-striped table-bordered table-hover data-sort" width="100%">
+                        <thead>
+                        <tr>
+                            <th data-hide="phone">
+                                <div class="checkbox checkbox-danger">
+                                    <input type="checkbox" name="dsd" id="toggle-all">
+                                    <label for="toggle-all">
+                                        <i class="fa fa-hashtag"></i>
+                                    </label>
+                                </div>
+                            </th>
+                            <th data-class="expand"><i class="fa fa-fw fa-building-o text-muted hidden-md hidden-sm hidden-xs"></i> Nome do empreendimento</th>
+                            <th data-hide="phone" style="width: 178px;"> Tipo do empreendimento</th>
+                            <th data-hide="phone"> Tipo do imóvel</th>
+                            <th data-hide="phone"> Finalidade do imóvel</th>
+                            <th data-hide="phone,tablet">CNPJ</th>
+                            <th data-hide="phone,tablet"><i class="fa fa-fw fa-map-marker hidden-md hidden-sm hidden-xs"></i> Cidade</th>
+                            <th data-hide="phone,tablet" class="centralizado"><i class="fa fa-fw fa-map-marker hidden-md hidden-sm hidden-xs"></i> UF</th>
+                            <th data-hide="phone,tablet" class="centralizado"><i class="fa fa-fw fa-calendar hidden-md hidden-sm hidden-xs"></i> Data cadastro</th>
+                        </tr>
+                        </thead>
+
+                        <?php if($all = $this->model->all()): ?>
+                            <tbody>
+                            <?php foreach ($all as $i => $o): $i++; ?>
+                                <?php
+                                if ($o->TipoEmpreendimento->Nome == 'Loteamento')
+                                    $Stylo = 'label-primary';
+                                else if ($o->TipoEmpreendimento->Nome == 'Condomínio' || $o->TipoEmpreendimento->Nome == 'Condominio')
+                                    $Stylo = 'bg-color-blue txt-color-white';
+                                else
+                                    $Stylo = 'bg-color-blueLight txt-color-white';
+                                ?>
+                                <tr class="row-data">
+                                    <td class="cell-check"><?=$this->checks($i, $o->Id);?></td>
+                                    <td class="cell-link"><?=$o->Nome?></td>
+                                    <td class="cell-link"><?='<span class="center-block padding-5 label ' . $Stylo . '">' . $o->TipoEmpreendimento->Nome . '</span>'?></td>
+                                    <td class="cell-link"><?=$o->TipoImovel->Nome?></td>
+                                    <td class="cell-link"><?=$o->FinalidadeImovel->Nome?></td>
+                                    <td class="cell-link"><?=mask($o->CNPJ,'##.###.###/####-##')?></td>
+                                    <td class="cell-link"><?=$o->Endereco->Cidade->Nome?></td>
+                                    <td class="cell-link centralizado"><?=$o->Endereco->Cidade->Estado->Uf?></td>
+                                    <td class="cell-link centralizado"><?=date('d/m/Y H:i', strtotime($o->DataCriacao));?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                            </tbody>
+                        <?php endif; ?>
+
+                    </table>
 
                 </div>
                 <!-- end widget content -->
