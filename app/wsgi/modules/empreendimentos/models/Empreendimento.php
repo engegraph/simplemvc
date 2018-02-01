@@ -61,16 +61,8 @@ class Empreendimento extends Model
     //Eventos
     public function onBeforeSave()
     {
-        var_dump($this);
-        die;
-
         //Chaves estrangerias
         $this->CNPJ   = RetiraCaracteres($this->CNPJ);
         $this->Status = 1;
-
-        var_dump($this);
-        die;
-
-
     }
 }

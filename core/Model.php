@@ -64,7 +64,7 @@ class Model extends \Illuminate\Database\Eloquent\Model
         self::$DB = new DB;
         $this->Conn = DB::connection($this->getConnectionName())->getPdo();
         $this->infoTable();
-        $this->applyValidate();
+        #$this->applyValidate();
     }
 
     /**

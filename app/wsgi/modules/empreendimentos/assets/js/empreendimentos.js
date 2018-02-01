@@ -21,7 +21,7 @@ $(window).load(function() {
 $(document).ready(function() {
 
     //Inicializa os anexos
-    $("#lightgallery").lightGallery();
+    //$("#lightgallery").lightGallery();
 
 });
 
